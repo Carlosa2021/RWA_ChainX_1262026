@@ -95,7 +95,7 @@ export interface ProjectDisplay {
   investmentController: string;
 }
 
-// Mapeo de metadataURI a datos adicionales (ubicación, APY, imágenes)
+// Mapeo de metadataURI a datos adicionales (ubicación, APY, imágenes profesionales)
 const PROJECT_METADATA: Record<string, {
   location: string;
   apy: string;
@@ -105,19 +105,19 @@ const PROJECT_METADATA: Record<string, {
   "ipfs://QmApartamentoMadrid": {
     location: "Madrid, Calle Gran Vía 28",
     apy: "7.5%",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80", // Apartamento moderno Madrid
     investors: 23
   },
   "ipfs://QmCasaBarcelona": {
     location: "Barcelona, Passeig de Gràcia 92",
     apy: "6.8%",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80", // Casa moderna Barcelona
     investors: 35
   },
   "ipfs://QmLocalValencia": {
     location: "Valencia, Avenida del Puerto 15",
     apy: "8.2%",
-    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=800&q=80", // Local comercial moderno
     investors: 18
   }
 };
