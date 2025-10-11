@@ -1,0 +1,15 @@
+# Hardhat contracts (no necesarios para el frontend)
+contracts/
+
+# Archivos de desarrollo
+*.log
+.DS_Store
+*.pem
+
+# Testing
+coverage/
+*.test.ts
+*.test.tsx
+
+# Local env files
+.env*.local
