@@ -85,7 +85,7 @@ export function useInvestorInfo(controllerAddress: string, investorAddress?: str
   const { data, isLoading, error, refetch } = useReadContract({
     contract,
     method: "getInvestorInfo",
-    params: investorAddress ? [investorAddress as `0x${string}`] : undefined,
+    params: investorAddress ? [investorAddress as `0x${string}`] : ["0x0000000000000000000000000000000000000000" as `0x${string}`],
   });
 
   const investorData = Array.isArray(data) ? data : [false, false, 0n, 0];
