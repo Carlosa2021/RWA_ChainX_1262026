@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
         <ThirdwebProvider>
           <ThemeProvider>
             <AuthProvider>
+              <Toaster position="top-right" richColors closeButton />
               {children}
             </AuthProvider>
           </ThemeProvider>
