@@ -6,6 +6,7 @@ import { StatsCard } from "@/components/StatsCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { InvestmentModal } from "@/components/InvestmentModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { useProjects, useProjectStats } from "@/hooks/useProjects";
 import { 
   Building2, 
   TrendingUp, 
@@ -13,60 +14,20 @@ import {
   Users,
   Sparkles,
   ArrowRight,
-  Shield
+  Shield,
+  Loader2
 } from "lucide-react";
 import { useState } from "react";
-
-const mockProjects = [
-  {
-    id: 1,
-    name: "Property Madrid Centro",
-    location: "Madrid, España",
-    totalValue: "€50,000",
-    pricePerToken: "€1,000",
-    tokensAvailable: 30,
-    tokensTotal: 50,
-    apy: "10%",
-    status: "active" as const,
-    progress: 40,
-    investors: 23,
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80",
-  },
-  {
-    id: 2,
-    name: "Barcelona Luxury",
-    location: "Barcelona, España",
-    totalValue: "€75,000",
-    pricePerToken: "€1,500",
-    tokensAvailable: 0,
-    tokensTotal: 50,
-    apy: "12%",
-    status: "funded" as const,
-    progress: 100,
-    investors: 50,
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80",
-  },
-  {
-    id: 3,
-    name: "Valencia Beach",
-    location: "Valencia, España",
-    totalValue: "€60,000",
-    pricePerToken: "€800",
-    tokensAvailable: 45,
-    tokensTotal: 75,
-    apy: "11%",
-    status: "active" as const,
-    progress: 40,
-    investors: 18,
-    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80",
-  },
-];
 
 export default function Home() {
   const { isOwner, isKYCVerified } = useAuth();
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   
-  const currentProject = mockProjects.find(p => p.id === selectedProject);
+  // Obtener proyectos reales desde blockchain
+  const { projects, projectCount, isLoading: loadingProjects } = useProjects();
+  const stats = useProjectStats();
+  
+  const currentProject = projects.find(p => p.id === selectedProject);
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -127,23 +88,23 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatsCard
               title={isOwner ? "Proyectos Totales" : "Propiedades Disponibles"}
-              value="3"
+              value={loadingProjects ? "..." : String(stats.totalProjects)}
               subtitle={isOwner ? "En plataforma" : "Activas ahora"}
               icon={Building2}
               iconColor="text-blue-600"
               iconBg="bg-blue-100 dark:bg-blue-900/30"
             />
             <StatsCard
-              title={isOwner ? "Inversión Total" : "Tu Inversión"}
-              value={isOwner ? "€185K" : "$4"}
-              subtitle={isOwner ? "Valor bloqueado" : "En USDC"}
+              title={isOwner ? "Inversión Total" : "Valor Total"}
+              value={loadingProjects ? "..." : `€${Math.round(stats.totalValueLocked / 1000)}K`}
+              subtitle={isOwner ? "Valor bloqueado" : "Inmuebles tokenizados"}
               icon={Wallet}
               iconColor="text-green-600"
               iconBg="bg-green-100 dark:bg-green-900/30"
             />
             <StatsCard
               title="Rendimiento"
-              value="+12.5%"
+              value={loadingProjects ? "..." : `${stats.averageAPY.toFixed(1)}%`}
               subtitle="APY promedio"
               icon={TrendingUp}
               iconColor="text-purple-600"
@@ -151,8 +112,8 @@ export default function Home() {
             />
             <StatsCard
               title={isOwner ? "Inversores" : "Comunidad"}
-              value={isOwner ? "127" : "500+"}
-              subtitle={isOwner ? "KYC aprobados" : "Inversores verificados"}
+              value={loadingProjects ? "..." : String(stats.totalInvestors)}
+              subtitle={isOwner ? "KYC aprobados" : "Inversores activos"}
               icon={Users}
               iconColor="text-orange-600"
               iconBg="bg-orange-100 dark:bg-orange-900/30"
@@ -183,19 +144,45 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  {...project}
-                  onInvest={() => {
-                    if (!isKYCVerified && !isOwner) {
-                      alert("⚠️ Debes completar KYC primero (MiCA compliance)");
-                      return;
-                    }
-                    setSelectedProject(project.id);
-                  }}
-                />
-              ))}
+              {loadingProjects ? (
+                // Loading skeleton
+                <div className="col-span-full flex items-center justify-center py-12">
+                  <div className="text-center">
+                    <Loader2 className="w-12 h-12 animate-spin text-purple-600 mx-auto mb-4" />
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Cargando proyectos desde blockchain...
+                    </p>
+                  </div>
+                </div>
+              ) : projects.length === 0 ? (
+                // No projects state
+                <div className="col-span-full flex items-center justify-center py-12">
+                  <div className="text-center">
+                    <Building2 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      No hay proyectos disponibles
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {isOwner ? "Crea tu primer proyecto inmobiliario" : "Vuelve pronto para nuevas oportunidades"}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                // Projects list
+                projects.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    {...project}
+                    onInvest={() => {
+                      if (!isKYCVerified && !isOwner) {
+                        alert("⚠️ Debes completar KYC primero (MiCA compliance)");
+                        return;
+                      }
+                      setSelectedProject(project.id);
+                    }}
+                  />
+                ))
+              )}
             </div>
           </div>
         </main>
