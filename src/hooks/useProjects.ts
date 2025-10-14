@@ -157,22 +157,27 @@ export function useProjects() {
     // Convertir pricePerToken de eurocents a euros
     const priceInEuros = Number(project.pricePerToken) / 100;
     
-    // Calcular valor total (maxCap tokens * precio en euros)
-    const totalValueEuros = Number(project.maxCap) * priceInEuros;
+    // Los tokens tienen 18 decimals pero son indivisibles
+    // maxCap viene como BigInt con 18 decimales (ej: 5000000000000000000000000 = 5M tokens)
+    // Necesitamos dividir por 10^18 para obtener el número real de tokens
+    const maxCapTokens = Number(project.maxCap) / 1e18;
+    
+    // Calcular valor total (tokens * precio en euros)
+    const totalValueEuros = maxCapTokens * priceInEuros;
 
     // Mock: calcular tokens vendidos (en producción leer de InvestmentController.issued)
-    const mockTokensSold = Math.floor(Number(project.maxCap) * (0.3 + Math.random() * 0.4));
-    const tokensAvailable = Number(project.maxCap) - mockTokensSold;
-    const progress = Math.round((mockTokensSold / Number(project.maxCap)) * 100);
+    const mockTokensSold = Math.floor(maxCapTokens * (0.3 + Math.random() * 0.4));
+    const tokensAvailable = maxCapTokens - mockTokensSold;
+    const progress = Math.round((mockTokensSold / maxCapTokens) * 100);
 
     return {
       id: index,
       name: project.name,
       location: metadata.location,
-      totalValue: `€${totalValueEuros.toLocaleString("es-ES")}`,
-      pricePerToken: `€${priceInEuros.toLocaleString("es-ES")}`,
-      tokensAvailable,
-      tokensTotal: Number(project.maxCap),
+      totalValue: `€${totalValueEuros.toLocaleString("es-ES", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+      pricePerToken: `€${priceInEuros.toLocaleString("es-ES", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+      tokensAvailable: Math.floor(tokensAvailable),
+      tokensTotal: Math.floor(maxCapTokens),
       apy: metadata.apy,
       status: tokensAvailable > 0 ? "active" : "funded",
       progress,

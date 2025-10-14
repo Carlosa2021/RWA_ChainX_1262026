@@ -1,7 +1,35 @@
 {
-  "name": "app",
-  "version": "0.1.0",
+  "name": "chainx-rwa-inmotoken",
+  "version": "1.0.0",
   "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "author": {
+    "name": "Carlos Bernal",
+    "email": "legal@chainx.ch",
+    "url": "https://chainx.ch"
+  },
+  "description": "ChainX® Real World Assets Tokenization Platform - ERC-3643 compliant security token issuance and management",
+  "keywords": [
+    "blockchain",
+    "tokenization",
+    "RWA",
+    "real-world-assets",
+    "ERC-3643",
+    "security-tokens",
+    "web3",
+    "polygon",
+    "ethereum",
+    "chainx"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Carlosa2021/RWA_InmoToken.git"
+  },
+  "homepage": "https://chainx.ch",
+  "bugs": {
+    "url": "https://github.com/Carlosa2021/RWA_InmoToken/issues",
+    "email": "support@chainx.ch"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
@@ -9,6 +37,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "ethers": "^6.13.4",
     "lucide-react": "^0.545.0",
     "next": "15.5.4",
     "react": "19.1.0",
@@ -26,5 +55,17 @@
     "eslint-config-next": "15.5.4",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "trademark": {
+    "name": "ChainX",
+    "registration": "830657",
+    "registry": "Swissreg",
+    "owner": "Carlos Bernal",
+    "country": "Switzerland",
+    "validUntil": "2035-03-21"
   }
 }

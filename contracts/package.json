@@ -1,9 +1,19 @@
 {
-  "name": "contracts",
+  "name": "@chainx/smart-contracts",
   "version": "1.0.0",
   "private": true,
-  "description": "",
-  "license": "MIT",
+  "description": "ChainX® Smart Contracts - ERC-3643 Security Token Issuance Platform",
+  "license": "SEE LICENSE IN ../LICENSE",
+  "author": {
+    "name": "Carlos Bernal",
+    "email": "legal@chainx.ch",
+    "url": "https://chainx.ch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Carlosa2021/RWA_InmoToken.git",
+    "directory": "contracts"
+  },
   "scripts": {
     "compile": "hardhat compile",
     "clean": "hardhat clean",
@@ -24,5 +34,8 @@
   "dependencies": {
     "@openzeppelin/contracts": "^5.4.0",
     "ethers": "^6.14.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
