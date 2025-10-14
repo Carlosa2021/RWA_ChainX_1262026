@@ -126,10 +126,23 @@ const PROJECT_METADATA: Record<string, {
  * Hook to fetch all projects from blockchain
  */
 export function useProjects() {
+  // Validate contract address before creating contract instance
+  const contractAddress = CONTRACTS.projectRegistry;
+  
+  // Return empty state if no valid address (build time or missing env vars)
+  if (!contractAddress || contractAddress === "") {
+    return {
+      projects: [],
+      isLoading: false,
+      error: undefined,
+      refetch: () => Promise.resolve(),
+    };
+  }
+
   const contract = getContract({
     client,
     chain,
-    address: CONTRACTS.projectRegistry as `0x${string}`,
+    address: contractAddress as `0x${string}`,
     abi: PROJECT_REGISTRY_ABI,
   });
 
