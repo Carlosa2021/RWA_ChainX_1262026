@@ -11,7 +11,7 @@ interface ProjectCardProps {
   tokensAvailable: number;
   tokensTotal: number;
   apy: string;
-  status: "active" | "funded";
+  status: "active" | "funded" | "upcoming";
   progress: number;
   image: string;
   investors?: number;
@@ -26,7 +26,6 @@ export function ProjectCard({
   tokensAvailable,
   tokensTotal,
   apy,
-  status,
   progress,
   image,
   investors = 15,

@@ -9,7 +9,6 @@ import {
   User, 
   CheckCircle, 
   XCircle,
-  Mail,
   Bell,
   Globe,
   Shield,

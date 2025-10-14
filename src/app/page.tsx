@@ -24,7 +24,7 @@ export default function Home() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   
   // Obtener proyectos reales desde blockchain
-  const { projects, projectCount, isLoading: loadingProjects } = useProjects();
+  const { projects, isLoading: loadingProjects } = useProjects();
   const stats = useProjectStats();
   
   const currentProject = projects.find(p => p.id === selectedProject);
@@ -191,7 +191,6 @@ export default function Home() {
       {/* Investment Modal */}
       {currentProject && (
         <InvestmentModal
-          projectId={currentProject.id}
           projectName={currentProject.name}
           pricePerToken={currentProject.pricePerToken}
           isOpen={selectedProject !== null}

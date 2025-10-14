@@ -7,7 +7,6 @@ import { formatUnits } from "viem";
 import { X, Shield, CheckCircle, AlertCircle, Loader2, ArrowRight } from "lucide-react";
 
 interface InvestmentModalProps {
-  projectId: number;
   projectName: string;
   pricePerToken: string;
   isOpen: boolean;
@@ -16,7 +15,6 @@ interface InvestmentModalProps {
 }
 
 export function InvestmentModal({
-  projectId,
   projectName,
   pricePerToken,
   isOpen,
@@ -29,7 +27,7 @@ export function InvestmentModal({
   const [err, setErr] = useState<string | null>(null);
   
   const account = useActiveAccount();
-  const { mutateAsync: sendTx, isPending } = useSendTransaction();
+  const { mutateAsync: sendTx } = useSendTransaction();
 
   useEffect(() => {
     if (!isOpen) {
