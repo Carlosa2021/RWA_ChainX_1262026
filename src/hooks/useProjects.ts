@@ -150,6 +150,7 @@ export function useProjects() {
   console.log('🔍 useProjects - hasValidAddress:', hasValidAddress);
   console.log('🔍 useProjects - data:', data);
   console.log('🔍 useProjects - hasContractData:', hasContractData);
+  console.log('🔍 useProjects - Mostrando:', hasContractData ? 'DATOS DEL CONTRATO' : 'CAMPAÑAS DE DEMOSTRACIÓN');
   
   const projectsDisplay: ProjectDisplay[] = hasContractData 
     ? (data as Project[]).map((project, index) => {
