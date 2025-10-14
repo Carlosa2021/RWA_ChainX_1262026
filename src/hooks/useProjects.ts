@@ -140,7 +140,7 @@ export function useProjects() {
 
   // Call hooks unconditionally but with queryOptions to disable when no contract
   const { data, isLoading, error, refetch } = useReadContract({
-    contract: contract as any,
+    contract: contract!,
     method: "getActiveProjects",
     params: [],
     queryOptions: {
@@ -149,7 +149,7 @@ export function useProjects() {
   });
 
   const { data: projectCount } = useReadContract({
-    contract: contract as any,
+    contract: contract!,
     method: "getProjectCount",
     params: [],
     queryOptions: {
