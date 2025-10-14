@@ -128,34 +128,33 @@ const PROJECT_METADATA: Record<string, {
 export function useProjects() {
   // Validate contract address before creating contract instance
   const contractAddress = CONTRACTS.projectRegistry;
-  
-  // Return empty state if no valid address (build time or missing env vars)
-  if (!contractAddress || contractAddress === "") {
-    return {
-      projects: [],
-      isLoading: false,
-      error: undefined,
-      refetch: () => Promise.resolve(),
-    };
-  }
+  const hasValidAddress = contractAddress && contractAddress !== "";
 
-  const contract = getContract({
+  // Create contract only if address is valid
+  const contract = hasValidAddress ? getContract({
     client,
     chain,
     address: contractAddress as `0x${string}`,
     abi: PROJECT_REGISTRY_ABI,
-  });
+  }) : null;
 
+  // Call hooks unconditionally but with queryOptions to disable when no contract
   const { data, isLoading, error, refetch } = useReadContract({
-    contract,
+    contract: contract as any,
     method: "getActiveProjects",
     params: [],
+    queryOptions: {
+      enabled: hasValidAddress,
+    },
   });
 
   const { data: projectCount } = useReadContract({
-    contract,
+    contract: contract as any,
     method: "getProjectCount",
     params: [],
+    queryOptions: {
+      enabled: hasValidAddress,
+    },
   });
 
   // Transformar datos del contrato a formato de UI
