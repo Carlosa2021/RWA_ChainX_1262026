@@ -142,6 +142,7 @@ export function useProjects() {
   });
 
   // Transformar datos del contrato a formato de UI
+  // ACTUALIZADO: 3 campañas profesionales con imágenes reales
   const projectsDisplay: ProjectDisplay[] = data && (data as Project[]).length > 0 
     ? (data as Project[]).map((project, index) => {
         const metadata = PROJECT_METADATA[project.metadataURI] || {
@@ -198,7 +199,7 @@ export function useProjects() {
           status: "active" as const,
           progress: 60, // 300 tokens vendidos de 500
           investors: 23,
-          image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80",
+          image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop&q=80",
           securityToken: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45",
           investmentController: "0xYourInvestmentControllerAddress",
         },
@@ -215,7 +216,7 @@ export function useProjects() {
           status: "active" as const,
           progress: 0,
           investors: 0,
-          image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+          image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&auto=format&fit=crop&q=80",
           securityToken: "0xC5c789A12Fb5259f57Da713D909dBC797c029671",
           investmentController: "0xYourInvestmentControllerAddress2",
         },
@@ -232,7 +233,7 @@ export function useProjects() {
           status: "active" as const,
           progress: 0,
           investors: 0,
-          image: "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?w=800&q=80",
+          image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80",
           securityToken: "0x714E408cda94d0160a34310C2601871B1e7B16Fb",
           investmentController: "0xYourInvestmentControllerAddress3",
         }
