@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-const API_URL = "http://localhost:3004";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3004";
 
 interface KYCStatus {
   id?: number;
@@ -55,11 +55,24 @@ export default function KYCPage() {
     try {
       setIsLoadingStatus(true);
       const response = await fetch(`${API_URL}/kyc/status/${address}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setKycStatus(data);
     } catch (error) {
       console.error("Error al obtener estado KYC:", error);
-      toast.error("Error al cargar el estado del KYC");
+      // Don't show error toast if backend is not available (development mode)
+      if (API_URL.includes('localhost')) {
+        console.warn("Backend KYC no disponible. Usando modo offline.");
+        setKycStatus({
+          wallet_address: address,
+          document_type: "",
+          status: 'not_submitted'
+        });
+      } else {
+        toast.error("Error al cargar el estado del KYC");
+      }
     } finally {
       setIsLoadingStatus(false);
     }

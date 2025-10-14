@@ -8,6 +8,14 @@
 
 ## ✅ Variables a Agregar (una por una)
 
+### 0. Backend API URL (OPCIONAL - para KYC/Admin)
+```
+Name: NEXT_PUBLIC_API_URL
+Value: https://tu-backend-api.com
+Environments: ☑ Production ☑ Preview ☑ Development
+```
+**Nota**: Si no tienes backend, omite esta variable. El sistema funcionará en modo offline para KYC.
+
 ### 1. Project Registry (CRÍTICO)
 ```
 Name: NEXT_PUBLIC_PROJECT_REGISTRY

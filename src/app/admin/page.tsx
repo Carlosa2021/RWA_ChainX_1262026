@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-const API_URL = "http://localhost:3004";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3004";
 
 interface KYCSubmission {
   id: number;
@@ -88,7 +88,13 @@ export default function AdminPage() {
       setSubmissions(data);
     } catch (error) {
       console.error("Error al cargar KYCs:", error);
-      toast.error("Error al cargar las solicitudes");
+      // Don't show error toast if backend is not available (development mode)
+      if (!API_URL.includes('localhost')) {
+        toast.error("Error al cargar las solicitudes");
+      } else {
+        console.warn("Backend KYC no disponible. Mostrando lista vacía.");
+        setSubmissions([]);
+      }
     } finally {
       setIsLoading(false);
     }

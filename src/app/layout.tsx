@@ -12,8 +12,11 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "RWA InmoToken | Tokenización Inmobiliaria Premium",
+  title: "ChainX® RWA InmoToken | Tokenización Inmobiliaria Premium",
   description: "Plataforma profesional de tokenización inmobiliaria con ERC-3643 + MiCA compliance",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
