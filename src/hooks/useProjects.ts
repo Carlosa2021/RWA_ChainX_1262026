@@ -143,7 +143,15 @@ export function useProjects() {
 
   // Transformar datos del contrato a formato de UI
   // ACTUALIZADO: 3 campañas profesionales con imágenes reales
-  const projectsDisplay: ProjectDisplay[] = data && (data as Project[]).length > 0 
+  // Si no hay datos del contrato o está vacío, mostrar campañas de demostración
+  const hasContractData = data && Array.isArray(data) && (data as Project[]).length > 0;
+  
+  // Debug: verificar qué datos tenemos
+  console.log('🔍 useProjects - hasValidAddress:', hasValidAddress);
+  console.log('🔍 useProjects - data:', data);
+  console.log('🔍 useProjects - hasContractData:', hasContractData);
+  
+  const projectsDisplay: ProjectDisplay[] = hasContractData 
     ? (data as Project[]).map((project, index) => {
         const metadata = PROJECT_METADATA[project.metadataURI] || {
           location: "Ubicación desconocida",
