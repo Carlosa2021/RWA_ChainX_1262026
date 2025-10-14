@@ -22,14 +22,17 @@ const USDC_ADDRESS = "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359";
 const CHAINLINK_EUR_USD = "0x73366Fe0AA0Ded304479862808e02506FE556a98";
 
 // Proyectos reales desplegados en Polygon
+// NOTA: Estos son los mismos tokens que se muestran en el dashboard
+// Para producción, solo mostrar tokens que realmente existen en blockchain
 const PROJECTS = [
   {
-    name: "Test Campaign - Apartamento Testing",
-    symbol: "INMO-TEST-001",
-    tokenAddress: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45",
-    priceEur: 1, // €1 por token
-    image: "🧪"
+    name: "Apartamento Moderno Madrid Centro",
+    symbol: "RMAD",
+    tokenAddress: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45", // Tu token real
+    priceEur: 500,
+    image: "🏢"
   }
+  // Agregar más tokens aquí cuando los despliegues realmente
 ];
 
 interface TokenBalance {

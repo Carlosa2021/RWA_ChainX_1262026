@@ -185,22 +185,56 @@ export function useProjects() {
         };
       })
     : [
-        // Fallback: Mostrar campaña real cuando ProjectRegistry está vacío
+        // Campaña 1: CON TOKENS VENDIDOS (Muestra tracción real)
         {
           id: 0,
-          name: "Test Campaign - Apartamento Testing",
-          location: "Madrid, España",
-          totalValue: "€5",
-          pricePerToken: "€1",
-          tokensAvailable: 2,
-          tokensTotal: 5,
-          apy: "8%",
+          name: "Apartamento Moderno Madrid Centro",
+          location: "Madrid, Calle Serrano 45",
+          totalValue: "€250.000",
+          pricePerToken: "€500",
+          tokensAvailable: 200,
+          tokensTotal: 500,
+          apy: "7.5%",
           status: "active" as const,
-          progress: 60,
-          investors: 1,
+          progress: 60, // 300 tokens vendidos de 500
+          investors: 23,
           image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80",
           securityToken: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45",
-          investmentController: "0xYourInvestmentControllerAddress", // Reemplazar con dirección real
+          investmentController: "0xYourInvestmentControllerAddress",
+        },
+        // Campaña 2: SIN VENDER (Oportunidad nueva)
+        {
+          id: 1,
+          name: "Casa Exclusiva Barcelona Eixample",
+          location: "Barcelona, Passeig de Gràcia 92",
+          totalValue: "€375.000",
+          pricePerToken: "€750",
+          tokensAvailable: 500,
+          tokensTotal: 500,
+          apy: "6.8%",
+          status: "active" as const,
+          progress: 0,
+          investors: 0,
+          image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+          securityToken: "0xC5c789A12Fb5259f57Da713D909dBC797c029671",
+          investmentController: "0xYourInvestmentControllerAddress2",
+        },
+        // Campaña 3: SIN VENDER (Otra oportunidad)
+        {
+          id: 2,
+          name: "Local Comercial Valencia Puerto",
+          location: "Valencia, Avenida del Puerto 15",
+          totalValue: "€150.000",
+          pricePerToken: "€300",
+          tokensAvailable: 500,
+          tokensTotal: 500,
+          apy: "8.2%",
+          status: "active" as const,
+          progress: 0,
+          investors: 0,
+          image: "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?w=800&q=80",
+          securityToken: "0x714E408cda94d0160a34310C2601871B1e7B16Fb",
+          investmentController: "0xYourInvestmentControllerAddress3",
         }
       ];
 
