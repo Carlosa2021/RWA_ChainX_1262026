@@ -128,7 +128,7 @@ const PROJECT_METADATA: Record<string, {
 export function useProjects() {
   // Validate contract address before creating contract instance
   const contractAddress = CONTRACTS.projectRegistry;
-  const hasValidAddress = contractAddress && contractAddress !== "";
+  const hasValidAddress = Boolean(contractAddress && contractAddress !== "");
 
   // Create contract only if address is valid
   const contract = hasValidAddress ? getContract({
