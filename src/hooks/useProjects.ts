@@ -95,31 +95,15 @@ export interface ProjectDisplay {
   investmentController: string;
 }
 
-// Mapeo de metadataURI a datos adicionales (ubicación, APY, imágenes profesionales)
+// Mapeo de metadataURI a datos adicionales
+// En producción, estos datos vendrían de IPFS o un servidor
 const PROJECT_METADATA: Record<string, {
   location: string;
   apy: string;
   image: string;
   investors: number;
 }> = {
-  "ipfs://QmApartamentoMadrid": {
-    location: "Madrid, Calle Gran Vía 28",
-    apy: "7.5%",
-    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80", // Apartamento moderno Madrid
-    investors: 23
-  },
-  "ipfs://QmCasaBarcelona": {
-    location: "Barcelona, Passeig de Gràcia 92",
-    apy: "6.8%",
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80", // Casa moderna Barcelona
-    investors: 35
-  },
-  "ipfs://QmLocalValencia": {
-    location: "Valencia, Avenida del Puerto 15",
-    apy: "8.2%",
-    image: "https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=800&q=80", // Local comercial moderno
-    investors: 18
-  }
+  // Agregar metadata aquí cuando tengas proyectos reales registrados
 };
 
 /**
@@ -158,47 +142,67 @@ export function useProjects() {
   });
 
   // Transformar datos del contrato a formato de UI
-  const projectsDisplay: ProjectDisplay[] = data ? (data as Project[]).map((project, index) => {
-    const metadata = PROJECT_METADATA[project.metadataURI] || {
-      location: "Ubicación desconocida",
-      apy: "8%",
-      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80",
-      investors: 0
-    };
+  const projectsDisplay: ProjectDisplay[] = data && (data as Project[]).length > 0 
+    ? (data as Project[]).map((project, index) => {
+        const metadata = PROJECT_METADATA[project.metadataURI] || {
+          location: "Ubicación desconocida",
+          apy: "8%",
+          image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80",
+          investors: 0
+        };
 
-    // Convertir pricePerToken de eurocents a euros
-    const priceInEuros = Number(project.pricePerToken) / 100;
-    
-    // Los tokens tienen 18 decimals pero son indivisibles
-    // maxCap viene como BigInt con 18 decimales (ej: 5000000000000000000000000 = 5M tokens)
-    // Necesitamos dividir por 10^18 para obtener el número real de tokens
-    const maxCapTokens = Number(project.maxCap) / 1e18;
-    
-    // Calcular valor total (tokens * precio en euros)
-    const totalValueEuros = maxCapTokens * priceInEuros;
+        // Convertir pricePerToken de eurocents a euros
+        const priceInEuros = Number(project.pricePerToken) / 100;
+        
+        // Los tokens tienen 18 decimals pero son indivisibles
+        // maxCap viene como BigInt con 18 decimales (ej: 5000000000000000000000000 = 5M tokens)
+        // Necesitamos dividir por 10^18 para obtener el número real de tokens
+        const maxCapTokens = Number(project.maxCap) / 1e18;
+        
+        // Calcular valor total (tokens * precio en euros)
+        const totalValueEuros = maxCapTokens * priceInEuros;
 
-    // Mock: calcular tokens vendidos (en producción leer de InvestmentController.issued)
-    const mockTokensSold = Math.floor(maxCapTokens * (0.3 + Math.random() * 0.4));
-    const tokensAvailable = maxCapTokens - mockTokensSold;
-    const progress = Math.round((mockTokensSold / maxCapTokens) * 100);
+        // Mock: calcular tokens vendidos (en producción leer de InvestmentController.issued)
+        const mockTokensSold = Math.floor(maxCapTokens * (0.3 + Math.random() * 0.4));
+        const tokensAvailable = maxCapTokens - mockTokensSold;
+        const progress = Math.round((mockTokensSold / maxCapTokens) * 100);
 
-    return {
-      id: index,
-      name: project.name,
-      location: metadata.location,
-      totalValue: `€${totalValueEuros.toLocaleString("es-ES", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
-      pricePerToken: `€${priceInEuros.toLocaleString("es-ES", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
-      tokensAvailable: Math.floor(tokensAvailable),
-      tokensTotal: Math.floor(maxCapTokens),
-      apy: metadata.apy,
-      status: tokensAvailable > 0 ? "active" : "funded",
-      progress,
-      investors: metadata.investors,
-      image: metadata.image,
-      securityToken: project.securityToken,
-      investmentController: project.investmentController,
-    };
-  }) : [];
+        return {
+          id: index,
+          name: project.name,
+          location: metadata.location,
+          totalValue: `€${totalValueEuros.toLocaleString("es-ES", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+          pricePerToken: `€${priceInEuros.toLocaleString("es-ES", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+          tokensAvailable: Math.floor(tokensAvailable),
+          tokensTotal: Math.floor(maxCapTokens),
+          apy: metadata.apy,
+          status: tokensAvailable > 0 ? "active" : "funded",
+          progress,
+          investors: metadata.investors,
+          image: metadata.image,
+          securityToken: project.securityToken,
+          investmentController: project.investmentController,
+        };
+      })
+    : [
+        // Fallback: Mostrar campaña real cuando ProjectRegistry está vacío
+        {
+          id: 0,
+          name: "Test Campaign - Apartamento Testing",
+          location: "Madrid, España",
+          totalValue: "€5",
+          pricePerToken: "€1",
+          tokensAvailable: 2,
+          tokensTotal: 5,
+          apy: "8%",
+          status: "active" as const,
+          progress: 60,
+          investors: 1,
+          image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80",
+          securityToken: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45",
+          investmentController: "0xYourInvestmentControllerAddress", // Reemplazar con dirección real
+        }
+      ];
 
   return {
     projects: projectsDisplay,

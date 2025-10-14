@@ -21,7 +21,7 @@ const SECURITY_TOKEN_ABI = [
 const USDC_ADDRESS = "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359";
 const CHAINLINK_EUR_USD = "0x73366Fe0AA0Ded304479862808e02506FE556a98";
 
-// Proyectos (incluye Test Campaign)
+// Proyectos reales desplegados en Polygon
 const PROJECTS = [
   {
     name: "Test Campaign - Apartamento Testing",
@@ -29,27 +29,6 @@ const PROJECTS = [
     tokenAddress: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45",
     priceEur: 1, // €1 por token
     image: "🧪"
-  },
-  {
-    name: "Apartamento Madrid Centro",
-    symbol: "RMAD",
-    tokenAddress: "0xC5c789A12Fb5259f57Da713D909dBC797c029671",
-    priceEur: 500, // €500 por token
-    image: "🏢"
-  },
-  {
-    name: "Casa Barcelona Eixample",
-    symbol: "RBCN",
-    tokenAddress: "0xe6cd52c37d82d33AEbAE7a9bB8f7fED62321b5AF",
-    priceEur: 750, // €750 por token
-    image: "🌊"
-  },
-  {
-    name: "Local Valencia Puerto",
-    symbol: "RVLC",
-    tokenAddress: "0x714E408cda94d0160a34310C2601871B1e7B16Fb",
-    priceEur: 300, // €300 por token
-    image: "🚀"
   }
 ];
 
