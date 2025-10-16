@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 export interface ProjectDisplay {
   id: number;
@@ -20,6 +20,8 @@ export interface ProjectDisplay {
   investmentController: string;
 }
 
+// Interface para proyectos almacenados localmente (para futuro uso)
+/*
 interface StoredProject {
   id: number;
   name: string;
@@ -35,12 +37,16 @@ interface StoredProject {
   metadataURI: string;
   tokenAddress: string;
   controllerAddress: string;
-  distributorAddress: string;
-  transactionHash: string;
-  createdAt: string;
+  tokensAvailable: number;
+  tokensTotal: number;
+  apy: string;
   status: "active" | "funded" | "upcoming";
+  progress: number;
+  image: string;
   images?: string[];
+  investors?: number;
 }
+*/
 
 // Data estática - no cambiar nunca
 const ALZIRA_PROJECT = {

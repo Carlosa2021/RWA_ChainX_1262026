@@ -40,7 +40,6 @@ interface SmartPaymentsDashboardProps {
 }
 
 export default function SmartPaymentsDashboard({
-  userId = 'user-123',
   className = ""
 }: SmartPaymentsDashboardProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -189,7 +188,7 @@ export default function SmartPaymentsDashboard({
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as 'overview' | 'transactions' | 'analytics' | 'ai')}
               className={`flex items-center gap-2 pb-2 border-b-2 transition-colors ${
                 activeTab === tab.id
                   ? 'border-purple-500 text-purple-600 dark:text-purple-400'

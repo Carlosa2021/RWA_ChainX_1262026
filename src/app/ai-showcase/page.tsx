@@ -130,7 +130,7 @@ export default function AIPaymentsShowcase() {
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setView(tab.id as any)}
+                  onClick={() => setView(tab.id as 'properties' | 'dashboard' | 'ai')}
                   className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all ${
                     view === tab.id
                       ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'

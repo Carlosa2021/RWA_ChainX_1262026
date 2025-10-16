@@ -85,7 +85,14 @@ export function EnhancedPropertyCard({
     setShowPayments(false);
   };
 
-  const handlePaymentSuccess = (details: any) => {
+  const handlePaymentSuccess = (details: {
+    projectId: string;
+    amount: number;
+    tokens: number;
+    paymentMethod: string;
+    transactionId: string;
+    timestamp: string;
+  }) => {
     console.log('Pago exitoso:', details);
     alert(`¡Inversión exitosa! Has recibido ${details.tokens} tokens.`);
     closeModal();

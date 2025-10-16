@@ -39,7 +39,7 @@ interface AIInvestmentAssistantProps {
 
 export default function AIInvestmentAssistant({ 
   property, 
-  userProfile, // TODO: Usar para personalizar análisis AI
+  userProfile, // TODO: Usar para personalizar análisis AI en futuras versiones
   className = "" 
 }: AIInvestmentAssistantProps) {
   const [advice, setAdvice] = useState<InvestmentAdvice | null>(null);
