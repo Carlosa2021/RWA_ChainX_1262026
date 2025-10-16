@@ -22,9 +22,9 @@ import {
   ArrowLeftRight,
   Vault
 } from "lucide-react";const thirdwebNavigation = [
-  { name: "thirdweb Pay", href: "/payments", icon: CreditCard, special: true },
-  { name: "thirdweb Bridge", href: "/bridge", icon: ArrowLeftRight, special: true },
-  { name: "thirdweb Vault", href: "/vault", icon: Vault, special: true },
+  { name: "Pay", href: "/payments", icon: CreditCard, special: true },
+  { name: "Bridge", href: "/bridge", icon: ArrowLeftRight, special: true },
+  { name: "Vault", href: "/vault", icon: Vault, special: true },
 ];
 
 const baseNavigation = [
