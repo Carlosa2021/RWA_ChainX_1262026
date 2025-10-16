@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { 
-  LayoutDashboard, 
-  Wallet, 
+import {
+  LayoutDashboard,
+  Wallet,
   ShieldCheck, 
   TrendingDown, 
   User, 
@@ -17,8 +17,15 @@ import {
   Sun,
   DollarSign,
   Brain,
-  Sparkles
-} from "lucide-react";
+  Sparkles,
+  CreditCard,
+  ArrowLeftRight,
+  Vault
+} from "lucide-react";const thirdwebNavigation = [
+  { name: "thirdweb Pay", href: "/payments", icon: CreditCard, special: true },
+  { name: "thirdweb Bridge", href: "/bridge", icon: ArrowLeftRight, special: true },
+  { name: "thirdweb Vault", href: "/vault", icon: Vault, special: true },
+];
 
 const baseNavigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -39,9 +46,20 @@ export function Sidebar() {
   const { isOwner } = useAuth();
   const { theme, toggleTheme, mounted } = useTheme();
 
+  // Reorganizar para que thirdweb aparezca siempre arriba
   const navigation = isOwner 
-    ? [...baseNavigation.slice(0, 1), ...adminNavigation, ...baseNavigation.slice(1)]
-    : baseNavigation;
+    ? [
+        baseNavigation[0], // Dashboard
+        ...thirdwebNavigation, // thirdweb features
+        baseNavigation[1], // AI Showcase
+        ...adminNavigation, // Admin options
+        ...baseNavigation.slice(2) // Resto de opciones
+      ]
+    : [
+        baseNavigation[0], // Dashboard
+        ...thirdwebNavigation, // thirdweb features
+        ...baseNavigation.slice(1) // Resto de opciones
+      ];
 
   const handleLogout = () => {
     // Intenta desconectar usando el hook de blockchain
@@ -83,6 +101,9 @@ export function Sidebar() {
           const Icon = item.icon;
           const isAdminRoute = item.href === "/admin";
           const isAIShowcase = item.href === "/ai-showcase";
+          const isPayments = item.href === "/payments";
+          const isBridge = item.href === "/bridge";
+          const isVault = item.href === "/vault";
           
           return (
             <Link
@@ -95,6 +116,12 @@ export function Sidebar() {
                     ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/30"
                     : isAIShowcase
                     ? "bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/40"
+                    : isPayments
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/40"
+                    : isBridge
+                    ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/40"
+                    : isVault
+                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/40"
                     : "bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-500/30" 
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                 }
@@ -102,7 +129,10 @@ export function Sidebar() {
             >
               <Icon className={`w-5 h-5 ${
                 isAdminRoute && !isActive ? "text-purple-600 dark:text-purple-400" : 
-                isAIShowcase && !isActive ? "text-blue-600 dark:text-blue-400" : ""
+                isAIShowcase && !isActive ? "text-blue-600 dark:text-blue-400" : 
+                isPayments && !isActive ? "text-blue-600 dark:text-blue-400" :
+                isBridge && !isActive ? "text-emerald-600 dark:text-emerald-400" :
+                isVault && !isActive ? "text-indigo-600 dark:text-indigo-400" : ""
               }`} />
               <span className="font-medium">{item.name}</span>
               
@@ -112,6 +142,36 @@ export function Sidebar() {
                   <Sparkles className="w-3 h-3" />
                   <span className="text-xs bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-2 py-0.5 rounded-full font-semibold">
                     NEW
+                  </span>
+                </div>
+              )}
+              
+              {/* Badge para thirdweb Pay */}
+              {isPayments && (
+                <div className="ml-auto flex items-center gap-1">
+                  <DollarSign className="w-3 h-3" />
+                  <span className="text-xs bg-gradient-to-r from-green-400 to-emerald-400 text-gray-900 px-2 py-0.5 rounded-full font-semibold">
+                    PAY
+                  </span>
+                </div>
+              )}
+              
+              {/* Badge para thirdweb Bridge */}
+              {isBridge && (
+                <div className="ml-auto flex items-center gap-1">
+                  <ArrowLeftRight className="w-3 h-3" />
+                  <span className="text-xs bg-gradient-to-r from-emerald-400 to-teal-400 text-gray-900 px-2 py-0.5 rounded-full font-semibold">
+                    CROSS-CHAIN
+                  </span>
+                </div>
+              )}
+              
+              {/* Badge para thirdweb Vault */}
+              {isVault && (
+                <div className="ml-auto flex items-center gap-1">
+                  <Vault className="w-3 h-3" />
+                  <span className="text-xs bg-gradient-to-r from-indigo-400 to-purple-400 text-gray-900 px-2 py-0.5 rounded-full font-semibold">
+                    SECURE
                   </span>
                 </div>
               )}

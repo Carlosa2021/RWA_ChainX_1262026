@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, TrendingUp, Users, CheckCircle, ChevronLeft, ChevronRight, Eye, Brain, CreditCard } from "lucide-react";
+import { MapPin, TrendingUp, Users, CheckCircle, ChevronLeft, ChevronRight, Eye, Brain, CreditCard, ArrowLeftRight, Vault } from "lucide-react";
 import AIInvestmentAssistant from './AIInvestmentAssistant';
-import PaymentSystem from './PaymentSystem';
+import ThirdwebPayDemo from './ThirdwebPayDemo';
+import ThirdwebBridgeDemo from './ThirdwebBridgeDemo';
+import ThirdwebVaultDemo from './ThirdwebVaultDemo';
 
 interface PropertyData {
   id: string;
@@ -52,6 +54,8 @@ export function EnhancedPropertyCard({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showAI, setShowAI] = useState(false);
   const [showPayments, setShowPayments] = useState(false);
+  const [showBridge, setShowBridge] = useState(false);
+  const [showVault, setShowVault] = useState(false);
   
   const propertyImages = images && images.length > 0 ? images : [image];
   const isFullyFunded = progress >= 100;
@@ -83,6 +87,8 @@ export function EnhancedPropertyCard({
     setIsModalOpen(false);
     setShowAI(false);
     setShowPayments(false);
+    setShowBridge(false);
+    setShowVault(false);
   };
 
   const handlePaymentSuccess = (details: {
@@ -264,12 +270,43 @@ export function EnhancedPropertyCard({
               <button
                 onClick={() => {
                   setShowAI(true);
+                  setShowPayments(false);
+                  setShowBridge(false);
+                  setShowVault(false);
                   openModal();
                 }}
                 className="px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-1"
               >
                 <Brain className="w-4 h-4" />
                 AI
+              </button>
+              
+              <button
+                onClick={() => {
+                  setShowBridge(true);
+                  setShowAI(false);
+                  setShowPayments(false);
+                  setShowVault(false);
+                  openModal();
+                }}
+                className="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-1"
+              >
+                <ArrowLeftRight className="w-4 h-4" />
+                Bridge
+              </button>
+              
+              <button
+                onClick={() => {
+                  setShowVault(true);
+                  setShowAI(false);
+                  setShowPayments(false);
+                  setShowBridge(false);
+                  openModal();
+                }}
+                className="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-1"
+              >
+                <Vault className="w-4 h-4" />
+                Vault
               </button>
               
               <button
@@ -294,7 +331,7 @@ export function EnhancedPropertyCard({
           <div className="relative max-w-7xl max-h-full w-full flex gap-6">
             
             {/* Imagen Principal */}
-            {!showAI && !showPayments && (
+            {!showAI && !showPayments && !showBridge && !showVault && (
               <div className="flex-1 max-w-4xl">
                 <img
                   src={propertyImages[currentImageIndex]}
@@ -338,16 +375,63 @@ export function EnhancedPropertyCard({
               </div>
             )}
 
-            {/* Panel de Pagos */}
+            {/* Panel de Pagos con thirdweb Pay */}
             {showPayments && (
               <div className="w-full max-w-lg max-h-full overflow-y-auto">
-                <PaymentSystem
-                  projectId={propertyData.id}
-                  tokenPrice={propertyData.price}
+                <ThirdwebPayDemo
+                  propertyId={propertyData.id}
+                  propertyName={propertyData.title}
+                  propertyPrice={propertyData.price}
                   minInvestment={minInvestment}
                   maxInvestment={maxInvestment}
-                  onPaymentSuccess={handlePaymentSuccess}
+                  onPaymentSuccess={(txHash: string) => {
+                    // Convertir el string txHash al formato objeto esperado
+                    handlePaymentSuccess({
+                      projectId: propertyData.id,
+                      amount: minInvestment,
+                      tokens: Math.floor(minInvestment / propertyData.price),
+                      paymentMethod: 'thirdweb-pay',
+                      transactionId: txHash,
+                      timestamp: new Date().toISOString()
+                    });
+                  }}
                   onPaymentError={handlePaymentError}
+                  className="max-h-[80vh]"
+                />
+              </div>
+            )}
+
+            {/* Panel de Bridge Cross-Chain */}
+            {showBridge && (
+              <div className="w-full max-w-lg max-h-full overflow-y-auto">
+                <ThirdwebBridgeDemo
+                  onBridgeSuccess={(details) => {
+                    console.log('Bridge exitoso:', details);
+                    alert(`¡Bridge completado! ${details.amount} ${details.token} transferido de ${details.fromChain} a ${details.toChain}`);
+                    closeModal();
+                  }}
+                  onBridgeError={(error) => {
+                    console.error('Error de bridge:', error);
+                    alert(`Error en el bridge: ${error}`);
+                  }}
+                  className="max-h-[80vh]"
+                />
+              </div>
+            )}
+
+            {/* Panel de Vault Seguro */}
+            {showVault && (
+              <div className="w-full max-w-lg max-h-full overflow-y-auto">
+                <ThirdwebVaultDemo
+                  onVaultAction={(details) => {
+                    console.log('Vault action exitosa:', details);
+                    alert(`¡Operación completada! ${details.action} de ${details.amount} ${details.token} en el vault`);
+                    closeModal();
+                  }}
+                  onVaultError={(error) => {
+                    console.error('Error de vault:', error);
+                    alert(`Error en el vault: ${error}`);
+                  }}
                   className="max-h-[80vh]"
                 />
               </div>
