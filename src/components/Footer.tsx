@@ -88,7 +88,7 @@ export default function Footer() {
           
           <div className="text-center mt-3 text-xs text-gray-500">
             <p>
-              InmoToken es una plataforma de <strong>ChainX Technology</strong> para tokenización de activos inmobiliarios.
+              Plataforma avanzada de tokenización blockchain desarrollada por <strong>ChainX Technology</strong>.
               Tecnología blockchain + IA para el futuro de las inversiones.
             </p>
           </div>
