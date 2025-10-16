@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { EnhancedPropertyCard } from '@/components/EnhancedPropertyCard';
 import SmartPaymentsDashboard from '@/components/SmartPaymentsDashboard';
 import AIInvestmentAssistant from '@/components/AIInvestmentAssistant';
+import { SalesShowcaseBanner } from '@/components/SalesShowcaseBanner';
 import { Brain, CreditCard, TrendingUp, Sparkles } from 'lucide-react';
 
 // Datos de ejemplo para las propiedades
@@ -114,53 +115,8 @@ export default function AIPaymentsShowcase() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
-      {/* Header Espectacular */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative container mx-auto px-6 py-16">
-          <div className="text-center">
-            <div className="flex justify-center mb-6">
-              <div className="relative">
-                <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-                  <Sparkles className="w-10 h-10 text-white" />
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
-                  <span className="text-white text-xs font-bold">AI</span>
-                </div>
-              </div>
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white to-yellow-200 bg-clip-text text-transparent">
-              RWA InmoToken
-            </h1>
-            <p className="text-xl md:text-2xl mb-6 text-blue-100">
-              La plataforma más avanzada de tokenización inmobiliaria
-            </p>
-            <div className="flex justify-center gap-4 text-sm md:text-base">
-              <div className="flex items-center gap-2 bg-white/20 rounded-full px-4 py-2">
-                <Brain className="w-5 h-5" />
-                <span>AI-Powered</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/20 rounded-full px-4 py-2">
-                <CreditCard className="w-5 h-5" />
-                <span>Pagos Inteligentes</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/20 rounded-full px-4 py-2">
-                <TrendingUp className="w-5 h-5" />
-                <span>ROI 12-15%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Efectos visuales */}
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-10 left-10 w-4 h-4 bg-yellow-400 rounded-full animate-ping"></div>
-          <div className="absolute top-20 right-20 w-6 h-6 bg-pink-400 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-10 left-1/4 w-3 h-3 bg-green-400 rounded-full animate-bounce"></div>
-          <div className="absolute bottom-20 right-1/3 w-5 h-5 bg-blue-400 rounded-full animate-ping"></div>
-        </div>
-      </div>
+      {/* Header Espectacular para Ventas */}
+      <SalesShowcaseBanner />
 
       {/* Navegación de Vistas */}
       <div className="container mx-auto px-6 py-8">
