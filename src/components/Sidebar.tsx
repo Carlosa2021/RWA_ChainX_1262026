@@ -44,9 +44,9 @@ export function Sidebar() {
     : baseNavigation;
 
   const handleLogout = () => {
-    // Intenta desconectar usando el hook de ThirdWeb
+    // Intenta desconectar usando el hook de blockchain
     try {
-      // Resetear localStorage de ThirdWeb
+      // Resetear localStorage de wallet
       localStorage.removeItem('thirdweb:active-wallet-id');
       localStorage.removeItem('thirdweb:connected-wallet-ids');
       

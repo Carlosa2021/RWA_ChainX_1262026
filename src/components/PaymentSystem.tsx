@@ -96,7 +96,7 @@ export default function PaymentSystem({
     setLoading(true);
     
     try {
-      // Simular procesamiento mientras configuramos thirdweb completamente
+      // Simular procesamiento mientras configuramos la integración completamente
       await simulatePayment();
       
       onPaymentSuccess?.({
@@ -142,7 +142,7 @@ export default function PaymentSystem({
           Inversión Inteligente
         </h3>
         <p className="text-gray-600 dark:text-gray-300 text-sm">
-          Powered by thirdweb • Pagos seguros y descentralizados
+          ChainX Technology • Pagos seguros y descentralizados
         </p>
       </div>
 

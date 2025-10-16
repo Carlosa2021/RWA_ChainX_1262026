@@ -89,7 +89,7 @@ export function SalesShowcaseBanner() {
               </div>
               <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-4">
                 <h4 className="font-bold text-blue-300 mb-2">⚡ ESCALABILIDAD GLOBAL</h4>
-                <p className="text-sm">thirdweb + Polygon = infraestructura para millones de usuarios y transacciones.</p>
+                <p className="text-sm">ChainX + Polygon = infraestructura para millones de usuarios y transacciones.</p>
               </div>
             </div>
           </div>

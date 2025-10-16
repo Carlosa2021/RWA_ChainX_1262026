@@ -48,7 +48,7 @@ export default function AIInvestmentAssistant({
   const [chatMessages, setChatMessages] = useState<Array<{role: 'user' | 'ai', content: string}>>([]);
   const [userInput, setUserInput] = useState('');
 
-  // Simular análisis AI mientras configuramos thirdweb completamente
+  // Simular análisis AI mientras configuramos la integración completamente
   const simulateAIAnalysis = async (propertyData: PropertyData) => {
     return new Promise<InvestmentAdvice>((resolve) => {
       setTimeout(() => {
@@ -81,7 +81,7 @@ export default function AIInvestmentAssistant({
     setError(null);
 
     try {
-      // TODO: Integrar con thirdweb AI cuando tengamos client ID real
+      // TODO: Integrar con AI avanzado cuando tengamos client ID real
       const analysis = await simulateAIAnalysis(property);
       setAdvice(analysis);
     } catch (err) {

@@ -6,6 +6,7 @@ import { EnhancedPropertyCard } from '@/components/EnhancedPropertyCard';
 import SmartPaymentsDashboard from '@/components/SmartPaymentsDashboard';
 import AIInvestmentAssistant from '@/components/AIInvestmentAssistant';
 import { SalesShowcaseBanner } from '@/components/SalesShowcaseBanner';
+import Footer from '@/components/Footer';
 import { Brain, CreditCard, TrendingUp, Sparkles } from 'lucide-react';
 
 // Datos de ejemplo para las propiedades
@@ -311,16 +312,16 @@ export default function AIPaymentsShowcase() {
             <h3 className="text-2xl font-bold mb-4">
               🔥 La plataforma más disruptiva del mercado inmobiliario
             </h3>
-            <p className="text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-4xl">
               Combinamos inteligencia artificial, pagos instantáneos y tokenización blockchain 
               para crear una experiencia de inversión inmobiliaria sin precedentes. 
-              Powered by thirdweb para máxima seguridad y escalabilidad.
+              Desarrollado por ChainX para máxima seguridad y escalabilidad.
             </p>
             
             <div className="flex justify-center gap-8 mt-8 text-sm">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span>thirdweb AI Integrado</span>
+                <span>AI Avanzado Integrado</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
@@ -338,6 +339,9 @@ export default function AIPaymentsShowcase() {
           </div>
         </div>
       </div>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

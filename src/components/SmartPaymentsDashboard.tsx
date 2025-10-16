@@ -169,7 +169,7 @@ export default function SmartPaymentsDashboard({
               Dashboard Inteligente
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-1">
-              Gestión automatizada de cartera con AI • Powered by thirdweb
+              Gestión automatizada de cartera con AI • ChainX Technology
             </p>
           </div>
           <div className="flex items-center gap-2">

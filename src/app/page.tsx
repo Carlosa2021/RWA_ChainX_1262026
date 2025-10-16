@@ -9,6 +9,7 @@ import { StatsCard } from "@/components/StatsCard";
 import { SimplePropertyCard } from "@/components/SimplePropertyCard";
 import { InvestmentModal } from "@/components/InvestmentModal";
 import { AIShowcaseBanner } from "@/components/AIShowcaseBanner";
+import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjects, useProjectStats } from "@/hooks/useProjects";
 import { 
@@ -202,6 +203,9 @@ export default function Home() {
             </div>
           </div>
         </main>
+        
+        {/* Footer */}
+        <Footer />
       </div>
 
       {/* Investment Modal */}
