@@ -1,5 +1,6 @@
 "use client";
 
+// Force Vercel redeploy - v2.0
 import React, { useState } from 'react';
 import { EnhancedPropertyCard } from '@/components/EnhancedPropertyCard';
 import SmartPaymentsDashboard from '@/components/SmartPaymentsDashboard';
