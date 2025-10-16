@@ -291,14 +291,6 @@ export default function AIPaymentsShowcase() {
               {/* Asistente AI */}
               <AIInvestmentAssistant 
                 property={propertyDataForAI}
-                userProfile={{
-                  riskTolerance: 'medium',
-                  investmentGoals: ['growth', 'income'],
-                  portfolio: [
-                    { id: 'prop1', amount: 5000, value: 5200 },
-                    { id: 'prop2', amount: 3000, value: 3150 }
-                  ]
-                }}
               />
             </div>
           </div>
