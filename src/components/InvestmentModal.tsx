@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useActiveAccount, useSendTransaction } from "thirdweb/react";
-import { quoteUSDC, txApproveUSDC, txInvest } from "@/lib/invest";
+import { quoteUSDC, txApproveUSDC, txInvest, getUSDCBalance } from "@/lib/invest";
 import { formatUnits } from "viem";
-import { X, Shield, CheckCircle, AlertCircle, Loader2, ArrowRight } from "lucide-react";
+import { X, Shield, CheckCircle, AlertCircle, Loader2, ArrowRight, Wallet } from "lucide-react";
 
 interface InvestmentModalProps {
   projectName: string;
@@ -25,6 +25,7 @@ export function InvestmentModal({
   const [qty, setQty] = useState("1");
   const [need, setNeed] = useState<bigint | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [usdcBalance, setUsdcBalance] = useState<bigint | null>(null);
   
   const account = useActiveAccount();
   const { mutateAsync: sendTx } = useSendTransaction();
@@ -42,6 +43,13 @@ export function InvestmentModal({
       quoteUSDC(t).then(setNeed).catch(() => setNeed(null));
     }
   }, [qty]);
+
+  // Cargar balance de USDC cuando se conecta una wallet
+  useEffect(() => {
+    if (account?.address && isOpen) {
+      getUSDCBalance(account.address).then(setUsdcBalance).catch(() => setUsdcBalance(null));
+    }
+  }, [account?.address, isOpen]);
 
   const handleInvest = async () => {
     if (!account || !need) return;
@@ -163,6 +171,26 @@ export function InvestmentModal({
                 </div>
               </div>
 
+              {/* Balance de USDC en wallet */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Wallet className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                      Tu balance USDC:
+                    </span>
+                  </div>
+                  <span className="text-lg font-bold text-blue-700 dark:text-blue-300">
+                    {usdcBalance !== null ? formatUnits(usdcBalance, 6) : "Cargando..."} USDC
+                  </span>
+                </div>
+                {need !== null && usdcBalance !== null && need > usdcBalance && (
+                  <div className="mt-2 text-xs text-red-600 dark:text-red-400">
+                    ⚠️ Balance insuficiente para esta inversión
+                  </div>
+                )}
+              </div>
+
               {err && (
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
@@ -171,11 +199,11 @@ export function InvestmentModal({
               )}
 
               <button
-                disabled={!account || need === null}
+                disabled={!account || need === null || (usdcBalance !== null && need !== null && need > usdcBalance)}
                 onClick={handleInvest}
                 className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
               >
-                Continuar
+                {usdcBalance !== null && need !== null && need > usdcBalance ? "Balance Insuficiente" : "Continuar"}
                 <ArrowRight className="w-5 h-5" />
               </button>
 

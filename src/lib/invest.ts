@@ -17,6 +17,16 @@ export async function quoteUSDC(tokens: bigint) {
   })) as bigint;
 }
 
+/** Obtiene el balance de USDC de una wallet */
+export async function getUSDCBalance(walletAddress: string): Promise<bigint> {
+  const usdc = getTw(USDC);
+  return (await readContract({
+    contract: usdc,
+    method: "function balanceOf(address) view returns (uint256)",
+    params: [walletAddress as `0x${string}`],
+  })) as bigint;
+}
+
 /** Construye la tx de approve(CTRL, maxUsdcExpected) en USDC (6 decimales) */
 export function txApproveUSDC(maxUsdcExpected: bigint): PreparedTransaction {
   const usdc = getTw(USDC);
