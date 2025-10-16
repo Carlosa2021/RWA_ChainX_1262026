@@ -1,7 +1,7 @@
 "use client";
 
 import { MapPin, TrendingUp, Users, CheckCircle } from "lucide-react";
-import Image from "next/image";
+import { PropertyImages } from "./PropertyImages";
 
 interface ProjectCardProps {
   name: string;
@@ -14,6 +14,7 @@ interface ProjectCardProps {
   status: "active" | "funded" | "upcoming";
   progress: number;
   image: string;
+  images?: string[];
   investors?: number;
   onInvest: () => void;
 }
@@ -28,96 +29,98 @@ export function ProjectCard({
   apy,
   progress,
   image,
+  images,
   investors = 15,
   onInvest,
 }: ProjectCardProps) {
   const isFullyFunded = progress >= 100;
 
   return (
-    <div className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
-      {/* Image */}
-      <div className="relative h-48 overflow-hidden">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-110 transition-transform duration-500"
+    <div className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 flex flex-col h-full">
+      {/* Image Gallery - Aumentamos la altura y hacemos flex-shrink-0 */}
+      <div className="relative h-64 flex-shrink-0">
+        <PropertyImages
+          images={images && images.length > 0 ? images : [image]}
+          projectName={name}
+          className="h-full"
         />
+        
         {isFullyFunded && (
-          <div className="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 font-semibold shadow-lg">
-            <CheckCircle className="w-5 h-5" />
+          <div className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1.5 rounded-full flex items-center gap-2 font-semibold shadow-lg z-10 text-sm">
+            <CheckCircle className="w-4 h-4" />
             ¡Financiado!
           </div>
         )}
         {!isFullyFunded && (
-          <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
+          <div className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-3 py-1.5 rounded-full font-semibold shadow-lg z-10 text-sm">
             Activo
           </div>
         )}
       </div>
 
-      {/* Content */}
-      <div className="p-6">
+      {/* Content - Compactamos el contenido */}
+      <div className="p-6 flex-1 flex flex-col">
         {/* Title & Location */}
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-          {name}
-        </h3>
-        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mb-4">
-          <MapPin className="w-4 h-4" />
-          <span className="text-sm">{location}</span>
+        <div className="mb-4">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 leading-tight line-clamp-2">
+            {name}
+          </h3>
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <MapPin className="w-4 h-4 flex-shrink-0" />
+            <span className="text-sm line-clamp-1">{location}</span>
+          </div>
         </div>
 
-        {/* Stats */}
+        {/* Stats - Compactamos */}
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Valor Total</p>
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Valor Total</p>
             <p className="text-lg font-bold text-gray-900 dark:text-white">{totalValue}</p>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Precio Token</p>
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Precio Token</p>
             <p className="text-lg font-bold text-gray-900 dark:text-white">{pricePerToken}</p>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-4">
+        <div className="mb-4 flex-1">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
               {progress.toFixed(1)}% completado
             </span>
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
+            <span className="text-sm font-semibold text-gray-900 dark:text-white">
               {tokensAvailable}/{tokensTotal} tokens
             </span>
           </div>
-          <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-orange-500 to-pink-500 transition-all duration-500"
+              className="h-full bg-gradient-to-r from-orange-500 to-pink-500 transition-all duration-500 rounded-full"
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+        {/* Footer - Compactamos */}
+        <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
-              <TrendingUp className="w-5 h-5" />
+            <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
+              <TrendingUp className="w-4 h-4" />
               <span className="font-semibold">{apy}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-              <Users className="w-5 h-5" />
-              <span className="text-sm">{investors}</span>
+            <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
+              <Users className="w-4 h-4" />
+              <span className="text-sm font-medium">{investors}</span>
             </div>
           </div>
           <button
             onClick={onInvest}
             disabled={isFullyFunded}
             className={`
-              px-6 py-2.5 rounded-xl font-semibold transition-all
+              px-6 py-2 rounded-lg font-semibold transition-all text-sm
               ${isFullyFunded 
                 ? "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed" 
-                : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30"
+                : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105"
               }
             `}
           >

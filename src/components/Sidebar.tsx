@@ -14,11 +14,15 @@ import {
   Building2,
   Settings,
   Moon,
-  Sun
+  Sun,
+  DollarSign,
+  Brain,
+  Sparkles
 } from "lucide-react";
 
 const baseNavigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "AI Showcase", href: "/ai-showcase", icon: Brain, special: true },
   { name: "Billetera", href: "/billetera", icon: Wallet },
   { name: "KYC", href: "/kyc", icon: ShieldCheck },
   { name: "Retiros", href: "/retiros", icon: TrendingDown },
@@ -27,6 +31,7 @@ const baseNavigation = [
 
 const adminNavigation = [
   { name: "Admin", href: "/admin", icon: Settings },
+  { name: "Pagos", href: "/admin/pagos", icon: DollarSign },
 ];
 
 export function Sidebar() {
@@ -37,6 +42,22 @@ export function Sidebar() {
   const navigation = isOwner 
     ? [...baseNavigation.slice(0, 1), ...adminNavigation, ...baseNavigation.slice(1)]
     : baseNavigation;
+
+  const handleLogout = () => {
+    // Intenta desconectar usando el hook de ThirdWeb
+    try {
+      // Resetear localStorage de ThirdWeb
+      localStorage.removeItem('thirdweb:active-wallet-id');
+      localStorage.removeItem('thirdweb:connected-wallet-ids');
+      
+      // Recargar página para limpiar estado
+      window.location.reload();
+    } catch (error) {
+      console.error("Error al desconectar wallet:", error);
+      // Fallback: recargar página
+      window.location.reload();
+    }
+  };
 
   return (
     <aside className="w-64 min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
@@ -61,27 +82,50 @@ export function Sidebar() {
           const isActive = pathname === item.href;
           const Icon = item.icon;
           const isAdminRoute = item.href === "/admin";
+          const isAIShowcase = item.href === "/ai-showcase";
           
           return (
             <Link
               key={item.name}
               href={item.href}
               className={`
-                flex items-center gap-3 px-4 py-3 rounded-xl transition-all group
+                flex items-center gap-3 px-4 py-3 rounded-xl transition-all group relative
                 ${isActive 
                   ? isAdminRoute
                     ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/30"
+                    : isAIShowcase
+                    ? "bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/40"
                     : "bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-500/30" 
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                 }
               `}
             >
-              <Icon className={`w-5 h-5 ${isAdminRoute && !isActive ? "text-purple-600 dark:text-purple-400" : ""}`} />
+              <Icon className={`w-5 h-5 ${
+                isAdminRoute && !isActive ? "text-purple-600 dark:text-purple-400" : 
+                isAIShowcase && !isActive ? "text-blue-600 dark:text-blue-400" : ""
+              }`} />
               <span className="font-medium">{item.name}</span>
+              
+              {/* Badge para AI Showcase */}
+              {isAIShowcase && (
+                <div className="ml-auto flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" />
+                  <span className="text-xs bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-2 py-0.5 rounded-full font-semibold">
+                    NEW
+                  </span>
+                </div>
+              )}
+              
+              {/* Badge para Admin */}
               {isAdminRoute && (
                 <span className="ml-auto text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full">
                   Owner
                 </span>
+              )}
+              
+              {/* Efecto de brillo para AI Showcase */}
+              {isAIShowcase && !isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/10 to-transparent animate-pulse rounded-xl"></div>
               )}
             </Link>
           );
@@ -109,7 +153,10 @@ export function Sidebar() {
           </button>
         )}
         
-        <button className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all">
+        <button 
+          onClick={handleLogout}
+          className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all"
+        >
           <LogOut className="w-5 h-5" />
           <span className="font-medium">Logout</span>
         </button>

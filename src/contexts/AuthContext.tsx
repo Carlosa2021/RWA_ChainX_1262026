@@ -17,8 +17,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const account = useActiveAccount();
   const address = account?.address?.toLowerCase();
   
-  const isOwner = address === OWNER_ADDRESS;
-  const isKYCVerified = false; // TODO: Check from IdentityRegistry
+  // DEMO MODE: Habilitar acceso completo para showcase
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+  
+  const isOwner = isDemoMode ? true : (address === OWNER_ADDRESS);
+  const isKYCVerified = isDemoMode ? true : false; // TODO: Check from IdentityRegistry
 
   return (
     <AuthContext.Provider value={{ isOwner, isKYCVerified, address }}>

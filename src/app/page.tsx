@@ -6,8 +6,9 @@ export const dynamic = 'force-dynamic';
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { StatsCard } from "@/components/StatsCard";
-import { ProjectCard } from "@/components/ProjectCard";
+import { SimplePropertyCard } from "@/components/SimplePropertyCard";
 import { InvestmentModal } from "@/components/InvestmentModal";
+import { AIShowcaseBanner } from "@/components/AIShowcaseBanner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjects, useProjectStats } from "@/hooks/useProjects";
 import { 
@@ -20,17 +21,26 @@ import {
   Shield,
   Loader2
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const { isOwner, isKYCVerified } = useAuth();
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   
   // Obtener proyectos reales desde blockchain
-  const { projects, isLoading: loadingProjects } = useProjects();
+  const { projects, isLoading: loadingProjects, refetch } = useProjects();
   const stats = useProjectStats();
   
   const currentProject = projects.find(p => p.id === selectedProject);
+
+  // Recargar proyectos cada 30 segundos para detectar nuevos proyectos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000); // 30 segundos
+    
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -38,6 +48,9 @@ export default function Home() {
       
       <div className="flex-1">
         <Header />
+        
+        {/* AI Showcase Banner */}
+        <AIShowcaseBanner />
         
         <main className="p-8">
           {/* Hero Section */}
@@ -173,7 +186,7 @@ export default function Home() {
               ) : (
                 // Projects list
                 projects.map((project) => (
-                  <ProjectCard
+                  <SimplePropertyCard
                     key={project.id}
                     {...project}
                     onInvest={() => {

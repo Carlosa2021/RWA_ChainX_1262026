@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { ConnectButton, darkTheme, lightTheme } from "thirdweb/react";
 import { client } from "@/lib/thirdweb";
 import { polygon } from "thirdweb/chains";
-import { Moon, Sun, Bell } from "lucide-react";
+import { Moon, Sun, Bell, Brain, Sparkles } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import {
   createWallet,
@@ -33,12 +34,6 @@ const wallets = [
 export function Header() {
   const { theme, toggleTheme, mounted } = useTheme();
 
-  // Debug: Ver el tema actual
-  if (mounted) {
-    console.log("Theme actual:", theme);
-    console.log("Clase dark en html:", document.documentElement.classList.contains('dark'));
-  }
-
   return (
     <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
       <div className="flex items-center justify-between px-8 py-4">
@@ -54,6 +49,16 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
+          {/* AI Showcase Quick Access */}
+          <Link
+            href="/ai-showcase"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white rounded-xl hover:shadow-lg hover:shadow-blue-500/40 transition-all group"
+          >
+            <Brain className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+            <span className="font-semibold hidden sm:block">AI Showcase</span>
+            <Sparkles className="w-4 h-4 animate-pulse" />
+          </Link>
+
           {/* Notifications */}
           <button className="relative p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
             <Bell className="w-6 h-6 text-gray-700 dark:text-gray-300" />
