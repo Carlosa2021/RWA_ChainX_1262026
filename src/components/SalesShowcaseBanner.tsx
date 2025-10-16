@@ -140,7 +140,7 @@ export function SalesShowcaseBanner() {
 
       {/* Barra de progreso animada de alta intensidad */}
       <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white/30 to-transparent">
-        <div className="h-full bg-gradient-to-r from-yellow-400 via-orange-500 via-pink-500 via-purple-500 to-blue-500 animate-pulse"></div>
+        <div className="h-full bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 animate-pulse"></div>
       </div>
     </div>
   );
