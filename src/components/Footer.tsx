@@ -31,7 +31,7 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-2">
               <Heart className="w-4 h-4 text-red-400" />
-              <span className="text-gray-300">Made in Spain</span>
+              <span className="text-gray-300">Made in Switzerland</span>
             </div>
           </div>
         </div>
