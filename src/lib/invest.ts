@@ -8,6 +8,15 @@ import {
 const CTRL = process.env.NEXT_PUBLIC_CONTROLLER as `0x${string}`;
 const USDC = process.env.NEXT_PUBLIC_USDC as `0x${string}`;
 
+// Verificar que las variables estén definidas
+if (!CTRL || !USDC) {
+  console.error('❌ Variables de entorno faltantes:', {
+    CTRL: !!CTRL,
+    USDC: !!USDC,
+    env: process.env.NODE_ENV
+  });
+}
+
 export async function quoteUSDC(tokens: bigint) {
   const ctrl = getTw(CTRL);
   return (await readContract({
@@ -19,12 +28,25 @@ export async function quoteUSDC(tokens: bigint) {
 
 /** Obtiene el balance de USDC de una wallet */
 export async function getUSDCBalance(walletAddress: string): Promise<bigint> {
-  const usdc = getTw(USDC);
-  return (await readContract({
-    contract: usdc,
-    method: "function balanceOf(address) view returns (uint256)",
-    params: [walletAddress as `0x${string}`],
-  })) as bigint;
+  if (!USDC) {
+    console.error('❌ NEXT_PUBLIC_USDC no está definido');
+    throw new Error('Configuración de USDC faltante');
+  }
+  
+  try {
+    const usdc = getTw(USDC);
+    const balance = await readContract({
+      contract: usdc,
+      method: "function balanceOf(address) view returns (uint256)",
+      params: [walletAddress as `0x${string}`],
+    });
+    
+    console.log('✅ Balance USDC obtenido:', balance, 'para wallet:', walletAddress);
+    return balance as bigint;
+  } catch (error) {
+    console.error('❌ Error obteniendo balance USDC:', error);
+    throw error;
+  }
 }
 
 /** Construye la tx de approve(CTRL, maxUsdcExpected) en USDC (6 decimales) */
