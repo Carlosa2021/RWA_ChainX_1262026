@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from 'react';
-import { CheckCircle, ArrowLeftRight, Network, TrendingUp, Shield, Zap, Globe, Clock } from 'lucide-react';
+import { CheckCircle, ArrowLeftRight, Network, TrendingUp, Shield, Zap, Globe, Clock, Lock } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { Header } from '../../components/Header';
 import ThirdwebBridgeDemo from '../../components/ThirdwebBridgeDemo';
+import { useFeatureGuard } from '../../hooks/useFeatureGuard';
+import { UpgradePrompt } from '../../components/UpgradePrompt';
 
 const networkStats = [
   {
@@ -73,6 +75,9 @@ const bridgeFeatures = [
 ];
 
 export default function BridgePage() {
+  // Feature Guard Protection
+  const { hasAccess, showUpgradePrompt, upgradePromptOpen, closeUpgradePrompt, requiredFeature } = useFeatureGuard('bridgeEnabled', 'Bridge');
+  
   const [bridgeCompleted, setBridgeCompleted] = useState(false);
   const [bridgeDetails, setBridgeDetails] = useState<{
     fromChain: string;
@@ -81,6 +86,46 @@ export default function BridgePage() {
     amount: number;
     txHash: string;
   } | null>(null);
+
+  // If user doesn't have access, show upgrade prompt immediately
+  if (!hasAccess) {
+    return (
+      <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+        <Sidebar />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <Header />
+          <main className="flex-1 overflow-auto">
+            <div className="p-6">
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <Lock className="w-10 h-10 text-white" />
+                  </div>
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                    Bridge Feature Locked
+                  </h1>
+                  <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+                    The Bridge feature is available in Pro and Enterprise plans
+                  </p>
+                  <button
+                    onClick={showUpgradePrompt}
+                    className="px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all transform hover:scale-105"
+                  >
+                    Upgrade Plan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+        <UpgradePrompt 
+          feature={requiredFeature}
+          isOpen={upgradePromptOpen}
+          onClose={closeUpgradePrompt}
+        />
+      </div>
+    );
+  }
 
   const handleBridgeSuccess = (details: {
     fromChain: string;

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLicense } from "@/contexts/LicenseContext";
 import {
   LayoutDashboard,
   Wallet,
@@ -45,20 +46,39 @@ export function Sidebar() {
   const pathname = usePathname();
   const { isOwner } = useAuth();
   const { theme, toggleTheme, mounted } = useTheme();
+  const { hasFeature, planDetails } = useLicense();
+
+  // Filter thirdweb features based on plan
+  const availableThirdwebFeatures = thirdwebNavigation.filter(item => {
+    switch (item.href) {
+      case '/payments':
+        return hasFeature('payEnabled');
+      case '/bridge':
+        return hasFeature('bridgeEnabled');
+      case '/vault':
+        return hasFeature('vaultEnabled');
+      default:
+        return true;
+    }
+  });
+
+  // Filter AI Showcase based on plan
+  const aiShowcaseItem = hasFeature('aiEnabled') ? [baseNavigation[1]] : [];
 
   // Reorganizar para que thirdweb aparezca siempre arriba
   const navigation = isOwner 
     ? [
         baseNavigation[0], // Dashboard
-        ...thirdwebNavigation, // thirdweb features
-        baseNavigation[1], // AI Showcase
+        ...availableThirdwebFeatures, // Available thirdweb features
+        ...aiShowcaseItem, // AI Showcase (if enabled)
         ...adminNavigation, // Admin options
         ...baseNavigation.slice(2) // Resto de opciones
       ]
     : [
         baseNavigation[0], // Dashboard
-        ...thirdwebNavigation, // thirdweb features
-        ...baseNavigation.slice(1) // Resto de opciones
+        ...availableThirdwebFeatures, // Available thirdweb features
+        ...aiShowcaseItem, // AI Showcase (if enabled)
+        ...baseNavigation.slice(2) // Resto de opciones (skip AI Showcase as it's already included)
       ];
 
   const handleLogout = () => {
@@ -85,8 +105,19 @@ export function Sidebar() {
           <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
             <Building2 className="w-7 h-7 text-white" />
           </div>
-          <div>
-            <h1 className="text-lg font-bold text-gray-900 dark:text-white">InmoToken</h1>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white">InmoToken</h1>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                planDetails.id === 'ENTERPRISE' 
+                  ? 'bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 dark:from-purple-900/30 dark:to-indigo-900/30 dark:text-purple-300'
+                  : planDetails.id === 'PRO'
+                  ? 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 dark:from-blue-900/30 dark:to-cyan-900/30 dark:text-blue-300'
+                  : 'bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 dark:from-gray-800 dark:to-slate-800 dark:text-gray-300'
+              }`}>
+                {planDetails.badge || planDetails.name}
+              </span>
+            </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {isOwner ? "Admin Panel" : "RWA Platform"}
             </p>

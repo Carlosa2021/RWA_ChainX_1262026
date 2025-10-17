@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { LicenseProvider } from "@/contexts/LicenseContext";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({
@@ -46,8 +47,10 @@ export default function RootLayout({
         <ThirdwebProvider>
           <ThemeProvider>
             <AuthProvider>
-              <Toaster position="top-right" richColors closeButton />
-              {children}
+              <LicenseProvider>
+                <Toaster position="top-right" richColors closeButton />
+                {children}
+              </LicenseProvider>
             </AuthProvider>
           </ThemeProvider>
         </ThirdwebProvider>

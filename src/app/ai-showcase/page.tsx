@@ -7,7 +7,11 @@ import SmartPaymentsDashboard from '@/components/SmartPaymentsDashboard';
 import AIInvestmentAssistant from '@/components/AIInvestmentAssistant';
 import { SalesShowcaseBanner } from '@/components/SalesShowcaseBanner';
 import Footer from '@/components/Footer';
-import { Brain, CreditCard, TrendingUp, Sparkles } from 'lucide-react';
+import { Sidebar } from '@/components/Sidebar';
+import { Header } from '@/components/Header';
+import { Brain, CreditCard, TrendingUp, Sparkles, Lock } from 'lucide-react';
+import { useFeatureGuard } from '@/hooks/useFeatureGuard';
+import { UpgradePrompt } from '@/components/UpgradePrompt';
 
 // Datos de ejemplo para las propiedades
 const sampleProperties = [
@@ -98,8 +102,51 @@ const sampleProperties = [
 ];
 
 export default function AIPaymentsShowcase() {
+  // Feature Guard Protection
+  const { hasAccess, showUpgradePrompt, upgradePromptOpen, closeUpgradePrompt, requiredFeature } = useFeatureGuard('aiEnabled', 'AI Showcase');
+  
   const [selectedProperty, setSelectedProperty] = useState(sampleProperties[0]);
   const [view, setView] = useState<'properties' | 'dashboard' | 'ai'>('properties');
+
+  // If user doesn't have access, return the locked page
+  if (!hasAccess) {
+    return (
+      <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+        <Sidebar />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <Header />
+          <main className="flex-1 overflow-auto">
+            <div className="p-6">
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <Lock className="w-10 h-10 text-white" />
+                  </div>
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                    AI Showcase Locked
+                  </h1>
+                  <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+                    The AI Showcase feature is available in Pro and Enterprise plans
+                  </p>
+                  <button
+                    onClick={showUpgradePrompt}
+                    className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all transform hover:scale-105"
+                  >
+                    Upgrade Plan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+        <UpgradePrompt 
+          feature={requiredFeature}
+          isOpen={upgradePromptOpen}
+          onClose={closeUpgradePrompt}
+        />
+      </div>
+    );
+  }
 
   const handleInvest = (propertyId: string) => {
     console.log(`Inversión iniciada para: ${propertyId}`);
