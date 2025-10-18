@@ -1,4 +1,4 @@
-# PACTO DE SOCIOS - INMOTOKEN SL
+# PACTO DE SOCIOS - ChainX SL
 ## Protección de Aportes No Dinerarios (Software ChainX®)
 
 **BORRADOR - DEBE SER REVISADO POR ABOGADO MERCANTIL ESPAÑOL**
@@ -7,7 +7,7 @@
 
 ## CONTEXTO
 
-**InmoToken SL** es una sociedad limitada española donde:
+**ChainX SL** es una sociedad limitada española donde:
 - **Carlos Bernal**: Aporta software ChainX® (propiedad intelectual)
 - **[Socio 2]**: Aporta [capital/trabajo/contactos/etc.]
 
@@ -48,7 +48,7 @@ Socio 2: Y% acciones
 **Opción C: Licencia + Acciones**
 ```
 Carlos Bernal mantiene propiedad del Software
-InmoToken SL paga licencia (según acuerdo separado)
+ChainX SL paga licencia (según acuerdo separado)
 Carlos Bernal: X% acciones por otros aportes
 ```
 
@@ -107,7 +107,7 @@ ión capital)
 
 **Los socios se comprometen a:**
 - No crear negocio competidor durante 5 años
-- No captar clientes de InmoToken SL
+- No captar clientes de ChainX SL
 - No contratar empleados clave sin permiso
 - Aplica durante sociedad + 2 años tras salida
 
@@ -127,7 +127,7 @@ Valor de acciones = Valoración empresa × % participación
 **Forma de pago:**
 - Opción A: Pago inmediato del valor de las acciones
 - Opción B: Pago diferido en X años (interés Y%)
-- Opción C: InmoToken SL compra Software (valoración independiente)
+- Opción C: ChainX SL compra Software (valoración independiente)
 
 **Licencia del Software:**
 - Según Acuerdo de Licencia separado (ver ACUERDO-LICENCIA-SOFTWARE.md)
@@ -149,7 +149,7 @@ Valor de acciones = Valoración empresa × % participación
 **Carlos Bernal:**
 - Software pasa a herederos (según testamento)
 - Licencia se renegocia con herederos o se cancela
-- Acciones de InmoToken SL: según estatutos/testamento
+- Acciones de ChainX SL: según estatutos/testamento
 
 **Otro Socio:**
 - Acciones: derecho preferente de Carlos para comprar
@@ -162,7 +162,7 @@ Valor de acciones = Valoración empresa × % participación
 ### 4.1. Due Diligence (Auditoría del Comprador):
 
 **Importante**:
-- El Software ChainX® **NO es activo de InmoToken SL**
+- El Software ChainX® **NO es activo de ChainX SL**
 - Es un activo LICENCIADO por Carlos Bernal
 - Valoración debe reflejar esto
 - Comprador negocia nueva licencia o compra Software
@@ -178,7 +178,7 @@ Socio 2: Y%
 
 **Modelo B: Con Separación de Software** (RECOMENDADO)
 ```
-Componente 1: Valor de InmoToken SL (sin Software)
+Componente 1: Valor de ChainX SL (sin Software)
 - Se reparte según % acciones
 
 Componente 2: Valor del Software ChainX®
@@ -191,7 +191,7 @@ Componente 2: Valor del Software ChainX®
 Oferta total del comprador: €2,000,000
 
 Desglose:
-- Valor negocio (clientes, marca InmoToken, equipo): €1,200,000
+- Valor negocio (clientes, marca ChainX, equipo): €1,200,000
   → Carlos 60% = €720,000
   → Socio 2 40% = €480,000
 
@@ -274,7 +274,7 @@ Si entra inversor a valoración inferior:
 
 **En caso de deadlock:**
 - Carlos Bernal puede cancelar licencia del Software
-- InmoToken SL tiene 180 días para:
+- ChainX SL tiene 180 días para:
   - Comprar el Software (valoración independiente)
   - Desarrollar alternativa
   - Cerrar el negocio
@@ -359,7 +359,7 @@ Requiere:
 
 ### 10.2. Duración:
 
-- **Duración**: Indefinida mientras exista InmoToken SL
+- **Duración**: Indefinida mientras exista ChainX SL
 - **Revisión**: Cada 3 años o ante evento relevante
 - **Terminación**: Solo por liquidación de la empresa
 
@@ -416,7 +416,7 @@ Fecha: ___________________
 1. **Anexo A**: Certificado de Marca ChainX® (Swissreg N° 830657)
 2. **Anexo B**: Valoración del Software (informe pericial)
 3. **Anexo C**: Acuerdo de Licencia Software (documento separado)
-4. **Anexo D**: Estatutos Sociales de InmoToken SL
+4. **Anexo D**: Estatutos Sociales de ChainX SL
 5. **Anexo E**: Composición accionarial inicial
 
 ---

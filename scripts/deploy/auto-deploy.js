@@ -72,7 +72,7 @@ const REPOS = {
   }
 };
 
-const SOURCE_DIR = 'C:\\Users\\User\\Desktop\\RWA-InmoToken';
+const SOURCE_DIR = 'C:\\Users\\User\\Desktop\\RWA-ChainX';
 
 class AutoDeployer {
   constructor() {

@@ -1,4 +1,4 @@
-# 🌐 Guía Completa: Configurar dapp.inmotoken.es en Vercel con DNS de Hostinger
+# 🌐 Guía Completa: Configurar dapp.chainx.es en Vercel con DNS de Hostinger
 
 ## 📋 Registros DNS Necesarios
 
@@ -7,7 +7,7 @@
 | Tipo | Nombre | Contenido | TTL | Acción |
 |------|--------|-----------|-----|--------|
 | **CNAME** | `dapp` | `5ba7697fe81bcc85.vercel-dns-016.com` | 60 | ✅ Ya existe |
-| **TXT** | `_vercel.inmotoken.es` | `vc-domain-verify=dapp.inmotoken.es,709c03dc19bbdb45cdd7` | 60 | ⚠️ **CREAR NUEVO** |
+| **TXT** | `_vercel.chainx.es` | `vc-domain-verify=dapp.chainx.es,709c03dc19bbdb45cdd7` | 60 | ⚠️ **CREAR NUEVO** |
 
 ### ❌ Registros a NO Tocar (son para email y otros servicios):
 
@@ -36,8 +36,8 @@
 **Opción A**: Si Hostinger permite subdominios en TXT:
 ```
 Tipo: TXT
-Nombre: _vercel.inmotoken.es
-Contenido: vc-domain-verify=dapp.inmotoken.es,709c03dc19bbdb45cdd7
+Nombre: _vercel.chainx.es
+Contenido: vc-domain-verify=dapp.chainx.es,709c03dc19bbdb45cdd7
 TTL: 60
 ```
 
@@ -45,7 +45,7 @@ TTL: 60
 ```
 Tipo: TXT
 Nombre: _vercel
-Contenido: vc-domain-verify=dapp.inmotoken.es,709c03dc19bbdb45cdd7
+Contenido: vc-domain-verify=dapp.chainx.es,709c03dc19bbdb45cdd7
 TTL: 60
 ```
 
@@ -53,7 +53,7 @@ TTL: 60
 ```
 Tipo: TXT
 Nombre: vercel
-Contenido: vc-domain-verify=dapp.inmotoken.es,709c03dc19bbdb45cdd7
+Contenido: vc-domain-verify=dapp.chainx.es,709c03dc19bbdb45cdd7
 TTL: 60
 ```
 
@@ -68,25 +68,25 @@ TTL: 60
 
 ### Verifica el CNAME:
 ```powershell
-nslookup -type=CNAME dapp.inmotoken.es
+nslookup -type=CNAME dapp.chainx.es
 ```
 
 **Resultado esperado:**
 ```
-dapp.inmotoken.es
+dapp.chainx.es
 canonical name = 5ba7697fe81bcc85.vercel-dns-016.com
 ```
 
 ### Verifica el TXT (prueba las 3 opciones):
 ```powershell
-nslookup -type=TXT _vercel.inmotoken.es
-nslookup -type=TXT vercel.inmotoken.es
-nslookup -type=TXT inmotoken.es
+nslookup -type=TXT _vercel.chainx.es
+nslookup -type=TXT vercel.chainx.es
+nslookup -type=TXT chainx.es
 ```
 
 **Resultado esperado** (en alguna de las 3):
 ```
-text = "vc-domain-verify=dapp.inmotoken.es,709c03dc19bbdb45cdd7"
+text = "vc-domain-verify=dapp.chainx.es,709c03dc19bbdb45cdd7"
 ```
 
 ---
@@ -113,7 +113,7 @@ Algunos proveedores DNS tienen problemas con CNAME. Prueba esto:
 ## ✅ Verificación en Vercel:
 
 1. Ve a: https://vercel.com/carlosa2021s-projects/rwa-inmo-token/settings/domains
-2. Click **"Refresh"** junto a `dapp.inmotoken.es`
+2. Click **"Refresh"** junto a `dapp.chainx.es`
 3. Debería cambiar de ⚠️ "Verification Needed" a ✅ "Valid Configuration"
 
 ---
@@ -122,12 +122,12 @@ Algunos proveedores DNS tienen problemas con CNAME. Prueba esto:
 
 - [ ] CNAME `dapp` apunta a `5ba7697fe81bcc85.vercel-dns-016.com`
 - [ ] TTL reducido a 60 segundos
-- [ ] TXT `_vercel.inmotoken.es` con el código de verificación
+- [ ] TXT `_vercel.chainx.es` con el código de verificación
 - [ ] Esperado 5 minutos
 - [ ] Ejecutado `nslookup` y confirma que resuelve
 - [ ] Click "Refresh" en Vercel
 - [ ] Dominio muestra ✅ "Valid Configuration"
-- [ ] `https://dapp.inmotoken.es` carga la aplicación
+- [ ] `https://dapp.chainx.es` carga la aplicación
 
 ---
 
@@ -136,7 +136,7 @@ Algunos proveedores DNS tienen problemas con CNAME. Prueba esto:
 ### Causa 1: Hostinger no soporta subdominios en TXT
 **Solución**: Contacta soporte de Hostinger y pide que agreguen:
 ```
-_vercel.inmotoken.es TXT "vc-domain-verify=dapp.inmotoken.es,709c03dc19bbdb45cdd7"
+_vercel.chainx.es TXT "vc-domain-verify=dapp.chainx.es,709c03dc19bbdb45cdd7"
 ```
 
 ### Causa 2: El dominio está "locked" en otra cuenta Vercel
@@ -154,7 +154,7 @@ CAA @ 0 issue "letsencrypt.org"
 ## 🎬 Después de que Funcione:
 
 1. **Aumenta el TTL** de vuelta a 14400 (4 horas)
-2. **Prueba el dominio** en incógnito: https://dapp.inmotoken.es
+2. **Prueba el dominio** en incógnito: https://dapp.chainx.es
 3. **Verifica SSL**: Debe mostrar 🔒 en el navegador
 4. **Actualiza links** en tu proyecto para usar el dominio real
 
@@ -163,10 +163,10 @@ CAA @ 0 issue "letsencrypt.org"
 ## 📊 Estado Actual (12 Oct 2025):
 
 - ✅ Proyecto desplegado en Vercel: `rwa-inmo-token.vercel.app`
-- ⚠️ Dominio personalizado: `dapp.inmotoken.es` (pending verification)
+- ⚠️ Dominio personalizado: `dapp.chainx.es` (pending verification)
 - ✅ DNS CNAME configurado en Hostinger
 - ❌ TXT verification record no detectado por Vercel
-- 🎯 Siguiente paso: Agregar TXT `_vercel.inmotoken.es`
+- 🎯 Siguiente paso: Agregar TXT `_vercel.chainx.es`
 
 ---
 

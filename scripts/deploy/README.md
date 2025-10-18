@@ -5,7 +5,7 @@ Este sistema automatiza el deploy de cada plan SaaS a sus repositorios específi
 ## 📁 Estructura de Repositorios
 
 ```
-RWA-InmoToken/          # 🏠 Repositorio principal (desarrollo)
+RWA-ChainX/             # 🏠 Repositorio principal (desarrollo)
 ├── chainx-rwa-starter     # 🟦 Plan STARTER (€0/mes)
 ├── chainx-rwa-pro        # 🟢 Plan PRO (€29/mes)
 └── chainx-rwa-enterprise # 🟣 Plan ENTERPRISE (€99/mes)
@@ -83,7 +83,7 @@ Cada plan genera automáticamente su archivo `.env` con:
 ## 🔧 Flujo de Deploy
 
 1. **Validación**: Verifica repositorios de destino
-2. **Copia**: Copia código base desde RWA-InmoToken
+2. **Copia**: Copia código base desde RWA-ChainX
 3. **Filtrado**: Remueve funcionalidades no disponibles en el plan
 4. **Configuración**: Genera archivos específicos (.env, config/plan.ts)
 5. **Build**: Compila y valida el proyecto
