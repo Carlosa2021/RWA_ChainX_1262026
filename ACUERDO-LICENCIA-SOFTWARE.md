@@ -1,5 +1,5 @@
 # ACUERDO DE LICENCIA DE SOFTWARE
-## ChainX® Platform → InmoToken SL
+## ChainX® Platform → ChainX SL
 
 **BORRADOR - DEBE SER REVISADO POR ABOGADO ESPAÑOL Y SUIZO**
 
@@ -14,7 +14,7 @@
 - **Propietario de**: Software ChainX® Platform (código fuente)
 
 ### LICENCIATARIO:
-- **Razón Social**: InmoToken SL
+- **Razón Social**: ChainX SL
 - **CIF**: [COMPLETAR]
 - **Domicilio Social**: [Dirección en Alicante]
 - **Representante Legal**: [Nombre del otro socio o administrador]
@@ -23,7 +23,7 @@
 
 ## 1. OBJETO DEL CONTRATO
 
-El LICENCIANTE otorga al LICENCIATARIO una **licencia no exclusiva, revocable y limitada** para usar el software ChainX® Platform ("el Software") y la marca ChainX® exclusivamente para las operaciones de InmoToken SL.
+El LICENCIANTE otorga al LICENCIATARIO una **licencia no exclusiva, revocable y limitada** para usar el software ChainX® Platform ("el Software") y la marca ChainX® exclusivamente para las operaciones de ChainX SL.
 
 ### 1.1. Software Incluido:
 - Plataforma web (Next.js)
@@ -46,7 +46,7 @@ El LICENCIANTE otorga al LICENCIATARIO una **licencia no exclusiva, revocable y 
 
 ### 2.1. Derechos Otorgados:
 El LICENCIATARIO puede:
-- ✅ Usar el Software para operaciones de InmoToken SL
+- ✅ Usar el Software para operaciones de ChainX SL
 - ✅ Desplegar en servidores propios o contratados
 - ✅ Realizar configuraciones básicas
 - ✅ Crear contenido (datos de proyectos, usuarios)
@@ -59,7 +59,7 @@ El LICENCIATARIO NO puede:
 - ❌ Crear productos competidores basados en el Software
 - ❌ Realizar ingeniería inversa (reverse engineering)
 - ❌ Eliminar avisos de copyright o marca registrada
-- ❌ Usar el Software fuera de las operaciones de InmoToken SL
+- ❌ Usar el Software fuera de las operaciones de ChainX SL
 
 ### 2.3. Uso de la Marca ChainX®:
 - El LICENCIATARIO puede usar "Powered by ChainX®" en marketing
@@ -77,7 +77,7 @@ El LICENCIANTE se reserva el derecho de:
 - Usar el Software en otros proyectos propios
 
 ### 3.2. Cláusula de No Competencia (LICENCIATARIO):
-InmoToken SL **NO puede**:
+ChainX SL **NO puede**:
 - Desarrollar software alternativo que compita con ChainX®
 - Contratar al equipo técnico del LICENCIANTE sin permiso
 - Compartir código fuente con terceros
@@ -104,7 +104,7 @@ Elige UNA de estas opciones (negociar con socios):
 
 **Opción C: Participación Accionarial + Regalías**
 ```
-- X% de acciones de InmoToken SL (por el aporte del Software)
+- X% de acciones de ChainX SL (por el aporte del Software)
 - Y% de regalías sobre ingresos brutos
 ```
 
@@ -128,8 +128,8 @@ Todas las mejoras desarrolladas por Carlos Bernal:
 - Son propiedad del LICENCIANTE
 - Se incluyen automáticamente en la licencia (sin costo adicional)
 
-### 5.2. Personalizaciones de InmoToken SL:
-Desarrollos específicos pagados por InmoToken SL:
+### 5.2. Personalizaciones de ChainX SL:
+Desarrollos específicos pagados por ChainX SL:
 - **Código base**: Propiedad del LICENCIANTE
 - **Personalizaciones**: Propiedad compartida
 - **Datos y contenido**: Propiedad del LICENCIATARIO
@@ -152,9 +152,9 @@ Desarrollos específicos pagados por InmoToken SL:
 
 ## 7. ESCENARIOS DE CAMBIO DE CONTROL
 
-### 7.1. Venta de InmoToken SL:
+### 7.1. Venta de ChainX SL:
 
-**Si InmoToken SL es adquirida por terceros:**
+**Si ChainX SL es adquirida por terceros:**
 
 **Opción A: Derecho de Rescisión**
 ```
@@ -179,7 +179,7 @@ Desarrollos específicos pagados por InmoToken SL:
 
 ### 7.2. Retiro de Carlos Bernal como Socio:
 
-**Si Carlos Bernal deja InmoToken SL:**
+**Si Carlos Bernal deja ChainX SL:**
 
 **Opción A: Licencia Continúa con Regalías**
 ```
@@ -190,7 +190,7 @@ Desarrollos específicos pagados por InmoToken SL:
 
 **Opción B: Buy-out del Software**
 ```
-- InmoToken SL puede comprar el Software
+- ChainX SL puede comprar el Software
 - Valoración por perito independiente
 - Pago en X años con interés del Y%
 - Marca ChainX® NO se transfiere (solo licencia perpetua)
@@ -199,11 +199,11 @@ Desarrollos específicos pagados por InmoToken SL:
 **Opción C: Rescisión con Transición**
 ```
 - Licencia termina en 12 meses
-- InmoToken SL debe desarrollar alternativa o negociar nueva licencia
+- ChainX SL debe desarrollar alternativa o negociar nueva licencia
 - LICENCIANTE colabora en transición (máximo X horas)
 ```
 
-### 7.3. Liquidación de InmoToken SL:
+### 7.3. Liquidación de ChainX SL:
 
 **Si la empresa se liquida:**
 - Licencia termina automáticamente
@@ -321,7 +321,7 @@ LICENCIATARIO no puede ceder sin consentimiento previo escrito.
 ### 13.4. Notificaciones:
 Por correo certificado o email con acuse de recibo:
 - LICENCIANTE: legal@chainx.ch
-- LICENCIATARIO: [email de InmoToken SL]
+- LICENCIATARIO: [email de ChainX SL]
 
 ### 13.5. Idiomas:
 - Versión en español: vinculante
@@ -343,7 +343,7 @@ Lugar: Basel, Switzerland
 
 ### LICENCIATARIO:
 
-**InmoToken SL**
+**ChainX SL**
 CIF: ___________________
 Representado por: ___________________
 
