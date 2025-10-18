@@ -1,37 +1,38 @@
-// Configuración de imágenes para el proyecto Alzira Reyes Católicos
-// Coloca tus fotos reales en la carpeta: /public/images/projects/alzira-reyes-catolicos/
+// ChainX RWA Platform - Sample project images configuration  
+// This is a demo project for the ChainX RWA Platform - InmoToken will be a client
+// Place your real photos in the folder: /public/images/projects/[project-name]/
 
-export const ALZIRA_PROJECT_IMAGES = {
-  // Fotos del inmueble actual
+export const SAMPLE_PROJECT_IMAGES = {
+  // Current property photos
   current: [
-    "/images/projects/alzira-reyes-catolicos/fachada-exterior.jpg",      // Fachada del edificio
-    "/images/projects/alzira-reyes-catolicos/salon-principal.jpg",        // Salón principal  
-    "/images/projects/alzira-reyes-catolicos/cocina-actual.jpg",          // Cocina actual
-    "/images/projects/alzira-reyes-catolicos/dormitorio-1.jpg",           // Dormitorio principal
-    "/images/projects/alzira-reyes-catolicos/dormitorio-2.jpg",           // Segundo dormitorio
-    "/images/projects/alzira-reyes-catolicos/bano-principal.jpg",         // Baño principal
-    "/images/projects/alzira-reyes-catolicos/bano-secundario.jpg",        // Segundo baño
-    "/images/projects/alzira-reyes-catolicos/patio-cubierto.jpg",         // Patio cubierto central
-    "/images/projects/alzira-reyes-catolicos/terraza-solarium.jpg",       // Terraza/solarium
+    "/images/projects/sample-project/exterior-facade.jpg",           // Building facade
+    "/images/projects/sample-project/main-living-room.jpg",          // Main living room
+    "/images/projects/sample-project/kitchen-current.jpg",           // Current kitchen
+    "/images/projects/sample-project/bedroom-1.jpg",                 // Master bedroom
+    "/images/projects/sample-project/bedroom-2.jpg",                 // Second bedroom
+    "/images/projects/sample-project/bathroom-main.jpg",             // Main bathroom
+    "/images/projects/sample-project/bathroom-secondary.jpg",        // Second bathroom
+    "/images/projects/sample-project/covered-patio.jpg",             // Covered central patio
+    "/images/projects/sample-project/terrace-solarium.jpg",          // Terrace/solarium
   ],
   
-  // Planos y diseños de renovación futura
+  // Plans and future renovation designs
   plans: [
-    "/images/projects/alzira-reyes-catolicos/plano-distribucion.jpg",     // Plano de distribución
-    "/images/projects/alzira-reyes-catolicos/plano-reforma.jpg",          // Plano de reforma
-    "/images/projects/alzira-reyes-catolicos/render-salon-futuro.jpg",    // Render salón renovado
-    "/images/projects/alzira-reyes-catolicos/render-cocina-futuro.jpg",   // Render cocina renovada
+    "/images/projects/sample-project/floor-plan.jpg",                // Floor plan distribution
+    "/images/projects/sample-project/renovation-plan.jpg",           // Renovation plan
+    "/images/projects/sample-project/render-living-future.jpg",      // Living room render
+    "/images/projects/sample-project/render-kitchen-future.jpg",     // Kitchen renovation render
   ],
   
-  // Fotos de la zona/ubicación
+  // Location/area photos
   location: [
-    "/images/projects/alzira-reyes-catolicos/calle-reyes-catolicos.jpg",  // Calle Reyes Católicos
-    "/images/projects/alzira-reyes-catolicos/centro-alzira.jpg",          // Centro histórico de Alzira
+    "/images/projects/sample-project/street-view.jpg",               // Street view
+    "/images/projects/sample-project/neighborhood.jpg",              // Neighborhood area
   ]
 };
 
-// URLs temporales (fallback mientras subes las fotos reales)
-export const ALZIRA_TEMP_IMAGES = [
+// Temporary URLs (fallback for demo purposes)
+export const SAMPLE_TEMP_IMAGES = [
   "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop&crop=center",
   "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop&crop=center",
   "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop&crop=center",

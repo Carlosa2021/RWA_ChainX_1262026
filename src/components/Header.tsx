@@ -6,6 +6,7 @@ import { client } from "@/lib/thirdweb";
 import { polygon } from "thirdweb/chains";
 import { Moon, Sun, Bell, Brain, Sparkles } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+// import { usePlanConfig } from "@/hooks/usePlanConfig";
 import {
   createWallet,
   walletConnect,
@@ -33,18 +34,35 @@ const wallets = [
 
 export function Header() {
   const { theme, toggleTheme, mounted } = useTheme();
+  // const planConfig = usePlanConfig();
+
+  const getBadgeColor = (type: string) => {
+    switch (type) {
+      case 'STARTER': return 'bg-blue-500 text-white';
+      case 'PRO': return 'bg-green-500 text-white';
+      case 'ENTERPRISE': return 'bg-purple-500 text-white';
+      default: return 'bg-gray-500 text-white';
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
       <div className="flex items-center justify-between px-8 py-4">
         {/* Search / Title */}
-        <div className="flex-1">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Dashboard
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Gestiona tus inversiones inmobiliarias tokenizadas
-          </p>
+        <div className="flex-1 flex items-center gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Dashboard
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              ChainX RWA Platform - Manage your tokenized real world assets
+            </p>
+          </div>
+          
+          {/* Plan Badge */}
+          <div className={`px-3 py-1 rounded-full text-xs font-semibold ${getBadgeColor('ENTERPRISE')}`}>
+            ENTERPRISE
+          </div>
         </div>
 
         {/* Actions */}

@@ -1,5 +1,5 @@
 {
-  "name": "chainx-rwa-inmotoken",
+  "name": "chainx-rwa-platform",
   "version": "1.0.0",
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
@@ -8,7 +8,7 @@
     "email": "legal@chainx.ch",
     "url": "https://chainx.ch"
   },
-  "description": "ChainX® Real World Assets Tokenization Platform - ERC-3643 compliant security token issuance and management",
+  "description": "ChainX® RWA Platform - Real World Assets Tokenization Platform with Multi-Tier SaaS Architecture",
   "keywords": [
     "blockchain",
     "tokenization",
@@ -23,21 +23,25 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Carlosa2021/RWA_InmoToken.git"
+    "url": "https://github.com/Carlosa2021/chainx-rwa-platform.git"
   },
   "homepage": "https://chainx.ch",
   "bugs": {
-    "url": "https://github.com/Carlosa2021/RWA_InmoToken/issues",
+    "url": "https://github.com/Carlosa2021/chainx-rwa-platform/issues",
     "email": "support@chainx.ch"
   },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dev:starter": "cp .env.starter .env && next dev --turbopack --port 3000",
+    "dev:pro": "cp .env.pro .env && next dev --turbopack --port 3001",
+    "dev:enterprise": "cp .env.enterprise .env && next dev --turbopack --port 3002"
   },
   "dependencies": {
     "ethers": "^6.13.4",
+    "fs-extra": "^11.3.2",
     "lucide-react": "^0.545.0",
     "next": "15.5.4",
     "react": "19.1.0",

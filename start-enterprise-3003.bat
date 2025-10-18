@@ -1,0 +1,6 @@
+@echo off
+echo === CONFIGURANDO PLAN ENTERPRISE (€4,999) ===
+echo Copiando configuracion ENTERPRISE...
+copy .env.enterprise .env
+echo Iniciando servidor ENTERPRISE en puerto 3004...
+npm run dev -- --port 3004

@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LicenseProvider } from "@/contexts/LicenseContext";
 import { Toaster } from "sonner";
+// import EnvDebug from "@/components/EnvDebug";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "ChainX® RWA InmoToken | Tokenización Inmobiliaria Premium",
-  description: "Plataforma profesional de tokenización inmobiliaria con ERC-3643 + MiCA compliance",
+  title: "ChainX® RWA Platform | Real World Assets Tokenization Platform",
+  description: "Professional multi-tier SaaS platform for Real World Assets tokenization with ERC-3643 + MiCA compliance",
   icons: {
     icon: '/favicon.ico',
   },
@@ -50,6 +51,7 @@ export default function RootLayout({
               <LicenseProvider>
                 <Toaster position="top-right" richColors closeButton />
                 {children}
+                {/* <EnvDebug /> */}
               </LicenseProvider>
             </AuthProvider>
           </ThemeProvider>

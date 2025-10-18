@@ -9,6 +9,8 @@ import { StatsCard } from "@/components/StatsCard";
 import { SimplePropertyCard } from "@/components/SimplePropertyCard";
 import { InvestmentModal } from "@/components/InvestmentModal";
 import { AIShowcaseBanner } from "@/components/AIShowcaseBanner";
+import SimplePlanDisplay from "@/components/SimplePlanDisplay";
+import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjects, useProjectStats } from "@/hooks/useProjects";
@@ -48,12 +50,18 @@ export default function Home() {
       <Sidebar />
       
       <div className="flex-1">
+        <SimpleHeader />
         <Header />
         
         {/* AI Showcase Banner */}
         <AIShowcaseBanner />
         
         <main className="p-8">
+          {/* Plan Display - Sistema de Licencias */}
+          <div className="mb-8">
+            <SimplePlanDisplay />
+          </div>
+          
           {/* Hero Section */}
           <div className="mb-8 bg-gradient-to-br from-orange-500 via-pink-500 to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>

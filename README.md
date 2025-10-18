@@ -1,13 +1,14 @@
-# ChainX® - Real World Assets Tokenization Platform
+# ChainX® RWA Platform - Multi-Tier SaaS Architecture
 
 ![License](https://img.shields.io/badge/license-Apache%202.0%20%2B%20ChainX-blue)
 ![Trademark](https://img.shields.io/badge/trademark-ChainX%C2%AE%20830657-green)
 ![Blockchain](https://img.shields.io/badge/blockchain-Polygon-purple)
 ![Standard](https://img.shields.io/badge/token-ERC--3643-orange)
+![SaaS](https://img.shields.io/badge/architecture-Multi--Tier%20SaaS-cyan)
 
-> **Plataforma profesional para tokenización de activos del mundo real con cumplimiento regulatorio ERC-3643**
+> **Professional multi-tier SaaS platform for Real World Assets tokenization with regulatory compliance ERC-3643**
 > 
-> 🚀 **Live Demo**: [dapp.inmotoken.es](https://dapp.inmotoken.es)
+> 🚀 **Platform**: ChainX RWA - Scalable from €49 to €4,999/month
 
 ---
 

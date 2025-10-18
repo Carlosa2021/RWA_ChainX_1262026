@@ -1,0 +1,9 @@
+@echo off
+echo === CONFIGURANDO PLAN PRO (€499) ===
+echo Limpiando cache...
+rmdir /s /q .next 2>nul
+echo Copiando configuracion PRO...
+copy .env.pro .env
+echo Iniciando servidor PRO en puerto 3001...
+set NEXT_PUBLIC_PLAN_TYPE=PRO
+npm run dev -- --port 3001
