@@ -284,7 +284,7 @@ app.use((error, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`
   ╔═══════════════════════════════════════════════╗
-  ║   🚀 API KYC RWA InmoToken                    ║
+  ║   🚀 API KYC RWA ChainX                       ║
   ║   📍 http://localhost:${PORT}                    ║
   ║   ✅ Database: SQLite (kyc.db)                ║
   ║   👤 Admin: ${ADMIN_ADDRESS?.slice(0, 10)}...  ║

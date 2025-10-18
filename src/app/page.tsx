@@ -71,7 +71,7 @@ export default function Home() {
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles className="w-6 h-6" />
                 <span className="text-sm font-semibold uppercase tracking-wider">
-                  {isOwner ? "Panel de Administración" : "Bienvenido a InmoToken"}
+                  {isOwner ? "Panel de Administración" : "Bienvenido a ChainX"}
                 </span>
               </div>
               <h1 className="text-5xl font-bold mb-3">

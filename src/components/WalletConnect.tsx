@@ -50,7 +50,7 @@ export function WalletConnect({ className }: WalletConnectProps) {
           className: "connect-button",
         }}
         connectModal={{
-          title: "Conectar a RWA InmoToken",
+          title: "Conectar a RWA ChainX",
           titleIcon: "",
           showThirdwebBranding: false,
           size: "compact",

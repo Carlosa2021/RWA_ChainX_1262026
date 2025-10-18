@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 pb-6 border-b border-gray-700">
           <div className="mb-4 md:mb-0">
             <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              InmoToken
+              ChainX
             </h3>
             <p className="text-gray-300 text-sm mt-1">
               Democratizando la inversión inmobiliaria
@@ -51,7 +51,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-purple-300 mb-2">🌐 Conecta</h4>
             <ul className="text-sm text-gray-300 space-y-1">
-              <li>• dapp.inmotoken.es</li>
+              <li>• dapp.chainx.es</li>
               <li>• Soporte 24/7</li>
               <li>• Documentación API</li>
               <li>• Comunidad Discord</li>

@@ -107,7 +107,7 @@ export function Sidebar() {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-lg font-bold text-gray-900 dark:text-white">InmoToken</h1>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white">ChainX</h1>
               <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
                 planDetails.id === 'ENTERPRISE' 
                   ? 'bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 dark:from-purple-900/30 dark:to-indigo-900/30 dark:text-purple-300'
