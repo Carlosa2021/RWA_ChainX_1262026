@@ -14,6 +14,8 @@ import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjects, useProjectStats } from "@/hooks/useProjects";
+import { useLicense } from "@/contexts/LicenseContext";
+import { usePlanConfig } from "@/hooks/usePlanSystem";
 import { 
   Building2, 
   TrendingUp, 
@@ -29,6 +31,8 @@ import { useState, useEffect } from "react";
 export default function Home() {
   const { isOwner, isKYCVerified } = useAuth();
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const license = useLicense();
+  const planConfig = usePlanConfig();
   
   // Obtener proyectos reales desde blockchain
   const { projects, isLoading: loadingProjects, refetch } = useProjects();
@@ -55,6 +59,18 @@ export default function Home() {
         
         {/* AI Showcase Banner */}
         <AIShowcaseBanner />
+        
+        {/* Enterprise Status Banner */}
+        {planConfig.type === 'ENTERPRISE' && (
+          <div className="mx-8 mb-6 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl p-4">
+            <div className="flex items-center gap-3 text-white">
+              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="font-bold">🚀 ENTERPRISE MODE ACTIVE</span>
+              <span className="text-purple-200">|</span>
+              <span className="text-sm">All features unlocked • Unlimited projects • Full API access</span>
+            </div>
+          </div>
+        )}
         
         <main className="p-8">
           {/* Plan Display - Sistema de Licencias */}

@@ -5,8 +5,9 @@ import { ThirdwebProvider } from "thirdweb/react";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LicenseProvider } from "@/contexts/LicenseContext";
+import { EnterpriseProvider } from "@/components/EnterpriseProvider";
 import { Toaster } from "sonner";
-// import EnvDebug from "@/components/EnvDebug";
+import EnvDebug from "@/components/EnvDebug";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,11 +49,13 @@ export default function RootLayout({
         <ThirdwebProvider>
           <ThemeProvider>
             <AuthProvider>
-              <LicenseProvider>
-                <Toaster position="top-right" richColors closeButton />
-                {children}
-                {/* <EnvDebug /> */}
-              </LicenseProvider>
+              <EnterpriseProvider>
+                <LicenseProvider>
+                  <Toaster position="top-right" richColors closeButton />
+                  {children}
+                  <EnvDebug />
+                </LicenseProvider>
+              </EnterpriseProvider>
             </AuthProvider>
           </ThemeProvider>
         </ThirdwebProvider>

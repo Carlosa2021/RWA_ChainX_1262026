@@ -86,8 +86,8 @@ const PLAN_CONFIGS: Record<number, PlanConfig> = {
     type: 'ENTERPRISE',
     name: 'ENTERPRISE',
     price: 4999,
-    maxProjects: 100,
-    maxInvestors: 10000,
+    maxProjects: -1, // Ilimitado
+    maxInvestors: -1, // Ilimitado
     badge: 'ENTERPRISE',
     color: 'purple',
     features: {
@@ -109,17 +109,44 @@ const PLAN_CONFIGS: Record<number, PlanConfig> = {
   }
 };
 
+// Configuración predeterminada ENTERPRISE
+const DEFAULT_ENTERPRISE_CONFIG: PlanConfig = {
+  type: 'ENTERPRISE',
+  name: 'ENTERPRISE',
+  price: 4999,
+  maxProjects: -1, // Ilimitado
+  maxInvestors: -1, // Ilimitado
+  badge: 'ENTERPRISE',
+  color: 'purple',
+  features: {
+    basicDashboard: true,
+    adminPanel: true,
+    analytics: true,
+    whiteLabel: true,
+    apiAccess: true,
+    customBranding: true,
+    prioritySupport: true,
+    projectCreation: true,
+    investmentTracking: true,
+    kycManagement: true,
+    payoutDistribution: true,
+    multiCurrency: true,
+    advancedReports: true,
+    customIntegrations: true,
+  }
+};
+
 // Hook principal para obtener configuración
 export function usePlanConfig(): PlanConfig {
-  const [config, setConfig] = React.useState<PlanConfig>(PLAN_CONFIGS[3000]);
+  // Iniciamos SIEMPRE con ENTERPRISE
+  const [config, setConfig] = React.useState<PlanConfig>(DEFAULT_ENTERPRISE_CONFIG);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      const port = parseInt(window.location.port) || 3000;
-      const planConfig = PLAN_CONFIGS[port] || PLAN_CONFIGS[3000];
-      setConfig(planConfig);
-      
-      console.log(`🎯 Plan Detection: Port ${port} -> ${planConfig.type}`);
+      // FORZAR ENTERPRISE sin importar puerto o ENV
+      setConfig(DEFAULT_ENTERPRISE_CONFIG);
+      console.log(`🚀 FORCED ENTERPRISE MODE ACTIVATED`);
+      console.log(`✅ All features enabled, unlimited projects/investors`);
     }
   }, []);
 

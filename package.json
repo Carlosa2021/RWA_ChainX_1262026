@@ -31,13 +31,14 @@
     "email": "support@chainx.ch"
   },
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack --port 3004",
+    "dev:enterprise": "next dev --turbopack --port 3004",
+    "dev:full": "next dev --turbopack --port 3004",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "dev:starter": "cp .env.starter .env && next dev --turbopack --port 3000",
-    "dev:pro": "cp .env.pro .env && next dev --turbopack --port 3001",
-    "dev:enterprise": "cp .env.enterprise .env && next dev --turbopack --port 3002"
+    "dev:pro": "cp .env.pro .env && next dev --turbopack --port 3001"
   },
   "dependencies": {
     "ethers": "^6.13.4",

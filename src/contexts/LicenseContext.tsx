@@ -35,33 +35,28 @@ interface LicenseProviderProps {
 
 export function LicenseProvider({ 
   children, 
-  defaultPlan = 'STARTER',
+  defaultPlan = 'ENTERPRISE', // SIEMPRE ENTERPRISE
   licenseKey: initialLicenseKey 
 }: LicenseProviderProps) {
-  const [currentPlan, setCurrentPlan] = useState<PlanType>(defaultPlan);
-  const [licenseKey, setLicenseKey] = useState<string | undefined>(initialLicenseKey);
+  // Estado inicial FORZADO a ENTERPRISE
+  const [currentPlan, setCurrentPlan] = useState<PlanType>('ENTERPRISE');
+  const [licenseKey, setLicenseKey] = useState<string | undefined>('ENTERPRISE_DEV_2024_CHAINX');
   const [isValid, setIsValid] = useState(true);
   const [expiresAt, setExpiresAt] = useState<Date | undefined>();
 
   // Get plan from environment variables or license key
   useEffect(() => {
-    // Try to get plan from environment
-    const envPlan = process.env.NEXT_PUBLIC_PLAN as PlanType;
-    if (envPlan && ['STARTER', 'PRO', 'ENTERPRISE'].includes(envPlan)) {
-      setCurrentPlan(envPlan);
-    }
-
-    // Try to get license key from environment or localStorage
-    const envLicenseKey = process.env.NEXT_PUBLIC_LICENSE_KEY;
-    const storedLicenseKey = typeof window !== 'undefined' ? localStorage.getItem('chainx_license_key') : null;
+    // FORZAR ENTERPRISE MODE - Sin condiciones
+    setCurrentPlan('ENTERPRISE');
+    console.log('🚀 LICENSE: ENTERPRISE MODE FORCED');
     
-    if (envLicenseKey) {
-      setLicenseKey(envLicenseKey);
-      validateLicense(envLicenseKey);
-    } else if (storedLicenseKey) {
-      setLicenseKey(storedLicenseKey);
-      validateLicense(storedLicenseKey);
-    }
+    // Set default ENTERPRISE license for development
+    const devLicense = 'ENTERPRISE_DEV_2024_CHAINX_UNLIMITED';
+    setLicenseKey(devLicense);
+    setIsValid(true);
+    setExpiresAt(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)); // 1 año
+    
+    console.log('✅ LICENSE: All features unlocked, unlimited usage');
   }, []);
 
   // License validation (simplified for now)
