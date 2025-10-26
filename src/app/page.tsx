@@ -13,7 +13,7 @@ import SimplePlanDisplay from "@/components/SimplePlanDisplay";
 import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
-import { useProjects, useProjectStats } from "@/hooks/useProjects";
+import { useProjects, useProjectStats, ProjectDisplay } from "@/hooks/useProjects";
 import { useLicense } from "@/contexts/LicenseContext";
 import { usePlanConfig } from "@/hooks/usePlanSystem";
 import { 
@@ -38,7 +38,9 @@ export default function Home() {
   const { projects, isLoading: loadingProjects, refetch } = useProjects();
   const stats = useProjectStats();
   
-  const currentProject = projects.find(p => p.id === selectedProject);
+  // Tipado explícito para evitar error con array vacío
+  const safeProjects: ProjectDisplay[] = projects || [];
+  const currentProject = safeProjects.find(p => p.id === selectedProject);
 
   // Recargar proyectos cada 30 segundos para detectar nuevos proyectos
   useEffect(() => {
@@ -195,7 +197,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-              ) : projects.length === 0 ? (
+              ) : safeProjects.length === 0 ? (
                 // No projects state
                 <div className="col-span-full flex items-center justify-center py-12">
                   <div className="text-center">
@@ -210,7 +212,7 @@ export default function Home() {
                 </div>
               ) : (
                 // Projects list
-                projects.map((project) => (
+                safeProjects.map((project) => (
                   <SimplePropertyCard
                     key={project.id}
                     {...project}
