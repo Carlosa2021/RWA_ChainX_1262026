@@ -438,7 +438,7 @@ Crypto Payments (Thirdweb Pay):
 ├── USDC: Primary stablecoin (Circle)
 ├── USDT: Tether support (multi-chain)
 ├── ETH: Native Ethereum payments
-├── MATIC: Polygon native token
+├── POL: Polygon native token
 ├── DAI: MakerDAO stablecoin
 └── Custom Tokens: ERC-20 compatible
 
