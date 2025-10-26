@@ -1,0 +1,19 @@
+{
+  "network": "polygon",
+  "chainId": 137,
+  "timestamp": "2025-10-26T12:49:34.128Z",
+  "deployer": "0xA62FeC1444118BD0e80c6cdA6a4873144ECe21ca",
+  "clientWallet": "0xe24c92e5E86608B3029a78Dc9c8E4cAdDF69e9FB",
+  "projectDetails": {
+    "tokenSupply": 5,
+    "pricePerToken": "1 EUR (100 cents)",
+    "totalGoal": "5 EUR"
+  },
+  "contracts": {
+    "ProjectRegistry": "0xce6658EacFc70fe142444d5E914cE756a32C6DC0"
+  },
+  "verification": {
+    "polygonscan": "https://polygonscan.com/address/0xce6658EacFc70fe142444d5E914cE756a32C6DC0"
+  },
+  "notes": "Owner is currently deployer. Client wallet noted for future transfer."
+}
