@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useProjectCreation } from "@/hooks/useProjectCreation";
-import { useProjects } from "@/hooks/useProjects";
+import { useProjects, ProjectDisplay } from "@/hooks/useProjects";
 import Image from "next/image";
 import {
   Shield,
@@ -412,8 +412,8 @@ export default function AdminPage() {
 
   // Renderizar contenido de proyectos
   const renderProjectsContent = () => {
-    // Tipado explícito para evitar error de TypeScript con array vacío
-    const safeProjects: typeof projects = projects || [];
+    // Tipado explícito con ProjectDisplay[] para evitar error de TypeScript con array vacío
+    const safeProjects: ProjectDisplay[] = projects || [];
     
     return (
     <div className="space-y-6">
