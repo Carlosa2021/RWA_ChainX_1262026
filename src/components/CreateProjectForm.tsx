@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { 
   Building2, 
-  DollarSign, 
+  Euro, 
   FileText, 
   Globe, 
   MapPin, 
@@ -266,7 +266,7 @@ export function CreateProjectForm({ onSubmit, isLoading }: CreateProjectFormProp
                     Valor Total del Proyecto (€) *
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Euro className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="number"
                       value={formData.totalValue}
