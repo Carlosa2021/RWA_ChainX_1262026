@@ -412,7 +412,8 @@ export default function AdminPage() {
 
   // Renderizar contenido de proyectos
   const renderProjectsContent = () => {
-    const safeProjects = projects || [];
+    // Tipado explícito para evitar error de TypeScript con array vacío
+    const safeProjects: typeof projects = projects || [];
     
     return (
     <div className="space-y-6">
