@@ -48,7 +48,9 @@ interface StoredProject {
 }
 */
 
-// Data estática - no cambiar nunca
+// Data estática - Comentada para empezar con plataforma limpia
+// Descomentar solo para modo demo con proyecto de ejemplo
+/*
 const ALZIRA_PROJECT = {
   id: 1,
   name: "Inmueble Reyes Católicos Alzira",
@@ -85,28 +87,15 @@ const ALZIRA_PROJECT = {
     "/images/projects/alzira-reyes-catolicos/Alzira6%20-%20Kopie.jpg"
   ]
 };
+*/
 
 export function useProjects() {
+  // PLATAFORMA LIMPIA: Sin proyectos de ejemplo
+  // Los proyectos se crearán desde el admin panel
   const projects = useMemo(() => {
-    const displayProject: ProjectDisplay = {
-      id: ALZIRA_PROJECT.id,
-      name: ALZIRA_PROJECT.name,
-      location: ALZIRA_PROJECT.location,
-      totalValue: ALZIRA_PROJECT.totalValue,
-      pricePerToken: ALZIRA_PROJECT.pricePerToken,
-      tokensAvailable: parseInt(ALZIRA_PROJECT.maxTokens),
-      tokensTotal: parseInt(ALZIRA_PROJECT.maxTokens),
-      apy: ALZIRA_PROJECT.expectedReturn + "%",
-      status: ALZIRA_PROJECT.status,
-      progress: 0,
-      investors: 0,
-      image: ALZIRA_PROJECT.images[0],
-      images: ALZIRA_PROJECT.images,
-      securityToken: ALZIRA_PROJECT.tokenAddress,
-      investmentController: ALZIRA_PROJECT.controllerAddress,
-    };
-    
-    return [displayProject];
+    // TODO: Aquí irá la lógica para cargar proyectos desde blockchain
+    // Por ahora, retorna array vacío para empezar limpio
+    return [];
   }, []);
 
   return {
@@ -135,11 +124,12 @@ export function useProject(projectId: number) {
 }
 
 export function useProjectStats() {
+  // PLATAFORMA LIMPIA: Stats en 0 hasta que se creen proyectos
   const stats = useMemo(() => ({
-    totalProjects: 1,
-    activeProjects: 1,
-    totalValueLocked: 175000,
-    averageAPY: 8,
+    totalProjects: 0,
+    activeProjects: 0,
+    totalValueLocked: 0,
+    averageAPY: 0,
     totalInvestors: 0,
   }), []);
 
