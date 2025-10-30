@@ -26,7 +26,8 @@ export interface ProjectDisplay {
   investmentController: string;
 }
 
-// REGISTRY CONTRACT ADDRESS
+// REGISTRY CONTRACT ADDRESS - PRODUCTION
+// Only projects registered in blockchain will appear
 const REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_PROJECT_REGISTRY || "";
 
 export function useProjects() {

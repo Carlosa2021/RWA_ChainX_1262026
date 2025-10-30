@@ -29,7 +29,8 @@ export default function Home() {
   const { isOwner, isKYCVerified } = useAuth();
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   
-  // Obtener proyectos reales desde blockchain
+  // PRODUCTION: Only real projects from blockchain (ProjectRegistry)
+  // NO mock/demo projects - clean dashboard
   const { projects, isLoading: loadingProjects, refetch } = useProjects();
   const stats = useProjectStats();
   
