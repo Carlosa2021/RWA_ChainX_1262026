@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { useActiveAccount, useSendTransaction } from "thirdweb/react";
 import { quoteUSDC, txApproveUSDC, txInvest, getUSDCBalance, getUSDCAllowance } from "@/lib/invest";
+import { getContract, readContract } from "thirdweb";
+import { polygon } from "thirdweb/chains";
+import { client } from "@/lib/client";
 import { formatUnits } from "viem";
 import { X, Shield, CheckCircle, AlertCircle, Loader2, ArrowRight, Wallet, Plus } from "lucide-react";
 
@@ -91,8 +94,26 @@ export function InvestmentModal({
     try {
       setErr(null);
       
-      // Calcular USDC necesario con 5% slippage (máximo del contrato)
-      const maxUsdc = (need * 10500n) / 10000n;
+      // Leer slippage del contrato para calcular correctamente
+      const CTRL = process.env.NEXT_PUBLIC_INVESTMENT_CONTROLLER as `0x${string}`;
+      const controllerContract = getContract({
+        client,
+        chain: polygon,
+        address: CTRL,
+      });
+      
+      const maxSlippageBps = await readContract({
+        contract: controllerContract,
+        method: "function maxSlippageBps() view returns (uint16)",
+        params: [],
+      }) as bigint;
+      
+      console.log("📊 Slippage del contrato:", maxSlippageBps.toString(), "bps");
+      
+      // Calcular USDC máximo con el slippage real del contrato
+      const maxUsdc = (need * (10000n + maxSlippageBps)) / 10000n;
+      console.log("💵 USDC necesario:", need.toString());
+      console.log("💸 USDC máximo (con slippage):", maxUsdc.toString());
       
       // Verificar allowance actual
       const currentAllowance = await getUSDCAllowance(account.address);
