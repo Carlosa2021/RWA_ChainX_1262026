@@ -106,12 +106,13 @@ export function InvestmentModal({
         contract: controllerContract,
         method: "function maxSlippageBps() view returns (uint16)",
         params: [],
-      }) as bigint;
+      }) as number;
       
-      console.log("📊 Slippage del contrato:", maxSlippageBps.toString(), "bps");
+      console.log("📊 Slippage del contrato:", maxSlippageBps, "bps");
       
       // Calcular USDC máximo con el slippage real del contrato
-      const maxUsdc = (need * (10000n + maxSlippageBps)) / 10000n;
+      const slippageBigInt = BigInt(maxSlippageBps);
+      const maxUsdc = (need * (10000n + slippageBigInt)) / 10000n;
       console.log("💵 USDC necesario:", need.toString());
       console.log("💸 USDC máximo (con slippage):", maxUsdc.toString());
       
