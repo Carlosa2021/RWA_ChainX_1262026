@@ -110,11 +110,11 @@ export function InvestmentModal({
       
       console.log("📊 Slippage del contrato:", maxSlippageBps, "bps");
       
-      // Calcular USDC máximo con el slippage real del contrato + 2% buffer para fluctuaciones
-      // Si el contrato tiene 5% (500 bps), usamos 7% (700 bps) para dar margen
+      // Calcular USDC máximo con margen amplio para fluctuaciones del oráculo
+      // Usamos el DOBLE del slippage del contrato para evitar rechazos
       const slippageBigInt = BigInt(maxSlippageBps);
-      const bufferBps = 200n; // 2% extra de seguridad
-      const maxUsdc = (need * (10000n + slippageBigInt + bufferBps)) / 10000n;
+      const maxUsdc = (need * (10000n + slippageBigInt * 2n)) / 10000n;
+      console.log("📊 Usando margen de seguridad:", (maxSlippageBps * 2), "bps");
       console.log("💵 USDC necesario:", need.toString());
       console.log("💸 USDC máximo (con slippage):", maxUsdc.toString());
       
