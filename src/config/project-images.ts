@@ -1,5 +1,5 @@
 // ChainX RWA Platform - Sample project images configuration  
-// This is a demo project for the ChainX RWA Platform - InmoToken will be a client
+// Demo configuration for the ChainX RWA Platform
 // Place your real photos in the folder: /public/images/projects/[project-name]/
 
 export const SAMPLE_PROJECT_IMAGES = {

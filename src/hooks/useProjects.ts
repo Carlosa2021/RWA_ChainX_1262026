@@ -1,6 +1,12 @@
 ﻿"use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
+import { getContract } from "thirdweb";
+import { polygon } from "thirdweb/chains";
+import { readContract } from "thirdweb";
+import { client } from "@/lib/client";
+import { PROJECT_REGISTRY_ABI } from "@/lib/abis/ProjectRegistry";
+import { INVESTMENT_CONTROLLER_ABI } from "@/lib/abis/InvestmentController";
 
 export interface ProjectDisplay {
   id: number;
@@ -20,96 +26,164 @@ export interface ProjectDisplay {
   investmentController: string;
 }
 
-// Interface para proyectos almacenados localmente (para futuro uso)
-/*
-interface StoredProject {
-  id: number;
-  name: string;
-  symbol: string;
-  description: string;
-  location: string;
-  totalValue: string;
-  pricePerToken: string;
-  maxTokens: string;
-  expectedReturn: string;
-  duration: string;
-  propertyType: string;
-  metadataURI: string;
-  tokenAddress: string;
-  controllerAddress: string;
-  tokensAvailable: number;
-  tokensTotal: number;
-  apy: string;
-  status: "active" | "funded" | "upcoming";
-  progress: number;
-  image: string;
-  images?: string[];
-  investors?: number;
-}
-*/
-
-// Data estática - Comentada para empezar con plataforma limpia
-// Descomentar solo para modo demo con proyecto de ejemplo
-/*
-const ALZIRA_PROJECT = {
-  id: 1,
-  name: "Inmueble Reyes Católicos Alzira",
-  symbol: "RCA97-001",
-  description: "Apartamento de lujo en pleno centro de Alzira. 6 habitaciones, salón, cocina, 2 baños independientes, patio cubierto central y solarium/terraza. Ubicado en las prestigiosas calles del centro histórico.",
-  location: "Calle Reyes Católicos 97, 1º y 1ªA, Alzira, Valencia C.P. 46600, España",
-  totalValue: "175000",
-  pricePerToken: "1000",
-  maxTokens: "175",
-  expectedReturn: "8",
-  duration: "3",
-  propertyType: "Residencial - Apartamento",
-  metadataURI: "ipfs://QmAlziraProject2025",
-  tokenAddress: "0x1234567890123456789012345678901234567890",
-  controllerAddress: "0x2345678901234567890123456789012345678901",
-  distributorAddress: "0x3456789012345678901234567890123456789012",
-  transactionHash: "0x4567890123456789012345678901234567890123456789012345678901234567",
-  createdAt: "2025-10-15T15:06:54.986Z",
-  status: "active" as const,
-  images: [
-    "/images/projects/alzira-reyes-catolicos/Alzira3.jpg",
-    "/images/projects/alzira-reyes-catolicos/Alzira4.jpg",
-    "/images/projects/alzira-reyes-catolicos/Alzira5.jpg",
-    "/images/projects/alzira-reyes-catolicos/Alzira6.jpg",
-    "/images/projects/alzira-reyes-catolicos/Alzira7.jpg",
-    "/images/projects/alzira-reyes-catolicos/PHOTO-2024-07-25-19-10-43.jpg",
-    "/images/projects/alzira-reyes-catolicos/PHOTO-2024-07-25-19-10-44.jpg",
-    "/images/projects/alzira-reyes-catolicos/PHOTO-2024-07-25-19-10-45.jpg",
-    "/images/projects/alzira-reyes-catolicos/PHOTO-2024-07-25-19-10-47.jpg",
-    "/images/projects/alzira-reyes-catolicos/PHOTO-2024-07-25-19-10-49.jpg",
-    "/images/projects/alzira-reyes-catolicos/Alzira_Planos1.jpg",
-    "/images/projects/alzira-reyes-catolicos/Alzira_Planos2.jpg",
-    "/images/projects/alzira-reyes-catolicos/PHOTO-2024-07-25-19-10-44%20(1).jpg",
-    "/images/projects/alzira-reyes-catolicos/Alzira6%20-%20Kopie.jpg"
-  ]
-};
-*/
+// REGISTRY CONTRACT ADDRESS
+const REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_PROJECT_REGISTRY || "";
 
 export function useProjects() {
-  // PLATAFORMA LIMPIA: Sin proyectos de ejemplo
-  // Los proyectos se crearán desde el admin panel
-  const projects = useMemo(() => {
-    // TODO: Aquí irá la lógica para cargar proyectos desde blockchain
-    // Por ahora, retorna array vacío para empezar limpio
-    return [];
+  const [projects, setProjects] = useState<ProjectDisplay[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  const loadProjects = async () => {
+    if (!REGISTRY_ADDRESS) {
+      console.warn("⚠️  ProjectRegistry address not configured");
+      setProjects([]);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      
+      const contract = getContract({
+        client,
+        chain: polygon,
+        address: REGISTRY_ADDRESS,
+      });
+
+      console.log("🔍 Reading projects from:", REGISTRY_ADDRESS);
+
+      // First check project count
+      const projectCount = await readContract({
+        contract,
+        method: PROJECT_REGISTRY_ABI[1], // getProjectCount
+        params: [],
+      });
+
+      console.log("📊 Total projects in registry:", projectCount.toString());
+
+      if (projectCount === 0n) {
+        console.log("⚠️  No projects registered yet");
+        setProjects([]);
+        setError(null);
+        setIsLoading(false);
+        return;
+      }
+
+      // Read all projects from blockchain
+      const projectsData = await readContract({
+        contract,
+        method: PROJECT_REGISTRY_ABI[0], // getAllProjects
+        params: [],
+      }) as Array<{
+        name: string;
+        securityToken: string;
+        investmentController: string;
+        pricePerToken: bigint;
+        maxCap: bigint;
+        stablecoin: string;
+        metadataURI: string;
+        active: boolean;
+        createdAt: bigint;
+      }>;
+
+      console.log("📊 Loaded projects from blockchain:", projectsData);
+
+      // Transform blockchain data to ProjectDisplay format
+      const transformedProjects: ProjectDisplay[] = await Promise.all(
+        projectsData
+          .filter((p) => p.active)
+          .map(async (p, index: number) => {
+            const totalTokens = Number(p.maxCap);
+            
+            // Query how many tokens have been issued (REAL from blockchain)
+            let tokensSold = 0;
+            let tokensAvailable = totalTokens;
+            
+            try {
+              const controllerContract = getContract({
+                client,
+                chain: polygon,
+                address: p.investmentController as `0x${string}`,
+              });
+              
+              const issued = await readContract({
+                contract: controllerContract,
+                method: "function issued() view returns (uint256)",
+                params: [],
+              }) as bigint;
+              
+              tokensSold = Number(issued);
+              tokensAvailable = totalTokens - tokensSold;
+              
+              console.log(`📊 Project "${p.name}": ${tokensSold}/${totalTokens} tokens sold`);
+            } catch {
+              console.warn("⚠️  Could not fetch issued tokens, using defaults");
+            }
+            
+            const progress = totalTokens > 0 ? Math.round((tokensSold / totalTokens) * 100) : 0;
+            
+            // Determine status based on tokens sold
+            let status: "active" | "funded" | "upcoming" = "active";
+            if (tokensSold >= totalTokens) {
+              status = "funded"; // 100% vendido = FINANCIADO
+            }
+            
+            return {
+              id: index,
+              name: p.name,
+              location: "Real Estate Property - Blockchain Verified",
+              totalValue: totalTokens.toString(),
+              pricePerToken: "1 EUR", // From contract: 100 cents = 1 EUR
+              tokensAvailable,
+              tokensTotal: totalTokens,
+              apy: "8.0",
+              status,
+              progress,
+              investors: 0,
+              image: p.name.includes("Alzira") 
+                ? "/images/projects/alzira-reyes-catolicos/Alzira3.jpg"
+                : `https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80`,
+              images: p.name.includes("Alzira") ? [
+                "/images/projects/alzira-reyes-catolicos/Alzira3.jpg",
+                "/images/projects/alzira-reyes-catolicos/Alzira4.jpg",
+                "/images/projects/alzira-reyes-catolicos/Alzira5.jpg",
+              ] : [
+                `https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80`,
+              ],
+              securityToken: p.securityToken,
+              investmentController: p.investmentController,
+            };
+          })
+      );
+
+      setProjects(transformedProjects);
+      setError(null);
+    } catch (err) {
+      console.error("❌ Error loading projects:", err);
+      setError(err instanceof Error ? err : new Error("Failed to load projects"));
+      setProjects([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadProjects();
   }, []);
 
   return {
     projects,
     projectsRaw: projects,
     projectCount: projects.length,
-    isLoading: false,
-    error: null,
-    refetch: () => Promise.resolve(),
+    isLoading,
+    error,
+    refetch: loadProjects,
   };
 }
 
 export function useProject(projectId: number) {
-  const { projects } = useProjects();
+  const { projects, isLoading, error } = useProjects();
   
   const project = useMemo(() => {
     return projects.find(p => p.id === projectId) || null;
@@ -118,20 +192,38 @@ export function useProject(projectId: number) {
   return {
     project,
     projectRaw: project,
-    isLoading: false,
-    error: null,
+    isLoading,
+    error,
   };
 }
 
 export function useProjectStats() {
-  // PLATAFORMA LIMPIA: Stats en 0 hasta que se creen proyectos
-  const stats = useMemo(() => ({
-    totalProjects: 0,
-    activeProjects: 0,
-    totalValueLocked: 0,
-    averageAPY: 0,
-    totalInvestors: 0,
-  }), []);
+  const { projects, isLoading } = useProjects();
+  
+  const stats = useMemo(() => {
+    if (isLoading || projects.length === 0) {
+      return {
+        totalProjects: 0,
+        activeProjects: 0,
+        totalValueLocked: 0,
+        averageAPY: 0,
+        totalInvestors: 0,
+      };
+    }
+
+    const activeProjects = projects.filter(p => p.status === "active");
+    const totalValue = projects.reduce((sum, p) => sum + Number(p.totalValue), 0);
+    const avgAPY = projects.reduce((sum, p) => sum + Number(p.apy), 0) / projects.length;
+    const totalInvestors = projects.reduce((sum, p) => sum + p.investors, 0);
+
+    return {
+      totalProjects: projects.length,
+      activeProjects: activeProjects.length,
+      totalValueLocked: totalValue,
+      averageAPY: Number(avgAPY.toFixed(1)),
+      totalInvestors,
+    };
+  }, [projects, isLoading]);
 
   return stats;
 }

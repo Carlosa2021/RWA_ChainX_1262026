@@ -6,4 +6,5 @@ export * as projectTokenFactorySol from "./ProjectTokenFactory.sol";
 export * as erc3643 from "./erc3643";
 export { MockSecurityToken__factory } from "./MockSecurityToken__factory";
 export { PayoutDistributor__factory } from "./PayoutDistributor__factory";
+export { ProductionToken__factory } from "./ProductionToken__factory";
 export { ProjectRegistry__factory } from "./ProjectRegistry__factory";

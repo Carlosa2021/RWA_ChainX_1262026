@@ -13,8 +13,8 @@ export const CONTRACTS = {
 
 // App configuration
 export const APP_CONFIG = {
-  name: "RWA InmoToken",
-  description: "Tokenización de inmuebles con ERC-3643",
-  url: "https://rwa-inmotoken.com",
+  name: "ChainX RWA Platform",
+  description: "Tokenización de activos del mundo real con ERC-3643",
+  url: "https://chainx.ch",
   logo: "/logo.png",
 } as const;

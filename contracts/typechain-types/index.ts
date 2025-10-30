@@ -46,6 +46,8 @@ export type { MockSecurityToken } from "./contracts/MockSecurityToken";
 export { MockSecurityToken__factory } from "./factories/contracts/MockSecurityToken__factory";
 export type { PayoutDistributor } from "./contracts/PayoutDistributor";
 export { PayoutDistributor__factory } from "./factories/contracts/PayoutDistributor__factory";
+export type { ProductionToken } from "./contracts/ProductionToken";
+export { ProductionToken__factory } from "./factories/contracts/ProductionToken__factory";
 export type { ProjectRegistry } from "./contracts/ProjectRegistry";
 export { ProjectRegistry__factory } from "./factories/contracts/ProjectRegistry__factory";
 export type { IProjectRegistry } from "./contracts/ProjectTokenFactory.sol/IProjectRegistry";

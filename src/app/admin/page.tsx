@@ -165,10 +165,11 @@ export default function AdminPage() {
 
   // Efectos
   useEffect(() => {
-    if (!isOwner) {
-      router.push("/");
-      return;
-    }
+    // 🎭 DEMO MODE: Comentado para permitir acceso completo sin verificación
+    // if (!isOwner) {
+    //   router.push("/");
+    //   return;
+    // }
     
     if (activeTab === 'kyc') {
       fetchSubmissions();

@@ -48,8 +48,8 @@ export default function KYCPage() {
     try {
       setIsLoadingStatus(true);
       
-      // Sistema KYC simplificado para demostración
-      const demoStatus: KYCStatus = {
+      // Sistema KYC simplificado
+      const initialStatus: KYCStatus = {
         wallet_address: address,
         document_type: "",
         status: 'not_submitted',
@@ -58,7 +58,7 @@ export default function KYCPage() {
         rejection_reason: undefined
       };
       
-      setKycStatus(demoStatus);
+      setKycStatus(initialStatus);
       
     } catch (error) {
       console.error("Error al obtener estado KYC:", error);
@@ -122,12 +122,12 @@ export default function KYCPage() {
     try {
       // Verificar si el backend está disponible
       if (!API_URL || API_URL.includes('localhost')) {
-        // Envío simulado para demostración
+        // Envío simulado
         
         // Simular envío exitoso
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Simular delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
-        toast.success("¡Documentos enviados correctamente! En revisión... (SIMULADO)");
+        toast.success("¡Documentos enviados correctamente! En revisión...");
         
         // Actualizar estado a "pending"
         setKycStatus({

@@ -22,7 +22,7 @@ const realTransactions = [
   { 
     id: 1, 
     type: "invest" as const, 
-    project: "Test Campaign", 
+    project: "Proyecto Alzira", 
     amount: 1.16, 
     amountToken: 1,
     date: "2025-10-12", 

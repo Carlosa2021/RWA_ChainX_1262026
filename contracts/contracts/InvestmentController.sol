@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-interface IERC20 { function transferFrom(address,address,uint256) external returns (bool); }
+interface IERC20 { 
+  function transferFrom(address from, address to, uint256 amount) external returns (bool);
+}
 interface IERC3643 { function issue(address to, uint256 amount) external; function decimals() external view returns (uint8); }
 interface AggregatorV3Interface {
   function latestRoundData() external view returns (uint80, int256 answer, uint256, uint256, uint80);
@@ -57,9 +59,8 @@ contract InvestmentController {
     uint256 maxAllowed = (need * (10000 + maxSlippageBps)) / 10000;
     require(maxUsdcExpected >= need && maxUsdcExpected <= maxAllowed, "slippage");
 
-    (bool ok, bytes memory data) =
-      usdc.call(abi.encodeWithSelector(IERC20.transferFrom.selector, msg.sender, treasury, need));
-    require(ok && (data.length == 0 || abi.decode(data,(bool))), "USDC transfer failed");
+    // Transfer USDC from investor to treasury
+    require(IERC20(usdc).transferFrom(msg.sender, treasury, need), "USDC transfer failed");
 
     IERC3643(token3643).issue(msg.sender, tokenAmount);
     issued += tokenAmount;

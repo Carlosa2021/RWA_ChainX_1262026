@@ -7,7 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { LicenseProvider } from "@/contexts/LicenseContext";
 import { EnterpriseProvider } from "@/components/EnterpriseProvider";
 import { Toaster } from "sonner";
-import EnvDebug from "@/components/EnvDebug";
+// import EnvDebug from "@/components/EnvDebug"; // Oculto para demo
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,7 +53,7 @@ export default function RootLayout({
                 <LicenseProvider>
                   <Toaster position="top-right" richColors closeButton />
                   {children}
-                  <EnvDebug />
+                  {/* <EnvDebug /> */}
                 </LicenseProvider>
               </EnterpriseProvider>
             </AuthProvider>

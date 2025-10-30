@@ -1,0 +1,14 @@
+{
+  "network": "polygon-mainnet",
+  "chainId": 137,
+  "timestamp": "2025-10-29T17:53:41.955Z",
+  "deployer": "0xA62FeC1444118BD0e80c6cdA6a4873144ECe21ca",
+  "contracts": {
+    "projectRegistry": "0xD0A787C10E1050cB994297206A5B251C6Ca11861",
+    "demoToken": "0x1161B090E6f221c921b8dbec7d2Fb7551a518570",
+    "investmentController": "0x9501a2FaAC3Fdad5E051917739e0a259AcA9b3F0",
+    "usdc": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+    "eurUsdFeed": "0x73366Fe0AA0Ded304479862808e02506FE556a98",
+    "treasury": "0xA62FeC1444118BD0e80c6cdA6a4873144ECe21ca"
+  }
+}

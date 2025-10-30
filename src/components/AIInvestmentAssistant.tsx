@@ -69,7 +69,7 @@ export default function AIInvestmentAssistant({
     setError(null);
 
     try {
-      // TODO: Integrar con AI avanzado cuando tengamos client ID real
+      // AI integration placeholder
       const analysis = await simulateAIAnalysis(property);
       setAdvice(analysis);
     } catch (err) {

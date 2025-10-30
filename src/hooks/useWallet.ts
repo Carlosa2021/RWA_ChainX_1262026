@@ -28,11 +28,17 @@ const PROJECTS = [
   {
     name: "Apartamento Moderno Madrid Centro",
     symbol: "RMAD",
-    tokenAddress: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45", // Tu token real
+    tokenAddress: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45",
     priceEur: 500,
     image: "🏢"
+  },
+  {
+    name: "Proyecto Alzira - Edificio Residencial",
+    symbol: "RET",
+    tokenAddress: "0x1c807Bd375a79249F34DC8EBfB6B426B8ffe4ca4", // Token desplegado Oct 29
+    priceEur: 1,
+    image: "🏠"
   }
-  // Agregar más tokens aquí cuando los despliegues realmente
 ];
 
 interface TokenBalance {
@@ -117,9 +123,13 @@ export function useWallet(): WalletData {
             const balance = await tokenContract.balanceOf(address);
             const amount = Number(balance); // Tokens son indivisibles (sin decimales)
             
+            console.log(`🔍 ${project.symbol} balance:`, balance.toString(), "→", amount);
+            
             if (amount > 0) {
               const valueEur = amount * project.priceEur;
               const valueUsd = valueEur * eurUsdRate;
+              
+              console.log(`✅ ${project.symbol}: ${amount} tokens = ${valueEur} EUR = ${valueUsd.toFixed(2)} USD`);
               
               tokenBalances.push({
                 name: project.name,
@@ -132,7 +142,7 @@ export function useWallet(): WalletData {
               });
             }
           } catch (err) {
-            console.error(`Error fetching balance for ${project.symbol}:`, err);
+            console.error(`❌ Error fetching balance for ${project.symbol}:`, err);
           }
         }
 

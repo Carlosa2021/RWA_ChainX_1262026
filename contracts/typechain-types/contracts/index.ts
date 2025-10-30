@@ -9,4 +9,5 @@ import type * as erc3643 from "./erc3643";
 export type { erc3643 };
 export type { MockSecurityToken } from "./MockSecurityToken";
 export type { PayoutDistributor } from "./PayoutDistributor";
+export type { ProductionToken } from "./ProductionToken";
 export type { ProjectRegistry } from "./ProjectRegistry";

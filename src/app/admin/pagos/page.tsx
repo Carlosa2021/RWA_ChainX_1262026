@@ -43,7 +43,8 @@ export default function PagosAdmin() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!isOwner) return;
+    // 🎭 DEMO MODE: Permitir carga sin verificación de owner
+    // if (!isOwner) return;
     
     // Mock data para el inmueble de Reyes Católicos 97, Alzira
     const alzirapayoutSchedule: PayoutSchedule = {
@@ -118,21 +119,22 @@ export default function PagosAdmin() {
     }
   };
 
-  if (!isOwner) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Acceso Denegado
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Solo el propietario puede acceder a la gestión de pagos.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // 🎭 DEMO MODE: Acceso completo sin restricciones
+  // if (!isOwner) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen">
+  //       <div className="text-center">
+  //         <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+  //         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+  //           Acceso Denegado
+  //         </h1>
+  //         <p className="text-gray-600 dark:text-gray-400">
+  //           Solo el propietario puede acceder a la gestión de pagos.
+  //         </p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">

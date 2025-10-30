@@ -98,6 +98,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.PayoutDistributor__factory>;
     getContractFactory(
+      name: "ProductionToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ProductionToken__factory>;
+    getContractFactory(
       name: "ProjectRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ProjectRegistry__factory>;
@@ -216,6 +220,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.PayoutDistributor>;
     getContractAt(
+      name: "ProductionToken",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ProductionToken>;
+    getContractAt(
       name: "ProjectRegistry",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -316,6 +325,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.PayoutDistributor>;
     deployContract(
+      name: "ProductionToken",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ProductionToken>;
+    deployContract(
       name: "ProjectRegistry",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.ProjectRegistry>;
@@ -433,6 +446,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.PayoutDistributor>;
+    deployContract(
+      name: "ProductionToken",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ProductionToken>;
     deployContract(
       name: "ProjectRegistry",
       args: any[],

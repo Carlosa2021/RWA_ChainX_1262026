@@ -11,17 +11,16 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const OWNER_ADDRESS = process.env.NEXT_PUBLIC_OWNER_ADDRESS?.toLowerCase();
+// TU dirección de owner
+const OWNER_ADDRESS = "0xA62FeC1444118BD0e80c6cdA6a4873144ECe21ca".toLowerCase();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const account = useActiveAccount();
   const address = account?.address?.toLowerCase();
   
-  // DEMO MODE: Habilitar acceso completo para showcase
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
-  
-  const isOwner = isDemoMode ? true : (address === OWNER_ADDRESS);
-  const isKYCVerified = isDemoMode ? true : false; // TODO: Check from IdentityRegistry
+  // Solo el OWNER puede hacer todo sin restricciones
+  const isOwner = address === OWNER_ADDRESS;
+  const isKYCVerified = isOwner; // Solo owner está verificado
 
   return (
     <AuthContext.Provider value={{ isOwner, isKYCVerified, address }}>

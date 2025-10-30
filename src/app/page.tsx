@@ -8,8 +8,8 @@ import { Header } from "@/components/Header";
 import { StatsCard } from "@/components/StatsCard";
 import { SimplePropertyCard } from "@/components/SimplePropertyCard";
 import { InvestmentModal } from "@/components/InvestmentModal";
-import { AIShowcaseBanner } from "@/components/AIShowcaseBanner";
-import SimplePlanDisplay from "@/components/SimplePlanDisplay";
+// import { AIShowcaseBanner } from "@/components/AIShowcaseBanner"; // Removed - intrusive
+// import SimplePlanDisplay from "@/components/SimplePlanDisplay";
 import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
@@ -21,9 +21,6 @@ import {
   TrendingUp, 
   Wallet, 
   Users,
-  Sparkles,
-  ArrowRight,
-  Shield,
   Loader2
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -31,8 +28,6 @@ import { useState, useEffect } from "react";
 export default function Home() {
   const { isOwner, isKYCVerified } = useAuth();
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
-  const license = useLicense();
-  const planConfig = usePlanConfig();
   
   // Obtener proyectos reales desde blockchain
   const { projects, isLoading: loadingProjects, refetch } = useProjects();
@@ -52,79 +47,22 @@ export default function Home() {
   }, [refetch]);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="flex min-h-screen bg-white dark:bg-black">
       <Sidebar />
       
       <div className="flex-1">
         <SimpleHeader />
         <Header />
         
-        {/* AI Showcase Banner */}
-        <AIShowcaseBanner />
-        
-        {/* Enterprise Status Banner */}
-        {planConfig.type === 'ENTERPRISE' && (
-          <div className="mx-8 mb-6 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl p-4">
-            <div className="flex items-center gap-3 text-white">
-              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="font-bold">🚀 ENTERPRISE MODE ACTIVE</span>
-              <span className="text-purple-200">|</span>
-              <span className="text-sm">All features unlocked • Unlimited projects • Full API access</span>
-            </div>
-          </div>
-        )}
-        
-        <main className="p-8">
-          {/* Plan Display - Sistema de Licencias */}
-          <div className="mb-8">
-            <SimplePlanDisplay />
-          </div>
-          
-          {/* Hero Section */}
-          <div className="mb-8 bg-gradient-to-br from-orange-500 via-pink-500 to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-black/10 rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="w-6 h-6" />
-                <span className="text-sm font-semibold uppercase tracking-wider">
-                  {isOwner ? "Panel de Administración" : "Bienvenido a ChainX"}
-                </span>
-              </div>
-              <h1 className="text-5xl font-bold mb-3">
-                {isOwner ? "Gestiona Tu Plataforma RWA" : "Invierte en Inmuebles Tokenizados"}
-              </h1>
-              <p className="text-xl text-white/90 mb-6 max-w-2xl">
-                {isOwner 
-                  ? "Control total sobre proyectos, KYC de inversores y compliance MiCA. Tu plataforma, tus reglas."
-                  : "La plataforma más innovadora de inversión inmobiliaria. ERC-3643 + MiCA compliance. Rendimientos del 10% anual."
-                }
-              </p>
-              
-              {!isKYCVerified && !isOwner && (
-                <div className="bg-yellow-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-4 mb-6 flex items-center gap-3">
-                  <Shield className="w-6 h-6" />
-                  <div>
-                    <p className="font-semibold">Verificación KYC Requerida</p>
-                    <p className="text-sm text-white/80">Completa tu KYC para poder invertir (MiCA compliance)</p>
-                  </div>
-                </div>
-              )}
-              
-              <div className="flex items-center gap-4">
-                <button className="bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:shadow-2xl transition-all flex items-center gap-2">
-                  <Sparkles className="w-5 h-5" />
-                  {isOwner ? "Crear Proyecto" : "Explorar Propiedades"}
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-                {isOwner && (
-                  <button className="bg-white/20 backdrop-blur-sm text-white px-8 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all border border-white/30">
-                    Ver Inversores
-                  </button>
-                )}
-              </div>
-            </div>
+        <main className="px-6 py-8 max-w-7xl mx-auto">
+          {/* Hero Section - Estilo Apple minimalista */}
+          <div className="mb-12 text-center">
+            <h1 className="text-6xl font-semibold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Invierte en Real Estate
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
+              Tokenización profesional de activos inmobiliarios. Seguro, transparente y regulado.
+            </p>
           </div>
 
           {/* Stats Grid */}
@@ -239,8 +177,13 @@ export default function Home() {
         <InvestmentModal
           projectName={currentProject.name}
           pricePerToken={currentProject.pricePerToken}
+          tokenAddress={currentProject.securityToken}
           isOpen={selectedProject !== null}
           onClose={() => setSelectedProject(null)}
+          onSuccess={() => {
+            refetch(); // Refresh projects from blockchain
+            setSelectedProject(null);
+          }}
           isKYCVerified={isKYCVerified}
         />
       )}

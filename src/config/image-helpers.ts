@@ -8,7 +8,7 @@ export function getProjectImages(projectName: string): string[] {
   switch (projectName) {
     case "Inmueble Reyes Católicos Alzira":
       // Por ahora usar imágenes temporales hasta que se suban las reales
-      // TODO: Cambiar a SAMPLE_PROJECT_IMAGES.current cuando estén las fotos reales
+      // Use sample images for now
       return SAMPLE_TEMP_IMAGES;
     
     default:

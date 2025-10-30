@@ -56,37 +56,40 @@ export function SimplePropertyCard({
 
   return (
     <>
-      {/* Tarjeta Principal */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-shadow duration-300">
+      {/* Tarjeta Principal - Estilo Apple/Thirdweb */}
+      <div className="group relative bg-white dark:bg-gray-900 rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-purple-500 dark:hover:border-purple-500 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10">
         
         {/* Sección de Imagen */}
-        <div className="relative h-64 bg-gray-100 dark:bg-gray-700">
+        <div className="relative h-72 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
           <img
             src={propertyImages[currentImageIndex]}
             alt={`${name} - Imagen ${currentImageIndex + 1}`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
           
-          {/* Badge de Estado */}
+          {/* Overlay gradiente sutil */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          
+          {/* Badge de Estado - Minimalista */}
           <div className="absolute top-4 left-4">
             {isFullyFunded ? (
-              <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+              <div className="backdrop-blur-xl bg-green-500/90 text-white px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5 shadow-lg">
                 <CheckCircle className="w-4 h-4" />
                 Financiado
               </div>
             ) : (
-              <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <div className="backdrop-blur-xl bg-purple-500/90 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow-lg">
                 Activo
               </div>
             )}
           </div>
 
-          {/* Controles de Carrusel */}
+          {/* Controles de Carrusel - Glassmorphism */}
           {propertyImages.length > 1 && (
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 backdrop-blur-xl bg-white/20 hover:bg-white/30 text-white p-2.5 rounded-full transition-all border border-white/20"
                 aria-label="Imagen anterior"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -94,7 +97,7 @@ export function SimplePropertyCard({
               
               <button
                 onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 backdrop-blur-xl bg-white/20 hover:bg-white/30 text-white p-2.5 rounded-full transition-all border border-white/20"
                 aria-label="Siguiente imagen"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -125,68 +128,68 @@ export function SimplePropertyCard({
           </button>
         </div>
 
-        {/* Contenido */}
+        {/* Contenido - Tipografía Apple */}
         <div className="p-6">
           {/* Título y Ubicación */}
-          <div className="mb-4">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+          <div className="mb-5">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
               {name}
             </h3>
-            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
               <MapPin className="w-4 h-4" />
               <span className="text-sm line-clamp-1">{location}</span>
             </div>
           </div>
 
-          {/* Estadísticas */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Valor Total</p>
-              <p className="text-lg font-bold text-gray-900 dark:text-white">{totalValue}</p>
+          {/* Estadísticas - Grid minimalista */}
+          <div className="grid grid-cols-2 gap-4 mb-5">
+            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4">
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Valor Total</p>
+              <p className="text-xl font-semibold text-gray-900 dark:text-white">{totalValue}</p>
             </div>
-            <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Precio Token</p>
-              <p className="text-lg font-bold text-gray-900 dark:text-white">{pricePerToken}</p>
+            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4">
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Precio Token</p>
+              <p className="text-xl font-semibold text-gray-900 dark:text-white">{pricePerToken}</p>
             </div>
           </div>
 
-          {/* Barra de Progreso */}
-          <div className="mb-4">
+          {/* Barra de Progreso - Estilo moderno */}
+          <div className="mb-5">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-gray-600 dark:text-gray-400 font-medium">
                 {progress.toFixed(1)}% completado
               </span>
               <span className="font-semibold text-gray-900 dark:text-white">
                 {tokensAvailable}/{tokensTotal} tokens
               </span>
             </div>
-            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-orange-500 to-pink-500 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 transition-all duration-500 shadow-lg"
                 style={{ width: `${Math.min(progress, 100)}%` }}
               />
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+          {/* Footer - Limpio */}
+          <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
+              <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
                 <TrendingUp className="w-4 h-4" />
-                <span className="font-semibold">{apy}</span>
+                <span className="font-semibold text-sm">{apy}</span>
               </div>
-              <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+              <div className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
                 <Users className="w-4 h-4" />
-                <span className="text-sm">{investors}</span>
+                <span className="text-sm font-medium">{investors}</span>
               </div>
             </div>
             <button
               onClick={onInvest}
               disabled={isFullyFunded}
-              className={`px-6 py-2 rounded-lg font-semibold text-sm transition-all ${
+              className={`px-6 py-2.5 rounded-full font-semibold text-sm transition-all ${
                 isFullyFunded
-                  ? "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
-                  : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:scale-105"
+                  ? "bg-gray-200 dark:bg-gray-800 text-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105 active:scale-95"
               }`}
             >
               {isFullyFunded ? "Completo" : "Invertir"}
@@ -195,14 +198,14 @@ export function SimplePropertyCard({
         </div>
       </div>
 
-      {/* Modal Simple */}
+      {/* Modal Glassmorphism */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-          <div className="relative max-w-4xl max-h-full">
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="relative max-w-6xl max-h-full">
             <img
               src={propertyImages[currentImageIndex]}
               alt={`${name} - Imagen ${currentImageIndex + 1}`}
-              className="max-w-full max-h-full object-contain"
+              className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl"
             />
             
             {/* Botón Cerrar */}
