@@ -118,26 +118,29 @@ export function InvestmentModal({
       console.log("💵 USDC necesario:", need.toString());
       console.log("💸 USDC máximo (con slippage):", maxUsdc.toString());
       
+      // Aprobar cantidad FIJA grande para evitar problemas con fluctuaciones del oráculo
+      // Aprobamos 10 USDC (suficiente para cualquier inversión razonable)
+      const fixedApprovalAmount = 10_000000n; // 10 USDC con 6 decimales
+      
       // Verificar allowance actual
       const currentAllowance = await getUSDCAllowance(account.address);
       console.log("🔍 Allowance actual:", currentAllowance.toString(), "USDC (6 decimales)");
-      console.log("🔍 Necesario:", maxUsdc.toString(), "USDC (6 decimales)");
+      console.log("🔍 Aprobación fija necesaria:", fixedApprovalAmount.toString(), "USDC (10 USDC)");
       
-      // Solo aprobar si el allowance es insuficiente
-      if (currentAllowance < maxUsdc) {
-        console.log("⚠️ Allowance insuficiente, aprobando...");
+      // Solo aprobar si el allowance es menor que la cantidad fija
+      if (currentAllowance < fixedApprovalAmount) {
+        console.log("⚠️ Allowance insuficiente, aprobando 10 USDC...");
         setStep("approve");
-        const txReceipt = await sendTx(txApproveUSDC(maxUsdc));
+        const txReceipt = await sendTx(txApproveUSDC(fixedApprovalAmount));
         console.log("✅ Approve enviado, esperando confirmación en Polygon...");
         console.log("📝 TX Hash:", txReceipt.transactionHash);
         
         // Esperar 15 segundos para ASEGURAR confirmación en Polygon
-        // Polygon tarda ~2-3 segundos por bloque, esperamos ~5-6 bloques
         console.log("⏳ Esperando 15 segundos para confirmación total...");
         await new Promise(resolve => setTimeout(resolve, 15000));
         console.log("✅ Approve 100% confirmado en blockchain");
       } else {
-        console.log("✅ Ya hay suficiente allowance, omitiendo approve");
+        console.log("✅ Ya hay suficiente allowance (10 USDC), omitiendo approve");
       }
       
       // Step 2: Invest
