@@ -1,5 +1,5 @@
 {
-  "name": "rwa-inmotoken-api",
+  "name": "chainx-rwa-api",
   "version": "1.0.0",
   "description": "Backend API for KYC management",
   "main": "server.js",

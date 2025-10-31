@@ -4,13 +4,13 @@
 
 ### 1️⃣ Inicializar Git (si no está inicializado)
 ```powershell
-cd c:\Users\User\Desktop\RWA-InmoToken
+cd <PROJECT_ROOT>
 git init
 ```
 
 ### 2️⃣ Añadir Remote (tu repositorio de GitHub)
 ```powershell
-git remote add origin https://github.com/Carlosa2021/RWA_InmoToken.git
+git remote add origin https://github.com/Carlosa2021/RWA_ChainX.git
 ```
 
 ### 3️⃣ Verificar archivos a subir
@@ -25,7 +25,7 @@ git add .
 
 ### 5️⃣ Commit con mensaje descriptivo
 ```powershell
-git commit -m "🎉 Initial commit: RWA InmoToken Platform v1.0
+git commit -m "🎉 Initial commit: ChainX® RWA Platform v1.0
 
 ✨ Features:
 - ERC-3643 compliant security tokens

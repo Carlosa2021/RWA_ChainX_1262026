@@ -363,7 +363,7 @@ Mantén un Excel/Notion con:
 
 1. **Probar el proceso completo:**
    ```powershell
-   cd C:\Users\User\Desktop\RWA-InmoToken\scripts\deploy
+   cd <PROJECT_ROOT>\scripts\deploy
    .\demo-onboarding-cliente.ps1
    ```
 

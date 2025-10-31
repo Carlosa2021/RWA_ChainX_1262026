@@ -11,7 +11,7 @@ https://vercel.com/dashboard
 ```
 - Click "Add New..." → Project
 - Import Git Repository
-- Buscar: "RWA_InmoToken" 
+- Buscar: "RWA_ChainX" 
 - Click Import
 ```
 
@@ -44,7 +44,7 @@ Value: 0x1234567890abcdef1234567890abcdef12345678
 ```bash
 1. Ir a: https://thirdweb.com/dashboard
 2. Sign Up (con Google/GitHub es más rápido)
-3. Create Project → "RWA-InmoToken"
+3. Create Project → "ChainX-RWA"
 4. Dashboard → Settings → API Keys
 5. Copiar "Client ID"
 ```

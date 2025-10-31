@@ -75,7 +75,7 @@ VERIFICACIONES:
 
 ### 2.1 Ejecutar Script de Setup
 
-Abre PowerShell en: `C:\Users\User\Desktop\RWA-InmoToken\scripts\deploy`
+Abre PowerShell en: `<PROJECT_ROOT>\scripts\deploy`
 
 ```powershell
 # Ejemplo con cliente "Inmobiliaria Madrid"
@@ -148,7 +148,7 @@ git push -u origin main
 
 ```powershell
 # Verificar que tienes el .env en contracts con tu PRIVATE_KEY
-cd C:\Users\User\Desktop\RWA-InmoToken\contracts
+cd <PROJECT_ROOT>\contracts
 cat .env
 
 # Debe contener:
@@ -159,7 +159,7 @@ cat .env
 ### 3.2 Ejecutar Deployment de Contratos
 
 ```powershell
-cd C:\Users\User\Desktop\RWA-InmoToken\scripts\deploy
+cd <PROJECT_ROOT>\scripts\deploy
 
 # Deploy contratos para el cliente
 .\deploy-contracts-starter.ps1 `
@@ -477,8 +477,8 @@ Después del 2º-3º cliente: **< 1 hora por cliente**
 ## 📚 RECURSOS ADICIONALES
 
 - **Template base**: `C:\Users\User\Desktop\chainx-rwa-starter-template`
-- **Scripts**: `C:\Users\User\Desktop\RWA-InmoToken\scripts\deploy`
-- **Contratos**: `C:\Users\User\Desktop\RWA-InmoToken\contracts`
+- **Scripts**: `<PROJECT_ROOT>\scripts\deploy`
+- **Contratos**: `<PROJECT_ROOT>\contracts`
 - **Docs Thirdweb**: https://portal.thirdweb.com
 - **Docs Vercel**: https://vercel.com/docs
 - **PolygonScan**: https://polygonscan.com

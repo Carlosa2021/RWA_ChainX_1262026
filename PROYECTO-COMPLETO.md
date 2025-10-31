@@ -220,9 +220,9 @@ Se ha desarrollado una **plataforma completa y disruptiva de tokenización inmob
 
 Para consultas sobre implementación enterprise, auditorías o partnership:
 
-**Email**: development@rwa-inmotoken.com  
-**Web**: [rwa-inmotoken.com](https://rwa-inmotoken.com)  
-**GitHub**: [github.com/rwa-inmotoken](https://github.com/rwa-inmotoken)
+**Email**: business@chainx.ch  
+**Web**: [chainx.ch](https://chainx.ch)  
+**GitHub**: [github.com/Carlosa2021/RWA_ChainX](https://github.com/Carlosa2021/RWA_ChainX)
 
 ---
 

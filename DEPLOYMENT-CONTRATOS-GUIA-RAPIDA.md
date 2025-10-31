@@ -36,7 +36,7 @@
 ### **PASO 2: Ejecutar Script de Deployment**
 
 ```powershell
-cd C:\Users\User\Desktop\RWA-InmoToken\scripts\deploy
+cd <PROJECT_ROOT>\scripts\deploy
 
 .\deploy-contracts-starter.ps1 `
   -ClientName "Nombre del Cliente" `
@@ -219,7 +219,7 @@ Antes de deployar para un cliente:
 ## 🔥 COMANDO RÁPIDO PARA COPIAR
 
 ```powershell
-cd C:\Users\User\Desktop\RWA-InmoToken\scripts\deploy; .\deploy-contracts-starter.ps1 -ClientName "NOMBRE" -OwnerWallet "0xWALLET" -Network "polygon"
+cd <PROJECT_ROOT>\scripts\deploy; .\deploy-contracts-starter.ps1 -ClientName "NOMBRE" -OwnerWallet "0xWALLET" -Network "polygon"
 ```
 
 Reemplazar:

@@ -1,4 +1,4 @@
-# 🚀 RWA InmoToken - AI + Payments Integration
+# 🚀 ChainX® RWA Platform - AI + Payments Integration
 
 ## 🎯 Nueva Funcionalidad: AI Showcase
 

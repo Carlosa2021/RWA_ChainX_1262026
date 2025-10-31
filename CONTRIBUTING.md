@@ -1,4 +1,4 @@
-# Contributing to ChainX® RWA InmoToken Platform
+# Contributing to ChainX® RWA Platform
 
 Thank you for your interest in contributing! 🎉
 
@@ -44,8 +44,8 @@ By contributing, you agree that:
 
 ```bash
 # Fork on GitHub, then:
-git clone https://github.com/YOUR_USERNAME/RWA_InmoToken.git
-cd RWA_InmoToken
+git clone https://github.com/YOUR_USERNAME/RWA_ChainX.git
+cd RWA_ChainX
 npm install
 ```
 

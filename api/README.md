@@ -1,4 +1,4 @@
-# 🔐 API KYC - RWA InmoToken
+# 🔐 API KYC - ChainX® RWA Platform
 
 Backend API para gestión de KYC (Know Your Customer)
 

@@ -1,4 +1,4 @@
-# 🚀 GUÍA DE DEPLOYMENT - RWA INMOTOKEN
+# 🚀 DEPLOYMENT GUIDE - ChainX® RWA Platform
 
 ## 📋 Pre-requisitos
 
@@ -19,7 +19,7 @@
 
 ### PASO 1: Preparar Git
 ```bash
-cd C:\Users\User\Desktop\RWA-InmoToken
+cd <PROJECT_ROOT>
 
 # Verificar archivos
 git status
@@ -64,7 +64,7 @@ git push origin main
 # En Vercel dashboard:
 # 1. New Project
 # 2. Import from GitHub
-# 3. Seleccionar: RWA_InmoToken
+# 3. Seleccionar: RWA_ChainX
 # 4. Deploy (primera vez fallará por falta de env vars)
 ```
 

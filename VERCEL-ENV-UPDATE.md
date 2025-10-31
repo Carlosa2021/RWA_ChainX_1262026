@@ -62,7 +62,7 @@ Dashboard: 0 proyectos (limpio)
 Si quieres volver a registrar el proyecto Alzira:
 
 ```bash
-cd C:\Users\User\Desktop\RWA-InmoToken\contracts
+cd <PROJECT_ROOT>\contracts
 npx hardhat run scripts/register-alzira.ts --network polygon
 ```
 

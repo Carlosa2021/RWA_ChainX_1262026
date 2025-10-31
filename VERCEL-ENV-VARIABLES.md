@@ -73,7 +73,7 @@ Environments: ☑ Production ☑ Preview ☑ Development
 2. Haz clic en **"Redeploy"**
 3. Espera 2-3 minutos para que complete el build
 4. ✅ El deployment debería completarse exitosamente
-5. 🌐 Tu dApp estará disponible en: **https://dapp.inmotoken.es**
+5. 🌐 Tu dApp estará disponible en: **https://dapp.chainx.ch**
 
 ---
 

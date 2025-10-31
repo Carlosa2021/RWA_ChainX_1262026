@@ -25,7 +25,7 @@
 ### 3. package.json (root) ✅
 - **Ubicación**: `/package.json`
 - **Actualizado con**:
-  - `name`: "chainx-rwa-inmotoken"
+  - `name`: "chainx-rwa-platform"
   - `license`: "SEE LICENSE IN LICENSE"
   - `author`: Carlos Bernal con datos completos
   - `description`: Descripción del proyecto
@@ -202,4 +202,4 @@ Tu proyecto ahora tiene:
 
 **Documento generado**: 14 de octubre de 2025  
 **Por**: GitHub Copilot para Carlos Bernal  
-**Proyecto**: ChainX® RWA-InmoToken Platform
+**Proyecto**: ChainX® RWA Platform
