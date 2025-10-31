@@ -2,18 +2,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "redirects": [
-    {
-      "source": "/demo",
-      "destination": "/miami",
-      "permanent": true
-    },
-    {
-      "source": "/presentation",
-      "destination": "/miami", 
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",

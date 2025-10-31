@@ -32,10 +32,10 @@ ChainX® RWA Platform is a **complete blockchain infrastructure** specifically d
 
 ## 🎯 **CURRENT LIVE DEPLOYMENT**
 
-🌐 **Live Demo**: [chainx-rwa.vercel.app](https://chainx-rwa.vercel.app)  
-🎪 **Miami Presentation**: [chainx-rwa.vercel.app/miami](https://chainx-rwa.vercel.app/miami)  
-🔧 **Admin Panel**: Enterprise features fully enabled  
-📊 **Status**: PRODUCTION READY with all services active
+🌐 **Production Platform**: [chainx-rwa.vercel.app](https://chainx-rwa.vercel.app)  
+🎪 **Client Demo**: [chainx-rwa.vercel.app/miami](https://chainx-rwa.vercel.app/miami)  
+🔧 **Admin Panel**: Enterprise features enabled for authorized wallets  
+📊 **Status**: PRODUCTION READY - Polygon Mainnet
 
 ---
 
@@ -43,10 +43,10 @@ ChainX® RWA Platform is a **complete blockchain infrastructure** specifically d
 
 ### 🎯 **Option 1: SaaS Licensing**
 ```
-STARTER    →  €49/month      (Testing & Small Projects)
-PRO        →  €499/month     (Medium Operations)  
-ENTERPRISE →  €4,999/month   (Unlimited Everything)
-CUSTOM     →  €15K-50K/month (White Label + Dedicated)
+STARTER    →  €49/month      (Small Projects & Initial Setup)
+PRO        →  €499/month     (Medium Scale Operations)  
+ENTERPRISE →  €4,999/month   (Unlimited Features & Support)
+CUSTOM     →  €15K-50K/month (White Label + Dedicated Infrastructure)
 ```
 
 ### 🎯 **Option 2: Complete Acquisition**
@@ -74,11 +74,11 @@ Shared:     Revenue & Growth
 
 **⚠️ NEVER COMMIT PRIVATE KEYS OR SENSITIVE DATA ⚠️**
 
-Before using this repository:
-1. Copy `.env.example` to `.env`
-2. Fill with your actual values
-3. NEVER commit `.env` file
-4. Use test wallets only for development
+Before deploying:
+1. Copy `.env.example` to `.env.local`
+2. Configure with your production values
+3. NEVER commit `.env.local` file
+4. Use secure wallet management for production deployments
 5. Review `.gitignore` before first commit
 
 ---

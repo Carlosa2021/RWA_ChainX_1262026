@@ -127,30 +127,26 @@ export function useProjects() {
             // Determine status based on tokens sold
             let status: "active" | "funded" | "upcoming" = "active";
             if (tokensSold >= totalTokens) {
-              status = "funded"; // 100% vendido = FINANCIADO
+              status = "funded"; // 100% sold = FUNDED
             }
             
+            // TODO: Load metadata from IPFS using p.metadataURI
+            // For now, use minimal defaults - clients should implement metadata loading
             return {
               id: index,
               name: p.name,
-              location: "Real Estate Property - Blockchain Verified",
+              location: "Location from metadata", // TODO: Load from IPFS/API
               totalValue: totalTokens.toString(),
               pricePerToken: "1 EUR", // From contract: 100 cents = 1 EUR
               tokensAvailable,
               tokensTotal: totalTokens,
-              apy: "8.0",
+              apy: "0.0", // TODO: Load from contract or metadata
               status,
               progress,
-              investors: 0,
-              image: p.name.includes("Alzira") 
-                ? "/images/projects/alzira-reyes-catolicos/Alzira3.jpg"
-                : `https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80`,
-              images: p.name.includes("Alzira") ? [
-                "/images/projects/alzira-reyes-catolicos/Alzira3.jpg",
-                "/images/projects/alzira-reyes-catolicos/Alzira4.jpg",
-                "/images/projects/alzira-reyes-catolicos/Alzira5.jpg",
-              ] : [
-                `https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80`,
+              investors: 0, // TODO: Query from SecurityToken holder count
+              image: "/images/placeholder-property.jpg", // TODO: Load from IPFS metadata
+              images: [
+                "/images/placeholder-property.jpg", // TODO: Load from IPFS metadata
               ],
               securityToken: p.securityToken,
               investmentController: p.investmentController,
