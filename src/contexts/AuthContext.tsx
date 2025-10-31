@@ -11,16 +11,19 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// TU dirección de owner
-const OWNER_ADDRESS = "0xA62FeC1444118BD0e80c6cdA6a4873144ECe21ca".toLowerCase();
+// Owner address MUST be configured per client deployment
+const OWNER_ADDRESS = process.env.NEXT_PUBLIC_OWNER_ADDRESS?.toLowerCase();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const account = useActiveAccount();
   const address = account?.address?.toLowerCase();
   
-  // Solo el OWNER puede hacer todo sin restricciones
-  const isOwner = address === OWNER_ADDRESS;
-  const isKYCVerified = isOwner; // Solo owner está verificado
+  // Check if current wallet is the configured owner
+  const isOwner = !!address && !!OWNER_ADDRESS && address === OWNER_ADDRESS;
+  
+  // TODO: Implement real KYC verification from IdentityRegistry contract
+  // For now, only owner is verified (clients must implement KYC flow)
+  const isKYCVerified = isOwner;
 
   return (
     <AuthContext.Provider value={{ isOwner, isKYCVerified, address }}>
