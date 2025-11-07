@@ -86,6 +86,9 @@ export function InvestmentModal({
   const handleInvest = async () => {
     if (!account || !need) return;
     
+    console.log("🔑 WALLET CONECTADA:", account.address);
+    console.log("✅ KYC Verificado:", isKYCVerified);
+    
     if (!isKYCVerified) {
       setStep("kyc");
       return;
@@ -94,21 +97,11 @@ export function InvestmentModal({
     try {
       setErr(null);
       
-      // Leer slippage del contrato para calcular correctamente
-      const CTRL = process.env.NEXT_PUBLIC_INVESTMENT_CONTROLLER as `0x${string}`;
-      const controllerContract = getContract({
-        client,
-        chain: polygon,
-        address: CTRL,
-      });
+      console.log("1️⃣ Iniciando proceso de inversión...");
       
-      const maxSlippageBps = await readContract({
-        contract: controllerContract,
-        method: "function maxSlippageBps() view returns (uint16)",
-        params: [],
-      }) as number;
-      
-      console.log("📊 Slippage del contrato:", maxSlippageBps, "bps");
+      // Usar slippage fijo de 0.5% (50 bps) - valor por defecto del contrato
+      const maxSlippageBps = 50;
+      console.log("📊 Usando slippage fijo:", maxSlippageBps, "bps (0.5%)");
       
       // Calcular USDC máximo con margen amplio para fluctuaciones del oráculo
       // Usamos el DOBLE del slippage del contrato para evitar rechazos
@@ -145,6 +138,12 @@ export function InvestmentModal({
       
       // Step 2: Invest
       console.log("💰 Iniciando invest...");
+      console.log("💰 Parámetros invest:", {
+        tokens: BigInt(qty).toString(),
+        maxUsdc: maxUsdc.toString(),
+        controller: process.env.NEXT_PUBLIC_INVESTMENT_CONTROLLER,
+        wallet: account.address
+      });
       setStep("invest");
       await sendTx(txInvest(BigInt(qty), maxUsdc));
       
@@ -166,8 +165,12 @@ export function InvestmentModal({
       }
       
     } catch (e: unknown) {
-      const error = e as { message?: string };
-      setErr(error?.message || "Error en la transacción");
+      console.error("❌ Error completo en invest:", e);
+      const error = e as { message?: string; reason?: string; data?: unknown };
+      const errorMsg = error?.reason || error?.message || "Error en la transacción";
+      console.error("❌ Mensaje de error:", errorMsg);
+      console.error("❌ Data:", error?.data);
+      setErr(errorMsg);
       setStep("input");
     }
   };

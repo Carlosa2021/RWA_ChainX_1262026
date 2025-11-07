@@ -1,47 +1,44 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.17;
 
-interface IERC20 { 
-  function transferFrom(address from, address to, uint256 amount) external returns (bool);
-}
-interface IERC3643 { function issue(address to, uint256 amount) external; function decimals() external view returns (uint8); }
+import "@erc3643org/erc-3643/contracts/token/IToken.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 interface AggregatorV3Interface {
   function latestRoundData() external view returns (uint80, int256 answer, uint256, uint256, uint80);
   function decimals() external view returns (uint8);
 }
 
-contract InvestmentController {
-  address public immutable token3643;
+/**
+ * @title ChainX Investment Controller
+ * @notice Manages token sales for real estate tokenization using official ERC-3643 Token
+ */
+contract ChainXInvestmentController {
+  IToken public immutable token;
   address public immutable usdc;
   address public immutable treasury;
-  AggregatorV3Interface public immutable eurUsd; // EUR/USD
+  AggregatorV3Interface public immutable eurUsd;
 
-  uint256 public priceEuroCents; // precio por token en céntimos de EUR
+  uint256 public priceEuroCents;
   uint256 public hardCap;
   uint256 public issued;
-  uint16  public maxSlippageBps = 50; // 0.5%
 
   event Invested(address indexed investor, uint256 tokenAmount, uint256 paidUSDC);
 
   constructor(
-    address _token3643,
+    address _token,
     address _usdc,
     address _treasury,
     address _eurUsdFeed,
     uint256 _priceEuroCents,
     uint256 _hardCap
   ) {
-    token3643 = _token3643;
+    token = IToken(_token);
     usdc = _usdc;
     treasury = _treasury;
     eurUsd = AggregatorV3Interface(_eurUsdFeed);
     priceEuroCents = _priceEuroCents;
     hardCap = _hardCap;
-  }
-
-  function setMaxSlippageBps(uint16 bps) external {
-    require(bps <= 500, "slippage too high");
-    maxSlippageBps = bps;
   }
 
   function quoteUSDC(uint256 tokenAmount) public view returns (uint256 usdcAmount) {
@@ -56,13 +53,12 @@ contract InvestmentController {
   function invest(uint256 tokenAmount, uint256 maxUsdcExpected) external {
     require(issued + tokenAmount <= hardCap, "hard cap");
     uint256 need = quoteUSDC(tokenAmount);
-    uint256 maxAllowed = (need * (10000 + maxSlippageBps)) / 10000;
-    require(maxUsdcExpected >= need && maxUsdcExpected <= maxAllowed, "slippage");
 
     // Transfer USDC from investor to treasury
-    require(IERC20(usdc).transferFrom(msg.sender, treasury, need), "USDC transfer failed");
+    IERC20(usdc).transferFrom(msg.sender, treasury, need);
 
-    IERC3643(token3643).issue(msg.sender, tokenAmount);
+    // Mint tokens to investor using official ERC-3643 Token
+    token.mint(msg.sender, tokenAmount);
     issued += tokenAmount;
     emit Invested(msg.sender, tokenAmount, need);
   }

@@ -6,6 +6,7 @@ import AIInvestmentAssistant from './AIInvestmentAssistant';
 import ThirdwebPayDemo from './ThirdwebPayDemo';
 import ThirdwebBridgeDemo from './ThirdwebBridgeDemo';
 import ThirdwebVaultDemo from './ThirdwebVaultDemo';
+import ProjectGallery from "./ProjectGallery";
 
 interface PropertyData {
   id: string;
@@ -117,10 +118,12 @@ export function EnhancedPropertyCard({
         
         {/* Sección de Imagen */}
         <div className="relative h-64 bg-gray-100 dark:bg-gray-700">
-          <img
-            src={propertyImages[currentImageIndex]}
-            alt={`${name} - Imagen ${currentImageIndex + 1}`}
-            className="w-full h-full object-cover"
+          <ProjectGallery
+            images={propertyImages}
+            name={name}
+            initialIndex={currentImageIndex}
+            onChange={setCurrentImageIndex}
+            className="h-64"
           />
           
           {/* Badge de Estado */}
@@ -333,11 +336,15 @@ export function EnhancedPropertyCard({
             {/* Imagen Principal */}
             {!showAI && !showPayments && !showBridge && !showVault && (
               <div className="flex-1 max-w-4xl">
-                <img
-                  src={propertyImages[currentImageIndex]}
-                  alt={`${name} - Imagen ${currentImageIndex + 1}`}
-                  className="max-w-full max-h-full object-contain rounded-lg"
-                />
+                <div className="relative w-full h-[70vh]">
+                  <ProjectGallery
+                    images={propertyImages}
+                    name={name}
+                    initialIndex={currentImageIndex}
+                    onChange={setCurrentImageIndex}
+                    className="h-[70vh]"
+                  />
+                </div>
                 
                 {/* Controles del Modal */}
                 {propertyImages.length > 1 && (

@@ -1,33 +1,113 @@
-# Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
+# ChainX® Smart Contracts - ERC-3643 Tokenization Platform
 
-This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
+**Real estate tokenization infrastructure using ERC-3643 (T-REX) standard for regulatory compliance.**
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+---
 
-## Project Overview
+## 🚀 Quick Start - Deployment
 
-This example project includes:
+**✅ Método recomendado: thirdweb CLI**
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using `mocha` and ethers.js
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+```powershell
+cd contracts
+npx thirdweb deploy -k YOUR_SECRET_KEY
+```
 
-## Usage
+**📖 Guía completa:** Ver [DEPLOYMENT-THIRDWEB.md](./DEPLOYMENT-THIRDWEB.md)
 
-### Running Tests
+---
 
-To run all the tests in the project, execute the following command:
+## 📦 Contratos Principales
 
-```shell
+### ERC-3643 Infrastructure
+- `IdentityRegistry` - KYC/AML verification registry
+- `IdentityRegistryStorage` - On-chain KYC data storage
+- `ClaimTopicsRegistry` - Required claims for token holders
+- `TrustedIssuersRegistry` - Authorized KYC providers
+- `Compliance` - Transfer restriction rules
+
+### Platform Contracts
+- `ProjectRegistry` - Registry of all tokenized properties
+- `ProjectTokenFactory` - Factory for creating new projects
+- `SecurityToken` - ERC-3643 compliant token (per project)
+- `InvestmentController` - USDC payment + token issuance
+- `PayoutDistributor` - Rental income distribution
+
+---
+
+## 🛠️ Development
+
+### Install Dependencies
+```powershell
+npm install
+```
+
+### Compile Contracts
+```powershell
+npx hardhat compile
+```
+
+### Run Tests
+```powershell
 npx hardhat test
 ```
 
-You can also selectively run the Solidity or `mocha` tests:
+### Deploy (Production)
+```powershell
+npx thirdweb deploy -k $env:THIRDWEB_SECRET_KEY
+```
 
-```shell
-npx hardhat test solidity
-npx hardhat test mocha
+---
+
+## 🔐 Configuration
+
+Create a `.env` file:
+
+```bash
+POLYGON_RPC_URL=https://137.rpc.thirdweb.com/YOUR_CLIENT_ID
+PRIVATE_KEY=your_private_key_here
+THIRDWEB_SECRET_KEY=your_secret_key_here
+```
+
+---
+
+## 📚 Documentation
+
+- [DEPLOYMENT-THIRDWEB.md](./DEPLOYMENT-THIRDWEB.md) - **Guía oficial de deployment**
+- [COMO-VER-TOKENS-METAMASK.md](./COMO-VER-TOKENS-METAMASK.md) - Ver tokens en MetaMask
+- [DEPLOYED_PROJECTS.md](./DEPLOYED_PROJECTS.md) - Proyectos desplegados
+
+---
+
+## 🔗 Resources
+
+- [ERC-3643 Standard](https://erc3643.org/)
+- [thirdweb Docs](https://portal.thirdweb.com/)
+- [Hardhat Docs](https://hardhat.org/docs)
+- [Polygon Network](https://polygon.technology/)
+
+---
+
+## ⚠️ Important Notes
+
+- **ALWAYS use thirdweb CLI** for deployments (more reliable than Hardhat scripts)
+- **Deploy to Polygon Mainnet** (chain ID 137)
+- **Verify contracts** on PolygonScan after deployment
+- **Save deployment addresses** to update `.env.local`
+
+---
+
+## 📝 Scripts Útiles
+
+```powershell
+# Aprobar usuario KYC
+npx hardhat run scripts/approve-user-kyc.ts --network polygon
+
+# Verificar investment status
+npx hardhat run scripts/check-investment-status.ts --network polygon
+
+# Agregar proyectos
+npx hardhat run scripts/add-real-projects.ts --network polygon
 ```
 
 ### Make a deployment to Sepolia

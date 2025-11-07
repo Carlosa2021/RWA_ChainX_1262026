@@ -1,12 +1,9 @@
 ﻿"use client";
 
 import { useMemo, useEffect, useState } from "react";
-import { getContract } from "thirdweb";
-import { polygon } from "thirdweb/chains";
+import { getContract, defineChain } from "thirdweb";
 import { readContract } from "thirdweb";
 import { client } from "@/lib/client";
-import { PROJECT_REGISTRY_ABI } from "@/lib/abis/ProjectRegistry";
-import { INVESTMENT_CONTROLLER_ABI } from "@/lib/abis/InvestmentController";
 
 export interface ProjectDisplay {
   id: number;
@@ -26,9 +23,10 @@ export interface ProjectDisplay {
   investmentController: string;
 }
 
-// REGISTRY CONTRACT ADDRESS - PRODUCTION
-// Only projects registered in blockchain will appear
-const REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_PROJECT_REGISTRY || "";
+// DIRECT PROJECT CONFIGURATION (No Registry Needed)
+const SECURITY_TOKEN = process.env.NEXT_PUBLIC_SECURITY_TOKEN || "";
+const INVESTMENT_CONTROLLER = process.env.NEXT_PUBLIC_INVESTMENT_CONTROLLER || "";
+const polygon = defineChain(137);
 
 export function useProjects() {
   const [projects, setProjects] = useState<ProjectDisplay[]>([]);
@@ -36,8 +34,8 @@ export function useProjects() {
   const [error, setError] = useState<Error | null>(null);
 
   const loadProjects = async () => {
-    if (!REGISTRY_ADDRESS) {
-      console.warn("⚠️  ProjectRegistry address not configured");
+    if (!SECURITY_TOKEN || !INVESTMENT_CONTROLLER) {
+      console.warn("⚠️  Contract addresses not configured");
       setProjects([]);
       setIsLoading(false);
       return;
@@ -46,119 +44,79 @@ export function useProjects() {
     try {
       setIsLoading(true);
       
-      const contract = getContract({
+      // Load project data from InvestmentController
+      const investmentContract = getContract({
         client,
         chain: polygon,
-        address: REGISTRY_ADDRESS,
+        address: INVESTMENT_CONTROLLER as `0x${string}`,
       });
 
-      console.log("🔍 Reading projects from:", REGISTRY_ADDRESS);
+      console.log("🔍 Loading project from InvestmentController:", INVESTMENT_CONTROLLER);
 
-      // First check project count
-      const projectCount = await readContract({
-        contract,
-        method: PROJECT_REGISTRY_ABI[1], // getProjectCount
-        params: [],
-      });
+      // Get project data from InvestmentController
+      const [hardCap, priceEuroCents, issued] = await Promise.all([
+        readContract({
+          contract: investmentContract,
+          method: "function hardCap() view returns (uint256)",
+          params: [],
+        }) as Promise<bigint>,
+        readContract({
+          contract: investmentContract,
+          method: "function priceEuroCents() view returns (uint256)",
+          params: [],
+        }) as Promise<bigint>,
+        readContract({
+          contract: investmentContract,
+          method: "function issued() view returns (uint256)",
+          params: [],
+        }) as Promise<bigint>,
+      ]);
 
-      console.log("📊 Total projects in registry:", projectCount.toString());
-
-      if (projectCount === 0n) {
-        console.log("⚠️  No projects registered yet");
-        setProjects([]);
-        setError(null);
-        setIsLoading(false);
-        return;
+      const totalTokens = Number(hardCap);
+      const tokensSold = Number(issued);
+      const tokensAvailable = totalTokens - tokensSold;
+      const progress = totalTokens > 0 ? Math.round((tokensSold / totalTokens) * 100) : 0;
+      const priceEur = Number(priceEuroCents) / 100;
+      
+      // Determine status
+      let status: "active" | "funded" | "upcoming" = "active";
+      if (tokensSold >= totalTokens) {
+        status = "funded";
       }
 
-      // Read all projects from blockchain
-      const projectsData = await readContract({
-        contract,
-        method: PROJECT_REGISTRY_ABI[0], // getAllProjects
-        params: [],
-      }) as Array<{
-        name: string;
-        securityToken: string;
-        investmentController: string;
-        pricePerToken: bigint;
-        maxCap: bigint;
-        stablecoin: string;
-        metadataURI: string;
-        active: boolean;
-        createdAt: bigint;
-      }>;
+      console.log(`📊 Project: ${tokensSold}/${totalTokens} tokens sold (${progress}%)`);
 
-      console.log("📊 Loaded projects from blockchain:", projectsData);
+      const project: ProjectDisplay = {
+        id: 0,
+        name: "ChainX Test InmoToken",
+        location: "Test Property - Polygon Mainnet",
+        totalValue: (totalTokens * priceEur).toString(),
+        pricePerToken: `${priceEur} EUR`,
+        tokensAvailable,
+        tokensTotal: totalTokens,
+        apy: "0.0",
+        status,
+        progress,
+        investors: 0,
+        image: "/images/projects/alzira-reyes-catolicos/Alzira3.jpg",
+        images: [
+          "/images/projects/alzira-reyes-catolicos/Alzira3.jpg",
+          "/images/projects/alzira-reyes-catolicos/Alzira4.jpg",
+          "/images/projects/alzira-reyes-catolicos/Alzira5.jpg",
+          "/images/projects/alzira-reyes-catolicos/Alzira6.jpg",
+          "/images/projects/alzira-reyes-catolicos/Alzira7.jpg",
+          "/images/projects/alzira-reyes-catolicos/Alzira_Planos1.jpg",
+          "/images/projects/alzira-reyes-catolicos/Alzira_Planos2.jpg"
+        ],
+        securityToken: SECURITY_TOKEN,
+        investmentController: INVESTMENT_CONTROLLER,
+      };
 
-      // Transform blockchain data to ProjectDisplay format
-      const transformedProjects: ProjectDisplay[] = await Promise.all(
-        projectsData
-          .filter((p) => p.active)
-          .map(async (p, index: number) => {
-            const totalTokens = Number(p.maxCap);
-            
-            // Query how many tokens have been issued (REAL from blockchain)
-            let tokensSold = 0;
-            let tokensAvailable = totalTokens;
-            
-            try {
-              const controllerContract = getContract({
-                client,
-                chain: polygon,
-                address: p.investmentController as `0x${string}`,
-              });
-              
-              const issued = await readContract({
-                contract: controllerContract,
-                method: "function issued() view returns (uint256)",
-                params: [],
-              }) as bigint;
-              
-              tokensSold = Number(issued);
-              tokensAvailable = totalTokens - tokensSold;
-              
-              console.log(`📊 Project "${p.name}": ${tokensSold}/${totalTokens} tokens sold`);
-            } catch {
-              console.warn("⚠️  Could not fetch issued tokens, using defaults");
-            }
-            
-            const progress = totalTokens > 0 ? Math.round((tokensSold / totalTokens) * 100) : 0;
-            
-            // Determine status based on tokens sold
-            let status: "active" | "funded" | "upcoming" = "active";
-            if (tokensSold >= totalTokens) {
-              status = "funded"; // 100% sold = FUNDED
-            }
-            
-            // TODO: Load metadata from IPFS using p.metadataURI
-            // For now, use minimal defaults - clients should implement metadata loading
-            return {
-              id: index,
-              name: p.name,
-              location: "Location from metadata", // TODO: Load from IPFS/API
-              totalValue: totalTokens.toString(),
-              pricePerToken: "1 EUR", // From contract: 100 cents = 1 EUR
-              tokensAvailable,
-              tokensTotal: totalTokens,
-              apy: "0.0", // TODO: Load from contract or metadata
-              status,
-              progress,
-              investors: 0, // TODO: Query from SecurityToken holder count
-              image: "/images/placeholder-property.jpg", // TODO: Load from IPFS metadata
-              images: [
-                "/images/placeholder-property.jpg", // TODO: Load from IPFS metadata
-              ],
-              securityToken: p.securityToken,
-              investmentController: p.investmentController,
-            };
-          })
-      );
-
-      setProjects(transformedProjects);
+      setProjects([project]);
       setError(null);
     } catch (err) {
-      console.error("❌ Error loading projects:", err);
-      setError(err instanceof Error ? err : new Error("Failed to load projects"));
+      console.error("❌ Error loading project:", err);
+      setError(err instanceof Error ? err : new Error("Failed to load project"));
       setProjects([]);
     } finally {
       setIsLoading(false);
