@@ -107,16 +107,7 @@ export function Sidebar() {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-lg font-bold text-gray-900 dark:text-white">ChainX</h1>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
-                planDetails.id === 'ENTERPRISE' 
-                  ? 'bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 dark:from-purple-900/30 dark:to-indigo-900/30 dark:text-purple-300'
-                  : planDetails.id === 'PRO'
-                  ? 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 dark:from-blue-900/30 dark:to-cyan-900/30 dark:text-blue-300'
-                  : 'bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 dark:from-gray-800 dark:to-slate-800 dark:text-gray-300'
-              }`}>
-                {planDetails.badge || planDetails.name}
-              </span>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white">ChainX RWA</h1>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {isOwner ? "Admin Panel" : "RWA Platform"}
