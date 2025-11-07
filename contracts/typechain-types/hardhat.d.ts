@@ -14,458 +14,584 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: "Ownable",
+      name: "IModularCompliance",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Ownable__factory>;
+    ): Promise<Contracts.IModularCompliance__factory>;
     getContractFactory(
-      name: "IERC1155Errors",
+      name: "ModularCompliance",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155Errors__factory>;
+    ): Promise<Contracts.ModularCompliance__factory>;
     getContractFactory(
-      name: "IERC20Errors",
+      name: "IModule",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20Errors__factory>;
-    getContractFactory(
-      name: "IERC721Errors",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC721Errors__factory>;
-    getContractFactory(
-      name: "ERC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC20__factory>;
-    getContractFactory(
-      name: "IERC20Metadata",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20Metadata__factory>;
-    getContractFactory(
-      name: "IERC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20__factory>;
-    getContractFactory(
-      name: "Pausable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Pausable__factory>;
-    getContractFactory(
-      name: "Compliance",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Compliance__factory>;
-    getContractFactory(
-      name: "IdentityRegistry",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IdentityRegistry__factory>;
-    getContractFactory(
-      name: "IIdentity",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IIdentity__factory>;
+    ): Promise<Contracts.IModule__factory>;
     getContractFactory(
       name: "ClaimTopicsRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ClaimTopicsRegistry__factory>;
     getContractFactory(
-      name: "TrustedIssuersRegistry",
+      name: "IdentityRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.TrustedIssuersRegistry__factory>;
-    getContractFactory(
-      name: "SecurityToken",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SecurityToken__factory>;
+    ): Promise<Contracts.IdentityRegistry__factory>;
     getContractFactory(
       name: "IdentityRegistryStorage",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IdentityRegistryStorage__factory>;
     getContractFactory(
-      name: "AggregatorV3Interface",
+      name: "TrustedIssuersRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.AggregatorV3Interface__factory>;
+    ): Promise<Contracts.TrustedIssuersRegistry__factory>;
+    getContractFactory(
+      name: "IClaimTopicsRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IClaimTopicsRegistry__factory>;
+    getContractFactory(
+      name: "IIdentityRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IIdentityRegistry__factory>;
+    getContractFactory(
+      name: "IIdentityRegistryStorage",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IIdentityRegistryStorage__factory>;
+    getContractFactory(
+      name: "ITrustedIssuersRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ITrustedIssuersRegistry__factory>;
+    getContractFactory(
+      name: "AgentRoleUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.AgentRoleUpgradeable__factory>;
+    getContractFactory(
+      name: "IToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IToken__factory>;
+    getContractFactory(
+      name: "Token",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Token__factory>;
+    getContractFactory(
+      name: "IClaimIssuer",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IClaimIssuer__factory>;
+    getContractFactory(
+      name: "IERC734",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC734__factory>;
+    getContractFactory(
+      name: "IERC735",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC735__factory>;
+    getContractFactory(
+      name: "IIdentity",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IIdentity__factory>;
+    getContractFactory(
+      name: "OwnableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.OwnableUpgradeable__factory>;
+    getContractFactory(
+      name: "Initializable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Initializable__factory>;
+    getContractFactory(
+      name: "ContextUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ContextUpgradeable__factory>;
     getContractFactory(
       name: "IERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "IERC3643",
+      name: "AggregatorV3Interface",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC3643__factory>;
+    ): Promise<Contracts.AggregatorV3Interface__factory>;
     getContractFactory(
-      name: "InvestmentController",
+      name: "ChainXInvestmentController",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.InvestmentController__factory>;
+    ): Promise<Contracts.ChainXInvestmentController__factory>;
     getContractFactory(
-      name: "MockSecurityToken",
+      name: "DeployableClaimTopicsRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MockSecurityToken__factory>;
+    ): Promise<Contracts.DeployableClaimTopicsRegistry__factory>;
     getContractFactory(
-      name: "PayoutDistributor",
+      name: "DeployableIdentityRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PayoutDistributor__factory>;
+    ): Promise<Contracts.DeployableIdentityRegistry__factory>;
     getContractFactory(
-      name: "ProductionToken",
+      name: "DeployableIdentityRegistryStorage",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ProductionToken__factory>;
+    ): Promise<Contracts.DeployableIdentityRegistryStorage__factory>;
     getContractFactory(
-      name: "ProjectRegistry",
+      name: "DeployableModularCompliance",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ProjectRegistry__factory>;
+    ): Promise<Contracts.DeployableModularCompliance__factory>;
     getContractFactory(
-      name: "IProjectRegistry",
+      name: "DeployableToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IProjectRegistry__factory>;
+    ): Promise<Contracts.DeployableToken__factory>;
     getContractFactory(
-      name: "ProjectTokenFactory",
+      name: "DeployableTrustedIssuersRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ProjectTokenFactory__factory>;
+    ): Promise<Contracts.DeployableTrustedIssuersRegistry__factory>;
+    getContractFactory(
+      name: "IIdentity",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IIdentity__factory>;
+    getContractFactory(
+      name: "SimpleIdentity",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SimpleIdentity__factory>;
 
     getContractAt(
-      name: "Ownable",
+      name: "IModularCompliance",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.Ownable>;
+    ): Promise<Contracts.IModularCompliance>;
     getContractAt(
-      name: "IERC1155Errors",
+      name: "ModularCompliance",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155Errors>;
+    ): Promise<Contracts.ModularCompliance>;
     getContractAt(
-      name: "IERC20Errors",
+      name: "IModule",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC20Errors>;
-    getContractAt(
-      name: "IERC721Errors",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC721Errors>;
-    getContractAt(
-      name: "ERC20",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ERC20>;
-    getContractAt(
-      name: "IERC20Metadata",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20Metadata>;
-    getContractAt(
-      name: "IERC20",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20>;
-    getContractAt(
-      name: "Pausable",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Pausable>;
-    getContractAt(
-      name: "Compliance",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Compliance>;
-    getContractAt(
-      name: "IdentityRegistry",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IdentityRegistry>;
-    getContractAt(
-      name: "IIdentity",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IIdentity>;
+    ): Promise<Contracts.IModule>;
     getContractAt(
       name: "ClaimTopicsRegistry",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.ClaimTopicsRegistry>;
     getContractAt(
-      name: "TrustedIssuersRegistry",
+      name: "IdentityRegistry",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.TrustedIssuersRegistry>;
-    getContractAt(
-      name: "SecurityToken",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SecurityToken>;
+    ): Promise<Contracts.IdentityRegistry>;
     getContractAt(
       name: "IdentityRegistryStorage",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.IdentityRegistryStorage>;
     getContractAt(
+      name: "TrustedIssuersRegistry",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TrustedIssuersRegistry>;
+    getContractAt(
+      name: "IClaimTopicsRegistry",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IClaimTopicsRegistry>;
+    getContractAt(
+      name: "IIdentityRegistry",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IIdentityRegistry>;
+    getContractAt(
+      name: "IIdentityRegistryStorage",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IIdentityRegistryStorage>;
+    getContractAt(
+      name: "ITrustedIssuersRegistry",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ITrustedIssuersRegistry>;
+    getContractAt(
+      name: "AgentRoleUpgradeable",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.AgentRoleUpgradeable>;
+    getContractAt(
+      name: "IToken",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IToken>;
+    getContractAt(
+      name: "Token",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Token>;
+    getContractAt(
+      name: "IClaimIssuer",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IClaimIssuer>;
+    getContractAt(
+      name: "IERC734",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC734>;
+    getContractAt(
+      name: "IERC735",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC735>;
+    getContractAt(
+      name: "IIdentity",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IIdentity>;
+    getContractAt(
+      name: "OwnableUpgradeable",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.OwnableUpgradeable>;
+    getContractAt(
+      name: "Initializable",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Initializable>;
+    getContractAt(
+      name: "ContextUpgradeable",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ContextUpgradeable>;
+    getContractAt(
+      name: "IERC20",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
       name: "AggregatorV3Interface",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.AggregatorV3Interface>;
     getContractAt(
-      name: "IERC20",
+      name: "ChainXInvestmentController",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC20>;
+    ): Promise<Contracts.ChainXInvestmentController>;
     getContractAt(
-      name: "IERC3643",
+      name: "DeployableClaimTopicsRegistry",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC3643>;
+    ): Promise<Contracts.DeployableClaimTopicsRegistry>;
     getContractAt(
-      name: "InvestmentController",
+      name: "DeployableIdentityRegistry",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.InvestmentController>;
+    ): Promise<Contracts.DeployableIdentityRegistry>;
     getContractAt(
-      name: "MockSecurityToken",
+      name: "DeployableIdentityRegistryStorage",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.MockSecurityToken>;
+    ): Promise<Contracts.DeployableIdentityRegistryStorage>;
     getContractAt(
-      name: "PayoutDistributor",
+      name: "DeployableModularCompliance",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.PayoutDistributor>;
+    ): Promise<Contracts.DeployableModularCompliance>;
     getContractAt(
-      name: "ProductionToken",
+      name: "DeployableToken",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.ProductionToken>;
+    ): Promise<Contracts.DeployableToken>;
     getContractAt(
-      name: "ProjectRegistry",
+      name: "DeployableTrustedIssuersRegistry",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.ProjectRegistry>;
+    ): Promise<Contracts.DeployableTrustedIssuersRegistry>;
     getContractAt(
-      name: "IProjectRegistry",
+      name: "IIdentity",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.IProjectRegistry>;
+    ): Promise<Contracts.IIdentity>;
     getContractAt(
-      name: "ProjectTokenFactory",
+      name: "SimpleIdentity",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.ProjectTokenFactory>;
+    ): Promise<Contracts.SimpleIdentity>;
 
     deployContract(
-      name: "Ownable",
+      name: "IModularCompliance",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.Ownable>;
+    ): Promise<Contracts.IModularCompliance>;
     deployContract(
-      name: "IERC1155Errors",
+      name: "ModularCompliance",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC1155Errors>;
+    ): Promise<Contracts.ModularCompliance>;
     deployContract(
-      name: "IERC20Errors",
+      name: "IModule",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC20Errors>;
-    deployContract(
-      name: "IERC721Errors",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC721Errors>;
-    deployContract(
-      name: "ERC20",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ERC20>;
-    deployContract(
-      name: "IERC20Metadata",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC20Metadata>;
-    deployContract(
-      name: "IERC20",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC20>;
-    deployContract(
-      name: "Pausable",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.Pausable>;
-    deployContract(
-      name: "Compliance",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.Compliance>;
-    deployContract(
-      name: "IdentityRegistry",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IdentityRegistry>;
-    deployContract(
-      name: "IIdentity",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IIdentity>;
+    ): Promise<Contracts.IModule>;
     deployContract(
       name: "ClaimTopicsRegistry",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.ClaimTopicsRegistry>;
     deployContract(
-      name: "TrustedIssuersRegistry",
+      name: "IdentityRegistry",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.TrustedIssuersRegistry>;
-    deployContract(
-      name: "SecurityToken",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.SecurityToken>;
+    ): Promise<Contracts.IdentityRegistry>;
     deployContract(
       name: "IdentityRegistryStorage",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IdentityRegistryStorage>;
     deployContract(
+      name: "TrustedIssuersRegistry",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.TrustedIssuersRegistry>;
+    deployContract(
+      name: "IClaimTopicsRegistry",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IClaimTopicsRegistry>;
+    deployContract(
+      name: "IIdentityRegistry",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IIdentityRegistry>;
+    deployContract(
+      name: "IIdentityRegistryStorage",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IIdentityRegistryStorage>;
+    deployContract(
+      name: "ITrustedIssuersRegistry",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ITrustedIssuersRegistry>;
+    deployContract(
+      name: "AgentRoleUpgradeable",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.AgentRoleUpgradeable>;
+    deployContract(
+      name: "IToken",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IToken>;
+    deployContract(
+      name: "Token",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Token>;
+    deployContract(
+      name: "IClaimIssuer",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IClaimIssuer>;
+    deployContract(
+      name: "IERC734",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IERC734>;
+    deployContract(
+      name: "IERC735",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IERC735>;
+    deployContract(
+      name: "IIdentity",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IIdentity>;
+    deployContract(
+      name: "OwnableUpgradeable",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.OwnableUpgradeable>;
+    deployContract(
+      name: "Initializable",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Initializable>;
+    deployContract(
+      name: "ContextUpgradeable",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ContextUpgradeable>;
+    deployContract(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IERC20>;
+    deployContract(
       name: "AggregatorV3Interface",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.AggregatorV3Interface>;
     deployContract(
-      name: "IERC20",
+      name: "ChainXInvestmentController",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC20>;
+    ): Promise<Contracts.ChainXInvestmentController>;
     deployContract(
-      name: "IERC3643",
+      name: "DeployableClaimTopicsRegistry",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC3643>;
+    ): Promise<Contracts.DeployableClaimTopicsRegistry>;
     deployContract(
-      name: "InvestmentController",
+      name: "DeployableIdentityRegistry",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.InvestmentController>;
+    ): Promise<Contracts.DeployableIdentityRegistry>;
     deployContract(
-      name: "MockSecurityToken",
+      name: "DeployableIdentityRegistryStorage",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.MockSecurityToken>;
+    ): Promise<Contracts.DeployableIdentityRegistryStorage>;
     deployContract(
-      name: "PayoutDistributor",
+      name: "DeployableModularCompliance",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.PayoutDistributor>;
+    ): Promise<Contracts.DeployableModularCompliance>;
     deployContract(
-      name: "ProductionToken",
+      name: "DeployableToken",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ProductionToken>;
+    ): Promise<Contracts.DeployableToken>;
     deployContract(
-      name: "ProjectRegistry",
+      name: "DeployableTrustedIssuersRegistry",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ProjectRegistry>;
-    deployContract(
-      name: "IProjectRegistry",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IProjectRegistry>;
-    deployContract(
-      name: "ProjectTokenFactory",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ProjectTokenFactory>;
-
-    deployContract(
-      name: "Ownable",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.Ownable>;
-    deployContract(
-      name: "IERC1155Errors",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC1155Errors>;
-    deployContract(
-      name: "IERC20Errors",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC20Errors>;
-    deployContract(
-      name: "IERC721Errors",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC721Errors>;
-    deployContract(
-      name: "ERC20",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ERC20>;
-    deployContract(
-      name: "IERC20Metadata",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC20Metadata>;
-    deployContract(
-      name: "IERC20",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC20>;
-    deployContract(
-      name: "Pausable",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.Pausable>;
-    deployContract(
-      name: "Compliance",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.Compliance>;
-    deployContract(
-      name: "IdentityRegistry",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IdentityRegistry>;
+    ): Promise<Contracts.DeployableTrustedIssuersRegistry>;
     deployContract(
       name: "IIdentity",
-      args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IIdentity>;
+    deployContract(
+      name: "SimpleIdentity",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.SimpleIdentity>;
+
+    deployContract(
+      name: "IModularCompliance",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IModularCompliance>;
+    deployContract(
+      name: "ModularCompliance",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ModularCompliance>;
+    deployContract(
+      name: "IModule",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IModule>;
     deployContract(
       name: "ClaimTopicsRegistry",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.ClaimTopicsRegistry>;
     deployContract(
-      name: "TrustedIssuersRegistry",
+      name: "IdentityRegistry",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.TrustedIssuersRegistry>;
-    deployContract(
-      name: "SecurityToken",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.SecurityToken>;
+    ): Promise<Contracts.IdentityRegistry>;
     deployContract(
       name: "IdentityRegistryStorage",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IdentityRegistryStorage>;
     deployContract(
-      name: "AggregatorV3Interface",
+      name: "TrustedIssuersRegistry",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.AggregatorV3Interface>;
+    ): Promise<Contracts.TrustedIssuersRegistry>;
+    deployContract(
+      name: "IClaimTopicsRegistry",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IClaimTopicsRegistry>;
+    deployContract(
+      name: "IIdentityRegistry",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IIdentityRegistry>;
+    deployContract(
+      name: "IIdentityRegistryStorage",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IIdentityRegistryStorage>;
+    deployContract(
+      name: "ITrustedIssuersRegistry",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ITrustedIssuersRegistry>;
+    deployContract(
+      name: "AgentRoleUpgradeable",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.AgentRoleUpgradeable>;
+    deployContract(
+      name: "IToken",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IToken>;
+    deployContract(
+      name: "Token",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Token>;
+    deployContract(
+      name: "IClaimIssuer",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IClaimIssuer>;
+    deployContract(
+      name: "IERC734",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IERC734>;
+    deployContract(
+      name: "IERC735",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IERC735>;
+    deployContract(
+      name: "IIdentity",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IIdentity>;
+    deployContract(
+      name: "OwnableUpgradeable",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.OwnableUpgradeable>;
+    deployContract(
+      name: "Initializable",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Initializable>;
+    deployContract(
+      name: "ContextUpgradeable",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ContextUpgradeable>;
     deployContract(
       name: "IERC20",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IERC20>;
     deployContract(
-      name: "IERC3643",
+      name: "AggregatorV3Interface",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IERC3643>;
+    ): Promise<Contracts.AggregatorV3Interface>;
     deployContract(
-      name: "InvestmentController",
+      name: "ChainXInvestmentController",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.InvestmentController>;
+    ): Promise<Contracts.ChainXInvestmentController>;
     deployContract(
-      name: "MockSecurityToken",
+      name: "DeployableClaimTopicsRegistry",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.MockSecurityToken>;
+    ): Promise<Contracts.DeployableClaimTopicsRegistry>;
     deployContract(
-      name: "PayoutDistributor",
+      name: "DeployableIdentityRegistry",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.PayoutDistributor>;
+    ): Promise<Contracts.DeployableIdentityRegistry>;
     deployContract(
-      name: "ProductionToken",
+      name: "DeployableIdentityRegistryStorage",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ProductionToken>;
+    ): Promise<Contracts.DeployableIdentityRegistryStorage>;
     deployContract(
-      name: "ProjectRegistry",
+      name: "DeployableModularCompliance",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ProjectRegistry>;
+    ): Promise<Contracts.DeployableModularCompliance>;
     deployContract(
-      name: "IProjectRegistry",
+      name: "DeployableToken",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IProjectRegistry>;
+    ): Promise<Contracts.DeployableToken>;
     deployContract(
-      name: "ProjectTokenFactory",
+      name: "DeployableTrustedIssuersRegistry",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ProjectTokenFactory>;
+    ): Promise<Contracts.DeployableTrustedIssuersRegistry>;
+    deployContract(
+      name: "IIdentity",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IIdentity>;
+    deployContract(
+      name: "SimpleIdentity",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.SimpleIdentity>;
 
     // default types
     getContractFactory(

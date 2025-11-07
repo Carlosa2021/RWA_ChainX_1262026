@@ -178,15 +178,18 @@ ThirdwebProvider > ThemeProvider > AuthProvider > EnterpriseProvider > LicensePr
 
 ### Production Deployment (Polygon Mainnet ONLY)
 ```powershell
-# ALWAYS test on mainnet - NO testnets
+# ✅ MÉTODO OFICIAL: thirdweb CLI (SIEMPRE usar este)
 cd contracts
-npx hardhat run scripts/deploy-full-platform.ts --network polygon
+npx thirdweb deploy -k YOUR_THIRDWEB_SECRET_KEY
 
-# Verify contracts on PolygonScan
-npx hardhat verify --network polygon CONTRACT_ADDRESS "constructor" "args"
+# El CLI abre navegador con interfaz de deployment
+# Selecciona contratos, conecta wallet, confirma en Polygon Mainnet
 ```
 
-**Critical**: This is a B2B product. Clients deploy on mainnet from day 1. NO test environments in production branches.
+**CRÍTICO**: 
+- **NUNCA uses** `npx hardhat run scripts/deploy-*.ts` directamente
+- **SIEMPRE usa** thirdweb CLI - maneja gas, confirmaciones y verificación automáticamente
+- Ver guía completa: `contracts/DEPLOYMENT-THIRDWEB.md`
 
 ### Local Development
 ```powershell
@@ -205,13 +208,20 @@ npx hardhat node --fork https://polygon-rpc.com
 
 ### Contract Deployment (Polygon Mainnet)
 ```powershell
+# ✅ Método oficial con thirdweb CLI
 cd contracts
-npx hardhat run scripts/deploy-full-platform.ts --network polygon
-# Saves addresses to deployments/*.json
-# Update client's .env with new addresses
+npx thirdweb deploy -k $env:THIRDWEB_SECRET_KEY
+
+# Selecciona contratos en el CLI (espacio para marcar, enter confirmar)
+# Se abre navegador con interfaz de deployment
+# Conecta wallet y confirma transacciones
+# Copia addresses del dashboard de thirdweb
+# Actualiza .env.local con nuevas addresses
 ```
 
-**Gas Management**: Polygon mainnet can spike. Deployment scripts use conservative gas limits. If "transaction underpriced", increase `maxFeePerGas` in `hardhat.config.ts`.
+**Gas Management**: thirdweb CLI maneja automáticamente gas price óptimo. Si falla, aumenta `gasPrice` en `hardhat.config.ts`.
+
+**Documentación completa**: `contracts/DEPLOYMENT-THIRDWEB.md`
 
 ### Environment Variables (Production)
 ```bash

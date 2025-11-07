@@ -53,7 +53,7 @@ const supportedNetworks: NetworkOption[] = [
     chainId: 137,
     color: 'bg-purple-500',
     icon: '⬟',
-    nativeCurrency: 'MATIC',
+    nativeCurrency: 'POL',
     bridgeFee: 0.001,
     estimatedTime: '5-10 min'
   },
@@ -105,7 +105,7 @@ const supportedTokens: TokenOption[] = [
     supported: true
   },
   {
-    symbol: 'MATIC',
+    symbol: 'POL',
     name: 'Polygon',
     icon: '⬟',
     balance: 125.75,

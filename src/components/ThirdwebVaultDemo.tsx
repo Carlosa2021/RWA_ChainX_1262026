@@ -83,7 +83,7 @@ const mockAssets: AssetBalance[] = [
     isStakeable: true
   },
   {
-    symbol: 'MATIC',
+    symbol: 'POL',
     name: 'Polygon',
     icon: '⬟',
     balance: 125.75,

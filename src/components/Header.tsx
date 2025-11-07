@@ -58,11 +58,6 @@ export function Header() {
               ChainX RWA Platform - Manage your tokenized real world assets
             </p>
           </div>
-          
-          {/* Plan Badge */}
-          <div className={`px-3 py-1 rounded-full text-xs font-semibold ${getBadgeColor('ENTERPRISE')}`}>
-            ENTERPRISE
-          </div>
         </div>
 
         {/* Actions */}
