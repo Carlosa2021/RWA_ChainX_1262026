@@ -10,7 +10,6 @@ import { SimplePropertyCard } from "@/components/SimplePropertyCard";
 import { InvestmentModal } from "@/components/InvestmentModal";
 // import { AIShowcaseBanner } from "@/components/AIShowcaseBanner"; // Removed - intrusive
 // import SimplePlanDisplay from "@/components/SimplePlanDisplay";
-import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjects, useProjectStats, ProjectDisplay } from "@/hooks/useProjects";
@@ -52,7 +51,6 @@ export default function Home() {
       <Sidebar />
       
       <div className="flex-1">
-        <SimpleHeader />
         <Header />
         
         <main className="px-6 py-8 max-w-7xl mx-auto">
