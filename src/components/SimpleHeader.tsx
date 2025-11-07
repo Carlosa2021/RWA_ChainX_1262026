@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { PowerBadge } from '@/components/PowerBadge';
 
 export default function SimpleHeader() {
   const [port, setPort] = React.useState('3000');
@@ -21,7 +20,6 @@ export default function SimpleHeader() {
               <span className="text-white font-bold text-sm">CX</span>
             </div>
             <span className="font-bold text-gray-900">ChainX RWA</span>
-            <PowerBadge />
           </div>
         </div>
         
