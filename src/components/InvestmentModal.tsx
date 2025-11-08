@@ -141,7 +141,6 @@ export function InvestmentModal({
       logger.info("Parámetros invest:", {
         tokens: BigInt(qty).toString(),
         maxUsdc: maxUsdc.toString(),
-      });
         wallet: account.address
       });
       setStep("invest");
