@@ -110,22 +110,15 @@ export default function AdminPage() {
   const { mutate: sendTransaction } = useSendTransaction();
   const { verifiedWallets, isLoading: isLoadingWallets, checkWallet, fetchAllWallets } = useVerifiedWallets();
 
-  // Debug temporal
-  console.log("Admin - Proyectos cargados:", projects?.length, projects);
-
   // Cargar solicitudes KYC desde blockchain
   const fetchSubmissions = useCallback(async () => {
-    console.log("🔄 fetchSubmissions ejecutado - address:", address);
-    
     if (!address) {
-      console.log("⚠️ No hay address conectada, saltando carga de wallets");
       return;
     }
     
     try {
       setIsLoading(true);
       
-      console.log("🚀 Llamando fetchAllWallets...");
       // 🚀 Leer wallets registradas desde blockchain
       await fetchAllWallets();
       
@@ -175,8 +168,6 @@ export default function AdminPage() {
     //   router.push("/");
     //   return;
     // }
-    
-    console.log("🎯 useEffect ejecutado - activeTab:", activeTab, "address:", address);
     
     if (activeTab === 'kyc') {
       fetchSubmissions();
@@ -234,7 +225,6 @@ export default function AdminPage() {
 
       sendTransaction(tx, {
         onSuccess: (result) => {
-          console.log("✅ Wallet registrada:", result);
           toast.success(`Wallet ${newWalletAddress.slice(0, 10)}... aprobada para invertir`);
           setShowRegisterForm(false);
           setNewWalletAddress("");

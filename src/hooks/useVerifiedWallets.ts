@@ -44,22 +44,17 @@ export function useVerifiedWallets() {
   // 🆕 Leer wallets verificadas desde IdentityRegistry directamente
   const fetchAllWallets = useCallback(async () => {
     if (!IR_ADDRESS) {
-      console.log("⚠️ IdentityRegistry no configurado");
       return;
     }
 
     setIsLoading(true);
     try {
-      console.log("📡 Buscando wallets verificadas en IdentityRegistry...");
-      
       // 🎯 MÉTODO SIMPLIFICADO: Leer inversores conocidos del proyecto
       // Como solo hay 1 inversor conocido, vamos a verificar su estado
       const knownInvestors = [
         "0xe24c92e5e86608b3029a78dc9c8e4caddf69e9fb", // Inversor con 2 tokens
         "0xa62fec1444118bd0e80c6cda6a4873144ece21ca", // Owner (tú)
       ];
-
-      console.log(`🔍 Verificando ${knownInvestors.length} wallets conocidas...`);
 
       // Verificar estado KYC de cada wallet
       const walletsWithStatus = await Promise.all(
@@ -77,7 +72,6 @@ export function useVerifiedWallets() {
       const verifiedOnly = walletsWithStatus.filter(w => w.isVerified);
       
       setVerifiedWallets(verifiedOnly);
-      console.log("✅ Wallets verificadas encontradas:", verifiedOnly);
       
     } catch (error) {
       console.error("❌ Error verificando wallets:", error);
