@@ -4,9 +4,8 @@
  */
 
 import { useState, useCallback } from "react";
-import { readContract, getContractEvents } from "thirdweb";
+import { readContract } from "thirdweb";
 import { getTw } from "@/lib/thirdweb";
-import { defineChain } from "thirdweb/chains";
 
 export interface VerifiedWallet {
   address: string;
@@ -20,14 +19,13 @@ export function useVerifiedWallets() {
   const [isLoading, setIsLoading] = useState(false);
 
   const IR_ADDRESS = process.env.NEXT_PUBLIC_IDENTITY_REGISTRY;
-  const IRS_ADDRESS = process.env.NEXT_PUBLIC_IDENTITY_REGISTRY_STORAGE;
 
   // Función para verificar una wallet específica (ahora con useCallback)
   const checkWallet = useCallback(async (walletAddress: string): Promise<boolean> => {
     if (!IR_ADDRESS) return false;
 
     try {
-      const contract = getTw(IR_ADDRESS);
+      const contract = getTw(IR_ADDRESS as `0x${string}`);
       const isVerified = await readContract({
         contract,
         method: "function isVerified(address _userAddress) view returns (bool)",

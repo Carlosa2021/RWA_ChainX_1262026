@@ -4,7 +4,6 @@ import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { CreateProjectForm } from "@/components/CreateProjectForm";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useProjectCreation } from "@/hooks/useProjectCreation";
 import { useProjects, ProjectDisplay } from "@/hooks/useProjects";
@@ -41,12 +40,8 @@ interface KYCSubmission {
   rejection_reason?: string;
 }
 
-interface KYCDocuments {
-  documentFront: string | null;
-  documentBack: string | null;
-  proofOfAddress: string | null;
-}
-
+// Todas las propiedades son usadas por CreateProjectForm
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ProjectFormData {
   // Información básica
   name: string;
@@ -83,8 +78,7 @@ interface KYCStats {
 }
 
 export default function AdminPage() {
-  const { address, isOwner } = useAuth();
-  const router = useRouter();
+  const { address } = useAuth();
   
   // Estados
   const [activeTab, setActiveTab] = useState<'kyc' | 'projects'>('kyc');
@@ -212,7 +206,7 @@ export default function AdminPage() {
       setIsRegistering(true);
       console.log("🔐 Registrando wallet en IdentityRegistry:", newWalletAddress);
 
-      const contract = getTw(IR_ADDRESS);
+      const contract = getTw(IR_ADDRESS as `0x${string}`);
       const tx = prepareContractCall({
         contract,
         method: "function registerIdentity(address _userAddress, address _identity, uint16 _country)",
@@ -224,7 +218,7 @@ export default function AdminPage() {
       });
 
       sendTransaction(tx, {
-        onSuccess: (result) => {
+        onSuccess: () => {
           toast.success(`Wallet ${newWalletAddress.slice(0, 10)}... aprobada para invertir`);
           setShowRegisterForm(false);
           setNewWalletAddress("");

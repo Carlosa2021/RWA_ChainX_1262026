@@ -50,7 +50,7 @@ contract ChainXInvestmentController {
                 / (100 * (10 ** feedDec));
   }
 
-  function invest(uint256 tokenAmount, uint256 maxUsdcExpected) external {
+  function invest(uint256 tokenAmount, uint256 /* maxUsdcExpected */) external {
     require(issued + tokenAmount <= hardCap, "hard cap");
     uint256 need = quoteUSDC(tokenAmount);
 
