@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { logger } from '@/lib/logger';
 
 export type PlanType = 'STARTER' | 'PRO' | 'ENTERPRISE';
 
@@ -145,8 +146,8 @@ export function usePlanConfig(): PlanConfig {
     if (typeof window !== 'undefined') {
       // FORZAR ENTERPRISE sin importar puerto o ENV
       setConfig(DEFAULT_ENTERPRISE_CONFIG);
-      console.log(`🚀 FORCED ENTERPRISE MODE ACTIVATED`);
-      console.log(`✅ All features enabled, unlimited projects/investors`);
+      logger.info(`🚀 FORCED ENTERPRISE MODE ACTIVATED`);
+      logger.info(`✅ All features enabled, unlimited projects/investors`);
     }
   }, []);
 

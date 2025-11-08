@@ -28,6 +28,7 @@ import { prepareContractCall } from "thirdweb";
 import { useSendTransaction } from "thirdweb/react";
 import { ethers } from "ethers";
 import { useVerifiedWallets } from "@/hooks/useVerifiedWallets";
+import { logger } from "@/lib/logger";
 
 interface KYCSubmission {
   id: number;
@@ -204,7 +205,7 @@ export default function AdminPage() {
 
     try {
       setIsRegistering(true);
-      console.log("🔐 Registrando wallet en IdentityRegistry:", newWalletAddress);
+      logger.security("Registrando wallet en IdentityRegistry:", newWalletAddress);
 
       const contract = getTw(IR_ADDRESS as `0x${string}`);
       const tx = prepareContractCall({

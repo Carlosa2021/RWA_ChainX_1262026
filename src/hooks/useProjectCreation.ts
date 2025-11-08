@@ -6,6 +6,7 @@ import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb/transac
 import { getContract, defineChain } from "thirdweb";
 import { toast } from "sonner";
 import { client } from "@/lib/thirdweb";
+import { logger } from "@/lib/logger";
 
 // Configuración de la red
 const polygonChain = defineChain(137);
@@ -90,7 +91,7 @@ export function useProjectCreation(): UseProjectCreationReturn {
       } else {
         // Si son múltiples archivos, subir el primero por ahora
         formData.append("file", files[0]);
-        console.log("Multiple files detected, uploading first one:", files[0].name);
+        logger.info("Multiple files detected, uploading first one:", files[0].name);
       }
       
       // Configuración para Pinata (necesitarás agregar estas variables de entorno)
@@ -98,7 +99,7 @@ export function useProjectCreation(): UseProjectCreationReturn {
       const pinataSecretKey = process.env.NEXT_PUBLIC_PINATA_SECRET_KEY;
       
       if (!pinataApiKey || !pinataSecretKey) {
-        console.warn("Pinata credentials not found, using mock IPFS hash");
+        logger.warn("Pinata credentials not found, using mock IPFS hash");
         const mockHash = `QmMockHash${Date.now()}`;
         return `ipfs://${mockHash}`;
       }

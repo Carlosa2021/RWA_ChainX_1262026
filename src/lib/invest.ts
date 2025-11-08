@@ -4,13 +4,14 @@ import {
   prepareContractCall,
   type PreparedTransaction,
 } from "thirdweb";
+import { logger } from "@/lib/logger";
 
 const CTRL = process.env.NEXT_PUBLIC_INVESTMENT_CONTROLLER as `0x${string}`;
 const USDC = process.env.NEXT_PUBLIC_USDC as `0x${string}`;
 
 // Verificar que las variables estén definidas
 if (!CTRL || !USDC) {
-  console.warn('⚠️ Variables de entorno de inversión no configuradas:', {
+  logger.warn('⚠️ Variables de entorno de inversión no configuradas:', {
     CTRL: !!CTRL,
     USDC: !!USDC,
     env: process.env.NODE_ENV,
@@ -41,7 +42,7 @@ export async function getUSDCBalance(walletAddress: string): Promise<bigint> {
       params: [walletAddress as `0x${string}`],
     });
     
-    console.log('✅ Balance USDC obtenido:', balance, 'para wallet:', walletAddress);
+    logger.info('✅ Balance USDC obtenido:', balance, 'para wallet:', walletAddress);
     return balance as bigint;
   } catch (error) {
     console.error('❌ Error obteniendo balance USDC:', error);
@@ -64,7 +65,7 @@ export async function getUSDCAllowance(walletAddress: string): Promise<bigint> {
       params: [walletAddress as `0x${string}`, CTRL],
     });
     
-    console.log('✅ Allowance actual:', allowance, 'USDC');
+    logger.info('✅ Allowance actual:', allowance, 'USDC');
     return allowance as bigint;
   } catch (error) {
     console.error('❌ Error obteniendo allowance:', error);

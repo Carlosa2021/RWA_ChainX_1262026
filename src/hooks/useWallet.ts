@@ -1,6 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useActiveAccount } from "thirdweb/react";
+import { readContract } from "thirdweb";
+import { getTw } from "@/lib/thirdweb";
+import { useProjects } from "./useProjects";
+import { logger } from "@/lib/logger";
 import { useAuth } from "@/contexts/AuthContext";
 import { ethers } from "ethers";
 
@@ -123,13 +128,13 @@ export function useWallet(): WalletData {
             const balance = await tokenContract.balanceOf(address);
             const amount = Number(balance); // Tokens son indivisibles (sin decimales)
             
-            console.log(`🔍 ${project.symbol} balance:`, balance.toString(), "→", amount);
+            logger.info(`🔍 ${project.symbol} balance:`, balance.toString(), "→", amount);
             
             if (amount > 0) {
               const valueEur = amount * project.priceEur;
               const valueUsd = valueEur * eurUsdRate;
               
-              console.log(`✅ ${project.symbol}: ${amount} tokens = ${valueEur} EUR = ${valueUsd.toFixed(2)} USD`);
+              logger.info(`✅ ${project.symbol}: ${amount} tokens = ${valueEur} EUR = ${valueUsd.toFixed(2)} USD`);
               
               tokenBalances.push({
                 name: project.name,

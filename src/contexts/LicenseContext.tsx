@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { PlanType, Plan, getPlan, isFeatureEnabled, getLimit, canExceedLimit } from '@/config/plans';
+import { logger } from '@/lib/logger';
 
 interface LicenseContextType {
   // Current Plan
@@ -48,7 +49,7 @@ export function LicenseProvider({
   useEffect(() => {
     // FORZAR ENTERPRISE MODE - Sin condiciones
     setCurrentPlan('ENTERPRISE');
-    console.log('🚀 LICENSE: ENTERPRISE MODE FORCED');
+    logger.info('🚀 LICENSE: ENTERPRISE MODE FORCED');
     
     // Set default ENTERPRISE license for development
     const devLicense = 'ENTERPRISE_DEV_2024_CHAINX_UNLIMITED';
@@ -56,7 +57,7 @@ export function LicenseProvider({
     setIsValid(true);
     setExpiresAt(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)); // 1 año
     
-    console.log('✅ LICENSE: All features unlocked, unlimited usage');
+    logger.info('✅ LICENSE: All features unlocked, unlimited usage');
   }, []);
 
   // License validation (simplified for now)

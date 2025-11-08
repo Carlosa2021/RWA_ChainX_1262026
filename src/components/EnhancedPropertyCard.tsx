@@ -7,6 +7,7 @@ import ThirdwebPayDemo from './ThirdwebPayDemo';
 import ThirdwebBridgeDemo from './ThirdwebBridgeDemo';
 import ThirdwebVaultDemo from './ThirdwebVaultDemo';
 import ProjectGallery from "./ProjectGallery";
+import { logger } from "@/lib/logger";
 
 interface PropertyData {
   id: string;
@@ -100,7 +101,7 @@ export function EnhancedPropertyCard({
     transactionId: string;
     timestamp: string;
   }) => {
-    console.log('Pago exitoso:', details);
+    logger.info('Pago exitoso:', details);
     alert(`¡Inversión exitosa! Has recibido ${details.tokens} tokens.`);
     closeModal();
     onInvest();
@@ -419,7 +420,7 @@ export function EnhancedPropertyCard({
               <div className="w-full max-w-lg max-h-full overflow-y-auto">
                 <ThirdwebBridgeDemo
                   onBridgeSuccess={(details) => {
-                    console.log('Bridge exitoso:', details);
+                    logger.info('Bridge exitoso:', details);
                     alert(`¡Bridge completado! ${details.amount} ${details.token} transferido de ${details.fromChain} a ${details.toChain}`);
                     closeModal();
                   }}
@@ -437,7 +438,7 @@ export function EnhancedPropertyCard({
               <div className="w-full max-w-lg max-h-full overflow-y-auto">
                 <ThirdwebVaultDemo
                   onVaultAction={(details) => {
-                    console.log('Vault action exitosa:', details);
+                    logger.info('Vault action exitosa:', details);
                     alert(`¡Operación completada! ${details.action} de ${details.amount} ${details.token} en el vault`);
                     closeModal();
                   }}

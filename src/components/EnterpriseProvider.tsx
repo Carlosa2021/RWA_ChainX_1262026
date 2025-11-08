@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { logger } from '@/lib/logger';
 
 interface EnterpriseContextType {
   isEnterpriseMode: boolean;
@@ -18,9 +19,9 @@ export function EnterpriseProvider({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     // Forzar configuración Enterprise
-    console.log('🚀 ENTERPRISE PROVIDER: Forcing Enterprise Mode');
-    console.log('✅ All features unlocked');
-    console.log('🔥 Unlimited projects and investors');
+    logger.info('🚀 ENTERPRISE PROVIDER: Forcing Enterprise Mode');
+    logger.info('✅ All features unlocked');
+    logger.info('🔥 Unlimited projects and investors');
     
     // Marcar como cargado después de un breve delay
     const timer = setTimeout(() => {

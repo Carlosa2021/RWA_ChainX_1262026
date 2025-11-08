@@ -5,6 +5,7 @@ import { useActiveAccount } from "thirdweb/react";
 import { getContract, readContract } from "thirdweb";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/client";
+import { logger } from "@/lib/logger";
 
 interface UserInvestment {
   projectName: string;
@@ -38,7 +39,7 @@ export function useUserInvestments() {
       // Check token balance
       const PROJECT_TOKEN = process.env.NEXT_PUBLIC_DEMO_TOKEN;
       if (!PROJECT_TOKEN) {
-        console.warn("⚠️  Project token not configured");
+        logger.warn("⚠️  Project token not configured");
         setInvestments([]);
         return;
       }
@@ -122,7 +123,7 @@ export function useUserInvestments() {
         },
       });
 
-      console.log("✅ Token agregado a Metamask");
+      logger.info("✅ Token agregado a Metamask");
     } catch (error) {
       console.error("❌ Error agregando token:", error);
       alert("Error al agregar token a Metamask");

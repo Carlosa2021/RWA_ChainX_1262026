@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useEffect, useState } from "react";
 import { getContract, defineChain } from "thirdweb";
 import { readContract } from "thirdweb";
 import { client } from "@/lib/client";
+import { logger } from "@/lib/logger";
 
 export interface ProjectDisplay {
   id: number;
@@ -35,7 +36,7 @@ export function useProjects() {
 
   const loadProjects = async () => {
     if (!SECURITY_TOKEN || !INVESTMENT_CONTROLLER) {
-      console.warn("⚠️  Contract addresses not configured");
+      logger.warn("??  Contract addresses not configured");
       setProjects([]);
       setIsLoading(false);
       return;
@@ -51,7 +52,7 @@ export function useProjects() {
         address: INVESTMENT_CONTROLLER as `0x${string}`,
       });
 
-      console.log("🔍 Loading project from InvestmentController:", INVESTMENT_CONTROLLER);
+      logger.info("?? Loading project from InvestmentController:", INVESTMENT_CONTROLLER);
 
       // Get project data from InvestmentController
       const [hardCap, priceEuroCents, issued] = await Promise.all([
@@ -84,7 +85,7 @@ export function useProjects() {
         status = "funded";
       }
 
-      console.log(`📊 Project: ${tokensSold}/${totalTokens} tokens sold (${progress}%)`);
+      logger.info(`?? Project: ${tokensSold}/${totalTokens} tokens sold (${progress}%)`);
 
       const project: ProjectDisplay = {
         id: 0,
@@ -115,7 +116,7 @@ export function useProjects() {
       setProjects([project]);
       setError(null);
     } catch (err) {
-      console.error("❌ Error loading project:", err);
+      console.error("? Error loading project:", err);
       setError(err instanceof Error ? err : new Error("Failed to load project"));
       setProjects([]);
     } finally {

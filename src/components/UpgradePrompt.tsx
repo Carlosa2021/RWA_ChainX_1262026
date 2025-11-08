@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useLicense } from '@/contexts/LicenseContext';
 import { getAllPlans } from '@/config/plans';
 import { X, Check, Star, Zap, Crown } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 interface UpgradePromptProps {
   feature: string;
@@ -21,7 +22,7 @@ export function UpgradePrompt({ feature, onClose, isOpen }: UpgradePromptProps) 
 
   const handleUpgrade = (planId: string) => {
     // In production, this would redirect to payment processor
-    console.log(`Upgrading to ${planId}`);
+    logger.info(`Upgrading to ${planId}`);
     // For demo, we can show success message
     alert(`¡Upgrade to ${planId} initiated! Check your email for payment details.`);
     onClose();

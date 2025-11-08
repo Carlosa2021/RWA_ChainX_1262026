@@ -12,6 +12,7 @@ import { Header } from '@/components/Header';
 import { Brain, CreditCard, TrendingUp, Sparkles, Lock } from 'lucide-react';
 import { useFeatureGuard } from '@/hooks/useFeatureGuard';
 import { UpgradePrompt } from '@/components/UpgradePrompt';
+import { logger } from '@/lib/logger';
 
 // Datos de ejemplo para las propiedades
 const sampleProperties = [
@@ -149,7 +150,7 @@ export default function AIPaymentsShowcase() {
   }
 
   const handleInvest = (propertyId: string) => {
-    console.log(`Inversión iniciada para: ${propertyId}`);
+    logger.info(`Inversión iniciada para: ${propertyId}`);
   };
 
   // Convertir propiedad para el AI

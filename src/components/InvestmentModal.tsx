@@ -8,6 +8,7 @@ import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/client";
 import { formatUnits } from "viem";
 import { X, Shield, CheckCircle, AlertCircle, Loader2, ArrowRight, Wallet, Plus } from "lucide-react";
+import { logger } from "@/lib/logger";
 
 interface InvestmentModalProps {
   projectName: string;
@@ -39,7 +40,7 @@ export function InvestmentModal({
 
   const addTokenToWallet = async () => {
     if (!window.ethereum || !tokenAddress) {
-      console.log("Metamask not available or token address missing");
+      logger.info("Metamask not available or token address missing");
       return;
     }
 
@@ -56,9 +57,9 @@ export function InvestmentModal({
           },
         },
       });
-      console.log("✅ Token added to wallet");
+      logger.info("✅ Token added to wallet");
     } catch (error) {
-      console.log("Token not added:", error);
+      logger.info("Token not added:", error);
     }
   };
 
@@ -86,8 +87,8 @@ export function InvestmentModal({
   const handleInvest = async () => {
     if (!account || !need) return;
     
-    console.log("🔑 WALLET CONECTADA:", account.address);
-    console.log("✅ KYC Verificado:", isKYCVerified);
+    logger.security("Wallet conectada:", account.address);
+    logger.info("KYC Verificado:", isKYCVerified);
     
     if (!isKYCVerified) {
       setStep("kyc");
@@ -97,19 +98,19 @@ export function InvestmentModal({
     try {
       setErr(null);
       
-      console.log("1️⃣ Iniciando proceso de inversión...");
+      logger.info("Iniciando proceso de inversión...");
       
       // Usar slippage fijo de 0.5% (50 bps) - valor por defecto del contrato
       const maxSlippageBps = 50;
-      console.log("📊 Usando slippage fijo:", maxSlippageBps, "bps (0.5%)");
+      logger.info("Usando slippage fijo:", maxSlippageBps, "bps");
       
       // Calcular USDC máximo con margen amplio para fluctuaciones del oráculo
       // Usamos el DOBLE del slippage del contrato para evitar rechazos
       const slippageBigInt = BigInt(maxSlippageBps);
       const maxUsdc = (need * (10000n + slippageBigInt * 2n)) / 10000n;
-      console.log("📊 Usando margen de seguridad:", (maxSlippageBps * 2), "bps");
-      console.log("💵 USDC necesario:", need.toString());
-      console.log("💸 USDC máximo (con slippage):", maxUsdc.toString());
+      logger.info("Margen de seguridad:", (maxSlippageBps * 2), "bps");
+      logger.info("USDC necesario:", need.toString());
+      logger.info("USDC máximo (con slippage):", maxUsdc.toString());
       
       // Aprobar cantidad FIJA grande para evitar problemas con fluctuaciones del oráculo
       // Aprobamos 10 USDC (suficiente para cualquier inversión razonable)
@@ -117,31 +118,30 @@ export function InvestmentModal({
       
       // Verificar allowance actual
       const currentAllowance = await getUSDCAllowance(account.address);
-      console.log("🔍 Allowance actual:", currentAllowance.toString(), "USDC (6 decimales)");
-      console.log("🔍 Aprobación fija necesaria:", fixedApprovalAmount.toString(), "USDC (10 USDC)");
+      logger.info("Allowance actual:", currentAllowance.toString());
+      logger.info("Aprobación necesaria:", fixedApprovalAmount.toString());
       
       // Solo aprobar si el allowance es menor que la cantidad fija
       if (currentAllowance < fixedApprovalAmount) {
-        console.log("⚠️ Allowance insuficiente, aprobando 10 USDC...");
+        logger.info("Allowance insuficiente, aprobando...");
         setStep("approve");
         const txReceipt = await sendTx(txApproveUSDC(fixedApprovalAmount));
-        console.log("✅ Approve enviado, esperando confirmación en Polygon...");
-        console.log("📝 TX Hash:", txReceipt.transactionHash);
+        logger.info("Approve enviado:", txReceipt.transactionHash);
         
         // Esperar 15 segundos para ASEGURAR confirmación en Polygon
-        console.log("⏳ Esperando 15 segundos para confirmación total...");
+        logger.info("Esperando confirmación...");
         await new Promise(resolve => setTimeout(resolve, 15000));
-        console.log("✅ Approve 100% confirmado en blockchain");
+        logger.info("Approve confirmado");
       } else {
-        console.log("✅ Ya hay suficiente allowance (10 USDC), omitiendo approve");
+        logger.info("Allowance suficiente, omitiendo approve");
       }
       
       // Step 2: Invest
-      console.log("💰 Iniciando invest...");
-      console.log("💰 Parámetros invest:", {
+      logger.info("Iniciando invest...");
+      logger.info("Parámetros invest:", {
         tokens: BigInt(qty).toString(),
         maxUsdc: maxUsdc.toString(),
-        controller: process.env.NEXT_PUBLIC_INVESTMENT_CONTROLLER,
+      });
         wallet: account.address
       });
       setStep("invest");
@@ -155,7 +155,7 @@ export function InvestmentModal({
         try {
           await addTokenToWallet();
         } catch {
-          console.log("Token not added to wallet");
+          logger.info("Token not added to wallet");
         }
       }, 1000);
       

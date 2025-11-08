@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 
 export interface PlanConfig {
   type: 'STARTER' | 'PRO' | 'ENTERPRISE';
@@ -88,7 +89,7 @@ export function usePlanConfig(): PlanConfig {
       setConfig(planConfig);
       
       // Debug info
-      console.log(`🎯 Puerto detectado: ${port} - Plan: ${planConfig.type}`);
+      logger.info(`🎯 Puerto detectado: ${port} - Plan: ${planConfig.type}`);
     }
   }, []);
 
