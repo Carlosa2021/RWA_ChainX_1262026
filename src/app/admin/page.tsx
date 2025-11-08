@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useProjectCreation } from "@/hooks/useProjectCreation";
 import { useProjects, ProjectDisplay } from "@/hooks/useProjects";
-import Image from "next/image";
 import {
   Shield,
   Users,
@@ -16,7 +15,6 @@ import {
   XCircle,
   Clock,
   Search,
-  Eye,
   Loader2,
   FileText,
   X,
@@ -26,6 +24,11 @@ import {
   Coins
 } from "lucide-react";
 import { toast } from "sonner";
+import { getTw } from "@/lib/thirdweb";
+import { prepareContractCall } from "thirdweb";
+import { useSendTransaction } from "thirdweb/react";
+import { ethers } from "ethers";
+import { useVerifiedWallets } from "@/hooks/useVerifiedWallets";
 
 interface KYCSubmission {
   id: number;
@@ -85,83 +88,85 @@ export default function AdminPage() {
   
   // Estados
   const [activeTab, setActiveTab] = useState<'kyc' | 'projects'>('kyc');
-  const [kycSubTab, setKycSubTab] = useState<'pending' | 'all'>('pending');
+  const [kycSubTab, setKycSubTab] = useState<'pending' | 'all'>('all');
   const [submissions, setSubmissions] = useState<KYCSubmission[]>([]);
   const [stats, setStats] = useState<KYCStats>({ pending: 0, approved: 0, rejected: 0 });
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedSubmission, setSelectedSubmission] = useState<KYCSubmission | null>(null);
-  const [documents, setDocuments] = useState<KYCDocuments | null>(null);
-  const [rejectionReason, setRejectionReason] = useState("");
   const [showCreateForm, setShowCreateForm] = useState(false);
+  
+  // 🆕 Estados para registro manual de KYC
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [newWalletAddress, setNewWalletAddress] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [walletCheckStatus, setWalletCheckStatus] = useState<{
+    checked: boolean;
+    isVerified: boolean;
+  }>({ checked: false, isVerified: false });
 
   // Hooks
   const { projects, refetch: refetchProjects } = useProjects();
   const { createProject, isLoading: isCreating } = useProjectCreation();
+  const { mutate: sendTransaction } = useSendTransaction();
+  const { verifiedWallets, isLoading: isLoadingWallets, checkWallet, fetchAllWallets } = useVerifiedWallets();
 
   // Debug temporal
   console.log("Admin - Proyectos cargados:", projects?.length, projects);
 
-  // Cargar solicitudes KYC
+  // Cargar solicitudes KYC desde blockchain
   const fetchSubmissions = useCallback(async () => {
-    if (!address) return;
+    console.log("🔄 fetchSubmissions ejecutado - address:", address);
+    
+    if (!address) {
+      console.log("⚠️ No hay address conectada, saltando carga de wallets");
+      return;
+    }
     
     try {
       setIsLoading(true);
       
-      // Simular datos para demostración del panel admin
-      // En producción real, esto se conectaría con el backend KYC
-      const mockSubmissions: KYCSubmission[] = [
-        {
-          id: 1,
-          wallet_address: "0x742d35Cc6634C0532925a3b8D404C3D8dCd1234",
-          document_type: "DNI",
-          status: "pending",
-          submitted_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        },
-        {
-          id: 2,
-          wallet_address: "0x8ba1f109551bD432803012645Hac189B5678",
-          document_type: "Pasaporte",
-          status: "approved",
-          submitted_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-          reviewed_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-          reviewed_by: address,
-        },
-        {
-          id: 3,
-          wallet_address: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-          document_type: "NIE",
-          status: "rejected",
-          submitted_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          reviewed_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-          reviewed_by: address,
-          rejection_reason: "Documento no legible"
-        }
-      ];
-
-      // Filtrar según el tab activo
-      const filteredData = kycSubTab === "pending" 
-        ? mockSubmissions.filter(s => s.status === "pending")
-        : mockSubmissions;
-        
-      setSubmissions(filteredData);
-      
-      // Calcular estadísticas de todos los submissions
-      setStats({
-        pending: mockSubmissions.filter(s => s.status === 'pending').length,
-        approved: mockSubmissions.filter(s => s.status === 'approved').length,
-        rejected: mockSubmissions.filter(s => s.status === 'rejected').length,
-      });
+      console.log("🚀 Llamando fetchAllWallets...");
+      // 🚀 Leer wallets registradas desde blockchain
+      await fetchAllWallets();
       
     } catch (error) {
-      console.error("Error en el panel KYC:", error);
+      console.error("Error cargando wallets desde blockchain:", error);
       setSubmissions([]);
       setStats({ pending: 0, approved: 0, rejected: 0 });
     } finally {
       setIsLoading(false);
     }
-  }, [address, kycSubTab]);
+  }, [address, fetchAllWallets]); // ✅ Removido kycSubTab y verifiedWallets
+  
+  // 🆕 Efecto separado para procesar verifiedWallets cuando cambian
+  useEffect(() => {
+    if (!address || verifiedWallets.length === 0) return;
+    
+    // Convertir a formato KYCSubmission
+    const blockchainSubmissions: KYCSubmission[] = verifiedWallets.map((wallet, index) => ({
+      id: index + 1,
+      wallet_address: wallet.address,
+      document_type: "Blockchain", // Sin documentos físicos por ahora
+      status: wallet.isVerified ? 'approved' : 'pending',
+      submitted_at: wallet.registeredAt || new Date().toISOString(),
+      reviewed_at: wallet.isVerified ? wallet.registeredAt : undefined,
+      reviewed_by: wallet.isVerified ? address : undefined,
+    }));
+
+    // Filtrar según el tab activo
+    const filteredData = kycSubTab === "pending" 
+      ? blockchainSubmissions.filter(s => s.status === "pending")
+      : blockchainSubmissions;
+      
+    setSubmissions(filteredData);
+    
+    // Calcular estadísticas
+    setStats({
+      pending: blockchainSubmissions.filter(s => s.status === 'pending').length,
+      approved: blockchainSubmissions.filter(s => s.status === 'approved').length,
+      rejected: 0, // No hay sistema de rechazo por ahora
+    });
+  }, [address, kycSubTab, verifiedWallets]); // ✅ Solo escuchar cambios en los datos
 
   // Efectos
   useEffect(() => {
@@ -171,83 +176,108 @@ export default function AdminPage() {
     //   return;
     // }
     
+    console.log("🎯 useEffect ejecutado - activeTab:", activeTab, "address:", address);
+    
     if (activeTab === 'kyc') {
       fetchSubmissions();
     } else {
       refetchProjects();
     }
+    // ✅ Ejecutar cuando cambie el tab activo O cuando se conecte la wallet
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOwner, router, activeTab, kycSubTab, address]); // Controlamos manualmente las dependencias
+  }, [activeTab, address]);
 
-  // Manejar visualización de documentos
-  const handleViewDocuments = async (submission: KYCSubmission) => {
-    if (!address) return;
-    
-    try {
-      setSelectedSubmission(submission);
-      setDocuments(null);
-      
-      // Simular carga de documentos para demostración
-      setTimeout(() => {
-        const mockDocuments: KYCDocuments = {
-          documentFront: "/images/projects/alzira-reyes-catolicos/Alzira3.jpg",
-          documentBack: "/images/projects/alzira-reyes-catolicos/Alzira4.jpg",
-          proofOfAddress: "/images/projects/alzira-reyes-catolicos/Alzira5.jpg"
-        };
-        setDocuments(mockDocuments);
-      }, 1000);
-      
-    } catch (error) {
-      console.error("Error al cargar documentos:", error);
-      toast.error("Error al cargar los documentos");
-    }
-  };
-
-  // Aprobar KYC
-  const handleApprove = async (submissionId: number) => {
-    if (!address) return;
-    
-    try {
-      // Simular aprobación exitosa
-      console.log("Aprobando KYC para submission:", submissionId);
-      toast.success("KYC aprobado exitosamente");
-      setSelectedSubmission(null);
-      setDocuments(null);
-      
-      // Actualizar la lista para reflejar el cambio
-      setTimeout(() => {
-        fetchSubmissions();
-      }, 500);
-      
-    } catch (error) {
-      console.error("Error al aprobar KYC:", error);
-      toast.error("Error al aprobar el KYC");
-    }
-  };
-
-  // Rechazar KYC
-  const handleReject = async (submissionId: number) => {
-    if (!address || !rejectionReason.trim()) {
-      toast.error("Debe proporcionar una razón para el rechazo");
+  // 🆕 Registrar wallet en IdentityRegistry (blockchain)
+  const handleRegisterWallet = async () => {
+    if (!address || !newWalletAddress.trim()) {
+      toast.error("Ingrese una dirección de wallet válida");
       return;
     }
-    
+
+    // Validar formato de dirección Ethereum
+    if (!ethers.isAddress(newWalletAddress)) {
+      toast.error("Dirección de wallet inválida");
+      return;
+    }
+
+    // Verificar si ya está aprobada
+    if (!walletCheckStatus.checked) {
+      toast.error("Primero verifica si la wallet ya está aprobada");
+      return;
+    }
+
+    if (walletCheckStatus.isVerified) {
+      toast.error("Esta wallet ya está aprobada en blockchain");
+      return;
+    }
+
+    const IR_ADDRESS = process.env.NEXT_PUBLIC_IDENTITY_REGISTRY;
+    if (!IR_ADDRESS) {
+      toast.error("IdentityRegistry no configurado");
+      return;
+    }
+
     try {
-      // Simular rechazo exitoso
-      console.log("Rechazando KYC para submission:", submissionId, "Razón:", rejectionReason);
-      toast.success("KYC rechazado");
-      setSelectedSubmission(null);
-      setDocuments(null);
-      setRejectionReason("");
-      
-      // Actualizar la lista para reflejar el cambio
-      setTimeout(() => {
-        fetchSubmissions();
-      }, 500);
-      
+      setIsRegistering(true);
+      console.log("🔐 Registrando wallet en IdentityRegistry:", newWalletAddress);
+
+      const contract = getTw(IR_ADDRESS);
+      const tx = prepareContractCall({
+        contract,
+        method: "function registerIdentity(address _userAddress, address _identity, uint16 _country)",
+        params: [
+          newWalletAddress as `0x${string}`,
+          ethers.ZeroAddress as `0x${string}`, // identity onchainID (puede ser 0x0)
+          0, // country code (0 = no especificado)
+        ],
+      });
+
+      sendTransaction(tx, {
+        onSuccess: (result) => {
+          console.log("✅ Wallet registrada:", result);
+          toast.success(`Wallet ${newWalletAddress.slice(0, 10)}... aprobada para invertir`);
+          setShowRegisterForm(false);
+          setNewWalletAddress("");
+          setWalletCheckStatus({ checked: false, isVerified: false });
+          setIsRegistering(false);
+          
+          // Recargar lista desde blockchain
+          setTimeout(() => {
+            fetchAllWallets().then(() => fetchSubmissions());
+          }, 2000); // Esperar 2s para que se indexe el evento
+        },
+        onError: (error) => {
+          console.error("❌ Error al registrar:", error);
+          toast.error("Error al registrar wallet en blockchain");
+          setIsRegistering(false);
+        },
+      });
     } catch (error) {
-      console.error("Error al rechazar KYC:", error);
-      toast.error("Error al rechazar el KYC");
+      console.error("Error al preparar registro:", error);
+      toast.error("Error al preparar la transacción");
+      setIsRegistering(false);
+    }
+  };
+
+  // 🆕 Verificar estado de wallet antes de registrar
+  const handleCheckWallet = async () => {
+    if (!newWalletAddress.trim() || !ethers.isAddress(newWalletAddress)) {
+      toast.error("Ingrese una dirección válida primero");
+      return;
+    }
+
+    try {
+      const isVerified = await checkWallet(newWalletAddress);
+      setWalletCheckStatus({ checked: true, isVerified });
+
+      if (isVerified) {
+        toast.success("✅ Esta wallet YA está aprobada en blockchain");
+      } else {
+        toast.info("⏳ Wallet no encontrada - puedes registrarla ahora");
+      }
+    } catch (error) {
+      console.error("Error verificando wallet:", error);
+      toast.error("Error al verificar wallet");
     }
   };
 
@@ -332,28 +362,42 @@ export default function AdminPage() {
             </button>
           </div>
 
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Buscar por wallet address..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white"
-            />
+          <div className="flex gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar por wallet address..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+            
+            <button
+              onClick={() => setShowRegisterForm(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap"
+            >
+              <Plus className="w-4 h-4" />
+              Registrar Wallet
+            </button>
           </div>
         </div>
 
         {/* Tabla de submissions */}
-        {isLoading ? (
+        {isLoading || isLoadingWallets ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+            <span className="ml-3 text-gray-600 dark:text-gray-400">Cargando wallets desde blockchain...</span>
           </div>
         ) : filteredSubmissions.length === 0 ? (
           <div className="text-center py-12">
             <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400">
-              {searchTerm ? "No se encontraron solicitudes" : "No hay solicitudes KYC"}
+            <p className="text-gray-600 dark:text-gray-400 mb-2">
+              {searchTerm ? "No se encontraron wallets" : "No hay wallets registradas en blockchain"}
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-500 mb-4">
+              Usa el botón &quot;Registrar Wallet&quot; para aprobar nuevos inversores
             </p>
           </div>
         ) : (
@@ -362,21 +406,31 @@ export default function AdminPage() {
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-700">
                   <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Wallet</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Documento</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Estado</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Fecha</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Acciones</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Fecha Registro</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Verificación</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredSubmissions.map((submission) => (
                   <tr key={submission.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                     <td className="py-3 px-4">
-                      <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                        {`${submission.wallet_address.slice(0, 6)}...${submission.wallet_address.slice(-4)}`}
-                      </code>
+                      <div className="flex items-center gap-2">
+                        <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded font-mono">
+                          {submission.wallet_address}
+                        </code>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(submission.wallet_address);
+                            toast.success("Dirección copiada");
+                          }}
+                          className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded"
+                          title="Copiar dirección"
+                        >
+                          📋
+                        </button>
+                      </div>
                     </td>
-                    <td className="py-3 px-4 text-gray-600 dark:text-gray-300">{submission.document_type}</td>
                     <td className="py-3 px-4">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         submission.status === 'pending'
@@ -385,21 +439,35 @@ export default function AdminPage() {
                           ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                           : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
                       }`}>
-                        {submission.status === 'pending' ? 'Pendiente' : 
-                         submission.status === 'approved' ? 'Aprobado' : 'Rechazado'}
+                        {submission.status === 'pending' ? '⏳ Pendiente' : 
+                         submission.status === 'approved' ? '✅ Verificado' : '❌ Rechazado'}
                       </span>
                     </td>
                     <td className="py-3 px-4 text-gray-600 dark:text-gray-300">
-                      {new Date(submission.submitted_at).toLocaleDateString('es-ES')}
+                      {new Date(submission.submitted_at).toLocaleDateString('es-ES', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
                     </td>
                     <td className="py-3 px-4">
-                      <button
-                        onClick={() => handleViewDocuments(submission)}
-                        className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
-                      >
-                        <Eye className="w-4 h-4" />
-                        Ver
-                      </button>
+                      {submission.status === 'approved' ? (
+                        <span className="text-green-600 dark:text-green-400 text-sm font-medium">
+                          ✅ Puede invertir
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setNewWalletAddress(submission.wallet_address);
+                            setShowRegisterForm(true);
+                          }}
+                          className="text-blue-600 hover:text-blue-700 dark:text-blue-400 text-sm font-medium"
+                        >
+                          Verificar ahora →
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -623,126 +691,6 @@ export default function AdminPage() {
         </main>
       </div>
 
-      {/* Modal de documentos KYC */}
-      {selectedSubmission && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Documentos KYC - {selectedSubmission.wallet_address.slice(0, 10)}...
-              </h3>
-              <button
-                onClick={() => {
-                  setSelectedSubmission(null);
-                  setDocuments(null);
-                  setRejectionReason("");
-                }}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="p-6">
-              {!documents ? (
-                <div className="flex items-center justify-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {/* Información del submission */}
-                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="font-medium text-gray-900 dark:text-white">Tipo de documento:</span>
-                        <p className="text-gray-600 dark:text-gray-300">{selectedSubmission.document_type}</p>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900 dark:text-white">Estado:</span>
-                        <p className="text-gray-600 dark:text-gray-300">{selectedSubmission.status}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Documentos */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {documents.documentFront && (
-                      <div>
-                        <h4 className="font-medium text-gray-900 dark:text-white mb-2">Documento (Frontal)</h4>
-                        <Image 
-                          src={documents.documentFront} 
-                          alt="Documento frontal" 
-                          width={400}
-                          height={256}
-                          className="w-full h-64 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
-                        />
-                      </div>
-                    )}
-                    
-                    {documents.documentBack && (
-                      <div>
-                        <h4 className="font-medium text-gray-900 dark:text-white mb-2">Documento (Posterior)</h4>
-                        <Image 
-                          src={documents.documentBack} 
-                          alt="Documento posterior" 
-                          width={400}
-                          height={256}
-                          className="w-full h-64 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
-                        />
-                      </div>
-                    )}
-                    
-                    {documents.proofOfAddress && (
-                      <div className="md:col-span-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white mb-2">Comprobante de Domicilio</h4>
-                        <Image 
-                          src={documents.proofOfAddress} 
-                          alt="Comprobante de domicilio" 
-                          width={800}
-                          height={256}
-                          className="w-full h-64 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Acciones */}
-                  {selectedSubmission.status === 'pending' && (
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                      <div className="flex flex-col sm:flex-row gap-4">
-                        <button
-                          onClick={() => handleApprove(selectedSubmission.id)}
-                          className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-                        >
-                          Aprobar KYC
-                        </button>
-                        
-                        <div className="flex-1 space-y-2">
-                          <textarea
-                            value={rejectionReason}
-                            onChange={(e) => setRejectionReason(e.target.value)}
-                            placeholder="Razón del rechazo..."
-                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                            rows={2}
-                          />
-                          <button
-                            onClick={() => handleReject(selectedSubmission.id)}
-                            disabled={!rejectionReason.trim()}
-                            className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-                          >
-                            Rechazar KYC
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Modal de crear proyecto */}
       {showCreateForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
@@ -762,6 +710,122 @@ export default function AdminPage() {
                 onSubmit={handleCreateProject}
                 isLoading={isCreating}
               />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 🆕 Modal de registrar wallet */}
+      {showRegisterForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-3">
+                <Shield className="w-6 h-6 text-green-600" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Registrar Wallet (KYC)
+                </h3>
+              </div>
+              <button
+                onClick={() => {
+                  setShowRegisterForm(false);
+                  setNewWalletAddress("");
+                }}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                  Dirección Wallet
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newWalletAddress}
+                    onChange={(e) => {
+                      setNewWalletAddress(e.target.value);
+                      setWalletCheckStatus({ checked: false, isVerified: false });
+                    }}
+                    placeholder="0x..."
+                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white font-mono text-sm"
+                    disabled={isRegistering}
+                  />
+                  <button
+                    onClick={handleCheckWallet}
+                    disabled={isRegistering || !newWalletAddress.trim()}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  >
+                    Verificar
+                  </button>
+                </div>
+
+                {walletCheckStatus.checked && (
+                  <div className={`mt-2 p-3 rounded-lg ${
+                    walletCheckStatus.isVerified 
+                      ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200'
+                      : 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200'
+                  }`}>
+                    <p className="text-sm font-medium">
+                      {walletCheckStatus.isVerified 
+                        ? '✅ Wallet ya aprobada en blockchain'
+                        : '⏳ Wallet no registrada - puedes aprobarla ahora'
+                      }
+                    </p>
+                  </div>
+                )}
+
+                <p className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                  Esta wallet podrá invertir inmediatamente después de la aprobación en blockchain
+                </p>
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                <p className="text-sm text-blue-900 dark:text-blue-200">
+                  <strong>ℹ️ Registro en Blockchain:</strong><br/>
+                  La aprobación se guarda directamente en el <code className="bg-blue-200 dark:bg-blue-800 px-1 rounded">IdentityRegistry</code> de Polygon.
+                  La wallet podrá invertir instantáneamente.
+                </p>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => {
+                    setShowRegisterForm(false);
+                    setNewWalletAddress("");
+                    setWalletCheckStatus({ checked: false, isVerified: false });
+                  }}
+                  disabled={isRegistering}
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleRegisterWallet}
+                  disabled={
+                    isRegistering || 
+                    !newWalletAddress.trim() || 
+                    !walletCheckStatus.checked ||
+                    walletCheckStatus.isVerified
+                  }
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isRegistering ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Registrando...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="w-4 h-4" />
+                      Aprobar en Blockchain
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>

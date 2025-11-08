@@ -140,9 +140,9 @@ export default function PaymentsPage() {
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Sección de Selección de Propiedad */}
               <div className="space-y-6">
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                    <Building className="w-6 h-6 text-blue-600" />
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                    <Building className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     Selecciona una Propiedad
                   </h2>
                   
@@ -153,8 +153,8 @@ export default function PaymentsPage() {
                         onClick={() => setSelectedProperty(property)}
                         className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
                           selectedProperty.id === property.id
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                         }`}
                       >
                         <div className="flex items-start gap-4">
@@ -164,17 +164,17 @@ export default function PaymentsPage() {
                             className="w-16 h-16 rounded-lg object-cover"
                           />
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900">{property.name}</h3>
-                            <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
+                            <h3 className="font-semibold text-gray-900 dark:text-white">{property.name}</h3>
+                            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 mt-1">
                               <MapPin className="w-4 h-4" />
                               {property.location}
                             </div>
-                            <p className="text-sm text-gray-600 mt-1">{property.description}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{property.description}</p>
                             <div className="flex items-center justify-between mt-3">
-                              <span className="text-lg font-bold text-blue-600">
+                              <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
                                 €{property.pricePerToken.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}/token
                               </span>
-                              <div className="flex items-center gap-1 text-green-600">
+                              <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
                                 <TrendingUp className="w-4 h-4" />
                                 <span className="font-semibold">{property.roi}% ROI</span>
                               </div>
@@ -187,14 +187,14 @@ export default function PaymentsPage() {
                 </div>
 
                 {/* Configuración de Inversión */}
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                     Configurar Inversión
                   </h3>
                   
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Cantidad de Tokens
                       </label>
                       <input
@@ -203,26 +203,26 @@ export default function PaymentsPage() {
                         max="100"
                         value={tokensDesired}
                         onChange={(e) => setTokensDesired(Number(e.target.value))}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Número de tokens"
                       />
                     </div>
                     
-                    <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Tokens seleccionados:</span>
-                          <span className="font-semibold">{tokensDesired}</span>
+                          <span className="text-gray-600 dark:text-gray-400">Tokens seleccionados:</span>
+                          <span className="font-semibold dark:text-white">{tokensDesired}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Precio por token:</span>
-                          <span className="font-semibold">€{selectedProperty.pricePerToken.toLocaleString()}</span>
+                          <span className="text-gray-600 dark:text-gray-400">Precio por token:</span>
+                          <span className="font-semibold dark:text-white">€{selectedProperty.pricePerToken.toLocaleString()}</span>
                         </div>
-                        <div className="border-t pt-2 flex justify-between font-bold text-blue-600">
+                        <div className="border-t dark:border-gray-700 pt-2 flex justify-between font-bold text-blue-600 dark:text-blue-400">
                           <span>Total de inversión:</span>
                           <span>€{totalInvestment.toLocaleString()}</span>
                         </div>
-                        <div className="flex justify-between text-green-600">
+                        <div className="flex justify-between text-green-600 dark:text-green-400">
                           <span>ROI proyectado:</span>
                           <span className="font-semibold">{selectedProperty.roi}% anual</span>
                         </div>

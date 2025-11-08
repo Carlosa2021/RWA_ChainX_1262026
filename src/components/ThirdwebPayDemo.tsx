@@ -149,7 +149,7 @@ export default function ThirdwebPayDemo({
                   max={maxInvestment}
                   value={investmentAmount}
                   onChange={(e) => setInvestmentAmount(Number(e.target.value))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-semibold"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-semibold placeholder-gray-400"
                   placeholder="Cantidad en EUR"
                 />
                 <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">

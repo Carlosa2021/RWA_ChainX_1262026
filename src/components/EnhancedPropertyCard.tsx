@@ -257,68 +257,74 @@ export function EnhancedPropertyCard({
           </div>
 
           {/* Footer con nuevas opciones */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
+          <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+            {/* Primera fila: Stats */}
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                 <TrendingUp className="w-4 h-4" />
                 <span className="font-semibold">{apy}</span>
               </div>
-              <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+              <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <Users className="w-4 h-4" />
                 <span className="text-sm">{investors}</span>
               </div>
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setShowAI(true);
-                  setShowPayments(false);
-                  setShowBridge(false);
-                  setShowVault(false);
-                  openModal();
-                }}
-                className="px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-1"
-              >
-                <Brain className="w-4 h-4" />
-                AI
-              </button>
+            {/* Segunda fila: Features y Acción */}
+            <div className="flex items-center justify-between gap-3">
+              {/* Features (estilo discreto) */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setShowAI(true);
+                    setShowPayments(false);
+                    setShowBridge(false);
+                    setShowVault(false);
+                    openModal();
+                  }}
+                  className="px-3 py-1.5 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 border border-purple-200 dark:border-purple-800"
+                >
+                  <Brain className="w-3.5 h-3.5" />
+                  AI
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setShowBridge(true);
+                    setShowAI(false);
+                    setShowPayments(false);
+                    setShowVault(false);
+                    openModal();
+                  }}
+                  className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 border border-emerald-200 dark:border-emerald-800"
+                >
+                  <ArrowLeftRight className="w-3.5 h-3.5" />
+                  Bridge
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setShowVault(true);
+                    setShowAI(false);
+                    setShowPayments(false);
+                    setShowBridge(false);
+                    openModal();
+                  }}
+                  className="px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 border border-indigo-200 dark:border-indigo-800"
+                >
+                  <Vault className="w-3.5 h-3.5" />
+                  Vault
+                </button>
+              </div>
               
-              <button
-                onClick={() => {
-                  setShowBridge(true);
-                  setShowAI(false);
-                  setShowPayments(false);
-                  setShowVault(false);
-                  openModal();
-                }}
-                className="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-1"
-              >
-                <ArrowLeftRight className="w-4 h-4" />
-                Bridge
-              </button>
-              
-              <button
-                onClick={() => {
-                  setShowVault(true);
-                  setShowAI(false);
-                  setShowPayments(false);
-                  setShowBridge(false);
-                  openModal();
-                }}
-                className="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-1"
-              >
-                <Vault className="w-4 h-4" />
-                Vault
-              </button>
-              
+              {/* Acción Principal (destacada) */}
               <button
                 onClick={isFullyFunded ? undefined : onInvest}
                 disabled={isFullyFunded}
-                className={`px-6 py-2 rounded-lg font-semibold text-sm transition-all ${
+                className={`px-8 py-2.5 rounded-lg font-bold text-sm transition-all ${
                   isFullyFunded
                     ? "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:scale-105"
+                    : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105"
                 }`}
               >
                 {isFullyFunded ? "Completo" : "Invertir"}
@@ -374,7 +380,7 @@ export function EnhancedPropertyCard({
 
             {/* Panel AI */}
             {showAI && (
-              <div className="w-full max-w-2xl max-h-full overflow-y-auto">
+              <div className="w-full max-w-2xl max-h-full overflow-y-auto pb-20">
                 <AIInvestmentAssistant 
                   property={propertyData}
                   className="max-h-[80vh]"
@@ -384,7 +390,7 @@ export function EnhancedPropertyCard({
 
             {/* Panel de Pagos con thirdweb Pay */}
             {showPayments && (
-              <div className="w-full max-w-lg max-h-full overflow-y-auto">
+              <div className="w-full max-w-lg max-h-full overflow-y-auto pb-20">
                 <ThirdwebPayDemo
                   propertyId={propertyData.id}
                   propertyName={propertyData.title}

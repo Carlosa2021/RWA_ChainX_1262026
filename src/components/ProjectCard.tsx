@@ -103,12 +103,12 @@ export function ProjectCard({
 
         {/* Footer - Compactamos */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
               <TrendingUp className="w-4 h-4" />
               <span className="font-semibold">{apy}</span>
             </div>
-            <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
               <Users className="w-4 h-4" />
               <span className="text-sm font-medium">{investors}</span>
             </div>
