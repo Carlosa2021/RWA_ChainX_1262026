@@ -1,10 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useActiveAccount } from "thirdweb/react";
-import { readContract } from "thirdweb";
-import { getTw } from "@/lib/thirdweb";
-import { useProjects } from "./useProjects";
 import { logger } from "@/lib/logger";
 import { useAuth } from "@/contexts/AuthContext";
 import { ethers } from "ethers";

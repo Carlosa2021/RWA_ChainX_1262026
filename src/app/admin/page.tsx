@@ -41,8 +41,6 @@ interface KYCSubmission {
   rejection_reason?: string;
 }
 
-// Todas las propiedades son usadas por CreateProjectForm
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ProjectFormData {
   // Información básica
   name: string;

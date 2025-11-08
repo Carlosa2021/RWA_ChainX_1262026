@@ -3,9 +3,6 @@
 import { useState, useEffect } from "react";
 import { useActiveAccount, useSendTransaction } from "thirdweb/react";
 import { quoteUSDC, txApproveUSDC, txInvest, getUSDCBalance, getUSDCAllowance } from "@/lib/invest";
-import { getContract, readContract } from "thirdweb";
-import { polygon } from "thirdweb/chains";
-import { client } from "@/lib/client";
 import { formatUnits } from "viem";
 import { X, Shield, CheckCircle, AlertCircle, Loader2, ArrowRight, Wallet, Plus } from "lucide-react";
 import { logger } from "@/lib/logger";

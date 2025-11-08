@@ -18,25 +18,25 @@ const DEBUG_MODE = process.env.NEXT_PUBLIC_DEBUG_MODE === 'true';
 const SHOULD_LOG = !IS_PRODUCTION && DEBUG_MODE;
 
 export const logger = {
-  log: (...args: any[]) => {
+  log: (...args: unknown[]) => {
     if (SHOULD_LOG) console.log(...args);
   },
   
-  info: (...args: any[]) => {
+  info: (...args: unknown[]) => {
     if (SHOULD_LOG) console.log(...args);
   },
   
-  warn: (...args: any[]) => {
+  warn: (...args: unknown[]) => {
     if (SHOULD_LOG) console.warn(...args);
   },
   
   // Errores críticos SIEMPRE se muestran (para debugging de producción)
-  error: (...args: any[]) => {
+  error: (...args: unknown[]) => {
     console.error(...args);
   },
   
   // Logging de seguridad sensible (NUNCA en producción)
-  security: (...args: any[]) => {
+  security: (...args: unknown[]) => {
     if (!IS_PRODUCTION && DEBUG_MODE) {
       console.log('🔐 [SECURITY]', ...args);
     }
