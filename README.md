@@ -97,6 +97,16 @@ Before deploying:
 
 ---
 
+## 📘 Client Documentation
+
+Documentation for operators of the white-label infrastructure:
+
+- [docs/PLATFORM-OVERVIEW.md](./docs/PLATFORM-OVERVIEW.md) - What the platform is, tiers, architecture
+- [docs/CLIENT-ONBOARDING.md](./docs/CLIENT-ONBOARDING.md) - From access to a live, branded platform
+- [docs/ADMIN-OPERATIONS.md](./docs/ADMIN-OPERATIONS.md) - Day-to-day administration & governance
+
+---
+
 ## 🏛️ Enterprise Governance & Administration
 
 Institutional admin layer (UI + architecture only, RBAC-governed, mock data):
