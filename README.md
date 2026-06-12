@@ -8,16 +8,16 @@
 ![Status](https://img.shields.io/badge/status-LIVE%20PRODUCTION-success)
 
 > **🚀 LIVE PRODUCTION PLATFORM FOR MIAMI INVESTMENT FUND PRESENTATION**
-> 
+>
 > **Enterprise-grade multi-tier SaaS platform for Real World Assets tokenization with full regulatory compliance**
-> 
+>
 > 🎯 **Current Status**: Enterprise tier with ALL features enabled and unlimited capacity
 
 ---
 
 ## 🔥 **EXECUTIVE SUMMARY**
 
-ChainX® RWA Platform is a **complete blockchain infrastructure** specifically designed for **institutional real estate funds** managing portfolios of **$50M to $1B+**. 
+ChainX® RWA Platform is a **complete blockchain infrastructure** specifically designed for **institutional real estate funds** managing portfolios of **$50M to $1B+**.
 
 ### **💎 Key Value Propositions:**
 
@@ -42,14 +42,16 @@ ChainX® RWA Platform is a **complete blockchain infrastructure** specifically d
 ## 💼 **BUSINESS MODELS**
 
 ### 🎯 **Option 1: SaaS Licensing**
+
 ```
 STARTER    →  €49/month      (Small Projects & Initial Setup)
-PRO        →  €499/month     (Medium Scale Operations)  
+PRO        →  €499/month     (Medium Scale Operations)
 ENTERPRISE →  €4,999/month   (Unlimited Features & Support)
 CUSTOM     →  €15K-50K/month (White Label + Dedicated Infrastructure)
 ```
 
 ### 🎯 **Option 2: Complete Acquisition**
+
 ```
 Base Price: €500,000 - €2,000,000
 ✅ Complete source code ownership
@@ -61,6 +63,7 @@ Base Price: €500,000 - €2,000,000
 ```
 
 ### 🎯 **Option 3: Strategic Partnership**
+
 ```
 50/50 Joint Venture Structure
 Miami Fund: Capital + Marketing + US Operations
@@ -75,6 +78,7 @@ Shared:     Revenue & Growth
 **⚠️ NEVER COMMIT PRIVATE KEYS OR SENSITIVE DATA ⚠️**
 
 Before deploying:
+
 1. Copy `.env.example` to `.env.local`
 2. Configure with your production values
 3. NEVER commit `.env.local` file
@@ -90,6 +94,16 @@ Before deploying:
 **Licencia**: Apache 2.0 + Términos Adicionales
 
 📧 Licencias comerciales: **business@chainx.ch**
+
+---
+
+## 🏛️ Enterprise Governance & Administration
+
+Institutional admin layer (UI + architecture only, RBAC-governed, mock data):
+White Label Branding, RBAC, Audit Trail, MiCA Compliance Reporting, and Dual
+Authorization & Approval Workflows.
+
+- [ENTERPRISE-FEATURES.md](./ENTERPRISE-FEATURES.md) - Full module documentation, RBAC matrix & future integration points
 
 ---
 
