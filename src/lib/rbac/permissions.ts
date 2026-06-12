@@ -60,6 +60,10 @@ export enum Permission {
   // ── Reporting ──────────────────────────────────────────────
   REPORTING_VIEW = 'reporting:view',
 
+  // ── Audit Trail ────────────────────────────────────────────
+  AUDIT_VIEW = 'audit:view',
+  AUDIT_EXPORT = 'audit:export',
+
   // ── Platform settings ──────────────────────────────────────
   SETTINGS_MANAGE = 'settings:manage',
 }
@@ -89,6 +93,7 @@ export const ROLE_PERMISSIONS: Readonly<Record<Role, readonly Permission[]>> = {
     Permission.COMPLIANCE_APPROVE,
     Permission.ANALYTICS_VIEW,
     Permission.REPORTING_VIEW,
+    Permission.AUDIT_VIEW, // read-only audit access
     Permission.PROJECTS_VIEW, // read-only
   ],
 

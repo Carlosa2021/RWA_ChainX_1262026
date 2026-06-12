@@ -23,6 +23,7 @@ import {
   Brain,
   CreditCard,
   Palette,
+  History,
   ArrowLeftRight,
   Vault,
   Rocket,
@@ -171,6 +172,13 @@ const NAV_SECTIONS: NavSection[] = [
         lockedFeature: 'customBranding',
         ownerOnly: true,
         requiredPermission: Permission.BRANDING_VIEW,
+      },
+      {
+        name: 'Audit Trail',
+        href: '/admin/audit-trail',
+        icon: History,
+        ownerOnly: true,
+        requiredPermission: Permission.AUDIT_VIEW,
       },
       {
         name: 'Billing',
