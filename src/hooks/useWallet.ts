@@ -1,45 +1,45 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { logger } from "@/lib/logger";
-import { useAuth } from "@/contexts/AuthContext";
-import { ethers } from "ethers";
+import { useEffect, useState } from 'react';
+import { logger } from '@/lib/logger';
+import { useAuth } from '@/contexts/AuthContext';
+import { ethers } from 'ethers';
 
 // ABIs
 const ERC20_ABI = [
-  "function balanceOf(address) view returns (uint256)",
-  "function decimals() view returns (uint8)",
-  "function symbol() view returns (string)"
+  'function balanceOf(address) view returns (uint256)',
+  'function decimals() view returns (uint8)',
+  'function symbol() view returns (string)',
 ];
 
 const SECURITY_TOKEN_ABI = [
-  "function balanceOf(address) view returns (uint256)",
-  "function name() view returns (string)",
-  "function symbol() view returns (string)"
+  'function balanceOf(address) view returns (uint256)',
+  'function name() view returns (string)',
+  'function symbol() view returns (string)',
 ];
 
 // Contratos
-const USDC_ADDRESS = "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359";
-const CHAINLINK_EUR_USD = "0x73366Fe0AA0Ded304479862808e02506FE556a98";
+const USDC_ADDRESS = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359';
+const CHAINLINK_EUR_USD = '0x73366Fe0AA0Ded304479862808e02506FE556a98';
 
 // Proyectos reales desplegados en Polygon
 // NOTA: Estos son los mismos tokens que se muestran en el dashboard
 // Para producción, solo mostrar tokens que realmente existen en blockchain
 const PROJECTS = [
   {
-    name: "Apartamento Moderno Madrid Centro",
-    symbol: "RMAD",
-    tokenAddress: "0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45",
+    name: 'Apartamento Moderno Madrid Centro',
+    symbol: 'RMAD',
+    tokenAddress: '0xA15b7BFdc26eEE1e4687D45cd2C9d6049956fd45',
     priceEur: 500,
-    image: "🏢"
+    image: '🏢',
   },
   {
-    name: "Proyecto Alzira - Edificio Residencial",
-    symbol: "RET",
-    tokenAddress: "0x1c807Bd375a79249F34DC8EBfB6B426B8ffe4ca4", // Token desplegado Oct 29
+    name: 'Proyecto Alzira - Edificio Residencial',
+    symbol: 'RET',
+    tokenAddress: '0x1c807Bd375a79249F34DC8EBfB6B426B8ffe4ca4', // Token desplegado Oct 29
     priceEur: 1,
-    image: "🏠"
-  }
+    image: '🏠',
+  },
 ];
 
 interface TokenBalance {
@@ -71,7 +71,7 @@ export function useWallet(): WalletData {
     totalValueEur: 0,
     eurUsdRate: 1.16,
     loading: true,
-    error: null
+    error: null,
   });
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export function useWallet(): WalletData {
         totalValueEur: 0,
         eurUsdRate: 1.16,
         loading: false,
-        error: "Wallet not connected"
+        error: 'Wallet not connected',
       });
       return;
     }
@@ -92,13 +92,19 @@ export function useWallet(): WalletData {
 
     async function fetchWalletData() {
       try {
-        // Provider de Polygon
-        const provider = new ethers.JsonRpcProvider("https://polygon-rpc.com");
+        // Provider de Polygon — thirdweb RPC (authenticated via client ID)
+        const twClientId = process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID;
+        const rpcUrl =
+          process.env.NEXT_PUBLIC_RPC_URL ||
+          (twClientId
+            ? `https://137.rpc.thirdweb.com/${twClientId}`
+            : 'https://polygon-bor-rpc.publicnode.com');
+        const provider = new ethers.JsonRpcProvider(rpcUrl);
 
         // 1. Get EUR/USD rate
         const priceFeedAbi = [
-          "function latestRoundData() view returns (uint80, int256, uint256, uint256, uint80)",
-          "function decimals() view returns (uint8)"
+          'function latestRoundData() view returns (uint80, int256, uint256, uint256, uint80)',
+          'function decimals() view returns (uint8)',
         ];
         const priceFeed = new ethers.Contract(CHAINLINK_EUR_USD, priceFeedAbi, provider);
         const [, answer] = await priceFeed.latestRoundData();
@@ -112,7 +118,7 @@ export function useWallet(): WalletData {
 
         // 3. Get token balances
         const tokenBalances: TokenBalance[] = [];
-        
+
         for (const project of PROJECTS) {
           try {
             const tokenContract = new ethers.Contract(
@@ -120,18 +126,20 @@ export function useWallet(): WalletData {
               SECURITY_TOKEN_ABI,
               provider
             );
-            
+
             const balance = await tokenContract.balanceOf(address);
             const amount = Number(balance); // Tokens son indivisibles (sin decimales)
-            
-            logger.info(`🔍 ${project.symbol} balance:`, balance.toString(), "→", amount);
-            
+
+            logger.info(`🔍 ${project.symbol} balance:`, balance.toString(), '→', amount);
+
             if (amount > 0) {
               const valueEur = amount * project.priceEur;
               const valueUsd = valueEur * eurUsdRate;
-              
-              logger.info(`✅ ${project.symbol}: ${amount} tokens = ${valueEur} EUR = ${valueUsd.toFixed(2)} USD`);
-              
+
+              logger.info(
+                `✅ ${project.symbol}: ${amount} tokens = ${valueEur} EUR = ${valueUsd.toFixed(2)} USD`
+              );
+
               tokenBalances.push({
                 name: project.name,
                 symbol: project.symbol,
@@ -139,7 +147,7 @@ export function useWallet(): WalletData {
                 valueEur,
                 valueUsd,
                 image: project.image,
-                address: project.tokenAddress
+                address: project.tokenAddress,
               });
             }
           } catch (err) {
@@ -160,16 +168,16 @@ export function useWallet(): WalletData {
             totalValueEur,
             eurUsdRate,
             loading: false,
-            error: null
+            error: null,
           });
         }
       } catch (error) {
-        console.error("Error fetching wallet data:", error);
+        console.error('Error fetching wallet data:', error);
         if (mounted) {
-          setData(prev => ({
+          setData((prev) => ({
             ...prev,
             loading: false,
-            error: error instanceof Error ? error.message : "Error loading wallet data"
+            error: error instanceof Error ? error.message : 'Error loading wallet data',
           }));
         }
       }

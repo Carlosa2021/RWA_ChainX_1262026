@@ -51,7 +51,7 @@ export default function Home() {
           {/* Platform header — institutional positioning */}
           <div className="mb-10">
             <h1 className="text-3xl font-semibold text-gray-900 dark:text-white mb-1">
-              {isOwner ? 'Operations Dashboard' : 'Active Offerings'}
+              {isOwner ? 'Portfolio Dashboard' : 'Active Offerings'}
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {isOwner
@@ -63,7 +63,7 @@ export default function Home() {
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatsCard
-              title={isOwner ? 'Active Offerings' : 'Available Offerings'}
+              title={isOwner ? 'Active Projects' : 'Available Offerings'}
               value={loadingProjects ? '...' : String(stats.totalProjects)}
               subtitle={isOwner ? 'On this platform' : 'Open for subscription'}
               icon={Building2}
@@ -87,7 +87,7 @@ export default function Home() {
               iconBg="bg-gray-100 dark:bg-gray-800"
             />
             <StatsCard
-              title={isOwner ? 'Verified Participants' : 'Qualified Investors'}
+              title={isOwner ? 'Verified Investors' : 'Qualified Investors'}
               value={loadingProjects ? '...' : String(stats.totalInvestors)}
               subtitle={isOwner ? 'Identity verified (KYC)' : 'Active on platform'}
               icon={Users}
@@ -101,7 +101,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                  {isOwner ? 'Digital Securities Offerings' : 'Open Offerings'}
+                  {isOwner ? 'Active Projects' : 'Open Offerings'}
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {isOwner
@@ -112,7 +112,7 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 {isOwner && (
                   <button className="px-4 py-2 rounded-lg bg-gray-900 dark:bg-gray-800 border border-gray-700 text-white text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors">
-                    + New Offering
+                    + New Project
                   </button>
                 )}
               </div>

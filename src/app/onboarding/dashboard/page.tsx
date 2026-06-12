@@ -157,7 +157,7 @@ export default function OnboardingDashboardPage() {
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header
-          title="Offerings Management"
+          title="Projects Management"
           subtitle="Digital securities issuance and lifecycle · ERC-3643 compliant"
         />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -174,7 +174,7 @@ export default function OnboardingDashboardPage() {
               </span>
             </div>
             <StatCard
-              label="Active Offerings"
+              label="Active Projects"
               value="2"
               sub="1 in structuring"
               icon={Building2}
@@ -183,13 +183,13 @@ export default function OnboardingDashboardPage() {
             <StatCard
               label="Capital Raised"
               value="€2.235.000"
-              sub="Across 3 offerings"
+              sub="Across 3 projects"
               icon={DollarSign}
               trend="+12% this month"
               color="green"
             />
             <StatCard
-              label="Verified Participants"
+              label="Verified Investors"
               value="60"
               sub="Identity verified (KYC)"
               icon={Users}
@@ -209,7 +209,7 @@ export default function OnboardingDashboardPage() {
           <div className="bg-gray-900/60 border border-gray-800/60 rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
               <div>
-                <h2 className="font-semibold text-white">Offerings</h2>
+                <h2 className="font-semibold text-white">Projects</h2>
                 <p className="text-xs text-gray-500 mt-0.5">
                   Digital securities on Polygon Mainnet · ERC-3643
                 </p>
@@ -218,7 +218,7 @@ export default function OnboardingDashboardPage() {
                 href="/onboarding"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white text-xs font-medium transition-colors"
               >
-                <Plus className="w-3.5 h-3.5" /> New Offering
+                <Plus className="w-3.5 h-3.5" /> New Project
               </Link>
             </div>
             <div className="overflow-x-auto">
@@ -226,9 +226,9 @@ export default function OnboardingDashboardPage() {
                 <thead>
                   <tr className="border-b border-gray-800">
                     {[
-                      'Offering',
+                      'Project',
                       'Capital Raised',
-                      'Participants',
+                      'Investors',
                       'Target Return',
                       'Status',
                       'Closing Date',

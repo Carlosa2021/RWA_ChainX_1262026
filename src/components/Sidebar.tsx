@@ -115,7 +115,7 @@ const NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    label: 'Issuance',
+    label: 'Projects',
     ownerOnly: true,
     items: [
       {
@@ -126,9 +126,9 @@ const NAV_SECTIONS: NavSection[] = [
         badgeColor: 'rose',
         ownerOnly: true,
       },
-      { name: 'Offerings', href: '/onboarding/dashboard', icon: Building2, ownerOnly: true },
+      { name: 'Projects', href: '/onboarding/dashboard', icon: Building2, ownerOnly: true },
       {
-        name: 'Participants',
+        name: 'Investors',
         href: '/onboarding/inversores',
         icon: Users,
         lockedFeature: 'investorManagement',

@@ -185,15 +185,22 @@ export default function MetricasPage() {
     <div className="flex h-screen bg-gray-950 text-white overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header title="Analytics & Reporting" subtitle="Portfolio performance, asset distributions and MiCA compliance reporting" />
+        <Header
+          title="Analytics & Reporting"
+          subtitle="Portfolio performance, asset distributions and MiCA compliance reporting"
+        />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
           {/* DEMO badge — PHASE 2: replace mock data with blockchain event reads + InvestmentController */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 w-fit">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Demo Data</span>
-            <span className="text-xs text-gray-600">· Sample metrics for illustration. No live data displayed.</span>
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Demo Data
+            </span>
+            <span className="text-xs text-gray-600">
+              · Sample metrics for illustration. No live data displayed.
+            </span>
           </div>
 
-          {/* Period selector */}}
+          {/* Period selector */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {periods.map((p) => (
@@ -311,7 +318,10 @@ export default function MetricasPage() {
                         color: 'text-emerald-400',
                       },
                     ].map(({ label, value, color }) => (
-                      <div key={label} className="bg-gray-900 border border-gray-800 rounded-lg p-2.5 text-center">
+                      <div
+                        key={label}
+                        className="bg-gray-900 border border-gray-800 rounded-lg p-2.5 text-center"
+                      >
                         <p className={`text-sm font-bold ${color}`}>{value}</p>
                         <p className="text-xs text-gray-600 mt-0.5">{label}</p>
                       </div>

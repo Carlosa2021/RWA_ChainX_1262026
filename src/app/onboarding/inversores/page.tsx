@@ -168,7 +168,7 @@ export default function InversoresPage() {
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header
-          title="Participant Management"
+          title="Investor Management"
           subtitle="Identity verification, wallet registry and investment positions · ERC-3643"
         />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -178,7 +178,7 @@ export default function InversoresPage() {
               Demo Data
             </span>
             <span className="text-xs text-gray-600">
-              · Sample participants for illustration. No live data displayed.
+              · Sample investors for illustration. No live data displayed.
             </span>
           </div>
 
@@ -246,13 +246,13 @@ export default function InversoresPage() {
                 <thead>
                   <tr className="border-b border-gray-800">
                     {[
-                      'Inversor',
+                      'Investor',
                       'Wallet',
-                      'País',
+                      'Country',
                       'KYC',
-                      'Verificado por',
-                      'Invertido',
-                      'Campañas',
+                      'Verified by',
+                      'Invested',
+                      'Projects',
                       '',
                     ].map((h) => (
                       <th
