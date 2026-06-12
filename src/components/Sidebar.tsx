@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLicense } from '@/contexts/LicenseContext';
+import { usePermissions } from '@/lib/rbac/usePermissions';
+import { Permission } from '@/lib/rbac/permissions';
 import { useState } from 'react';
 import {
   LayoutDashboard,
@@ -43,6 +45,9 @@ interface NavItem {
   badgeColor?: string;
   lockedFeature?: keyof PlanFeatures;
   ownerOnly?: boolean;
+  // RBAC (additive): when set, the item is only shown if the active role holds
+  // this permission. Items without it keep their previous visibility rules.
+  requiredPermission?: Permission;
 }
 
 interface NavSection {
@@ -73,13 +78,20 @@ const NAV_SECTIONS: NavSection[] = [
         badge: 'RWA',
         ownerOnly: true,
       },
-      { name: 'Projects', href: '/onboarding/dashboard', icon: Building2, ownerOnly: true },
+      {
+        name: 'Projects',
+        href: '/onboarding/dashboard',
+        icon: Building2,
+        ownerOnly: true,
+        requiredPermission: Permission.PROJECTS_VIEW,
+      },
       {
         name: 'Investors',
         href: '/onboarding/inversores',
         icon: Users,
         lockedFeature: 'investorManagement',
         ownerOnly: true,
+        requiredPermission: Permission.INVESTORS_VIEW,
       },
       {
         name: 'Documents',
@@ -87,6 +99,7 @@ const NAV_SECTIONS: NavSection[] = [
         icon: FileText,
         lockedFeature: 'documentManagement',
         ownerOnly: true,
+        requiredPermission: Permission.DOCUMENTS_VIEW,
       },
       {
         name: 'Analytics',
@@ -94,6 +107,7 @@ const NAV_SECTIONS: NavSection[] = [
         icon: BarChart3,
         lockedFeature: 'analyticsAdvanced',
         ownerOnly: true,
+        requiredPermission: Permission.ANALYTICS_VIEW,
       },
     ],
   },
@@ -140,6 +154,15 @@ const NAV_SECTIONS: NavSection[] = [
         icon: Settings,
         badge: 'Admin',
         ownerOnly: true,
+        requiredPermission: Permission.SETTINGS_MANAGE,
+      },
+      {
+        name: 'Users',
+        href: '/admin/users',
+        icon: Users,
+        lockedFeature: 'institutionalTools',
+        ownerOnly: true,
+        requiredPermission: Permission.USERS_VIEW,
       },
       {
         name: 'Branding',
@@ -147,8 +170,15 @@ const NAV_SECTIONS: NavSection[] = [
         icon: Palette,
         lockedFeature: 'customBranding',
         ownerOnly: true,
+        requiredPermission: Permission.BRANDING_VIEW,
       },
-      { name: 'Billing', href: '/admin/pagos', icon: DollarSign, ownerOnly: true },
+      {
+        name: 'Billing',
+        href: '/admin/pagos',
+        icon: DollarSign,
+        ownerOnly: true,
+        requiredPermission: Permission.BILLING_VIEW,
+      },
     ],
   },
 ];
@@ -164,6 +194,7 @@ export function Sidebar() {
   const { isOwner } = useAuth();
   const { theme, toggleTheme, mounted } = useTheme();
   const { hasFeature, currentPlan, requiredPlanFor } = useLicense();
+  const { can } = usePermissions();
   const [upgradeModal, setUpgradeModal] = useState<{
     feature: keyof PlanFeatures;
     label: string;
@@ -209,6 +240,9 @@ export function Sidebar() {
 
             const visibleItems = section.items.filter((item) => {
               if (item.ownerOnly && !isOwner) return false;
+              // RBAC (additive): hide items the active role cannot view. Routes are
+              // never removed — only navigation visibility is affected.
+              if (item.requiredPermission && !can(item.requiredPermission)) return false;
               return true;
             });
             if (visibleItems.length === 0) return null;

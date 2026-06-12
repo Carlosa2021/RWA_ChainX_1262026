@@ -294,7 +294,9 @@ function BrandingPanel() {
           </Field>
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-sm text-gray-900 dark:text-white">Show ChainX Infrastructure Notice</p>
+              <p className="text-sm text-gray-900 dark:text-white">
+                Show ChainX Infrastructure Notice
+              </p>
               <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">
                 When enabled, the portal footer shows: Powered by ChainX Infrastructure.
               </p>
