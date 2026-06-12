@@ -42,14 +42,14 @@ function StatCard({
     amber: 'text-amber-400 bg-amber-900/30 border-amber-700/30',
   };
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+    <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-sm text-gray-400">{label}</span>
+        <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
         <div className={`p-2 rounded-lg border ${colors[color]}`}>
           <Icon className="w-4 h-4" />
         </div>
       </div>
-      <p className="text-2xl font-bold text-white">{value}</p>
+      <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
       {sub && <p className="text-xs text-gray-500 mt-1">{sub}</p>}
       {trend && (
         <div className="flex items-center gap-1 mt-2">
@@ -153,7 +153,7 @@ const mockActivity = [
 // ─── Main Component ───────────────────────────────────────────
 export default function OnboardingDashboardPage() {
   return (
-    <div className="flex h-screen bg-gray-950 text-white overflow-hidden">
+    <div className="flex h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header
@@ -165,7 +165,7 @@ export default function OnboardingDashboardPage() {
           {/* PHASE 2 INSERTION POINT: replace mock values with useProjects() + useVerifiedWallets() */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {/* DEMO badge — visible indicator that data is illustrative */}
-            <div className="col-span-full flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 w-fit">
+            <div className="col-span-full flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 w-fit">
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Demo Data
               </span>
@@ -206,17 +206,17 @@ export default function OnboardingDashboardPage() {
           </div>
 
           {/* Campaigns table */}
-          <div className="bg-gray-900/60 border border-gray-800/60 rounded-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+          <div className="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/60 rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
               <div>
-                <h2 className="font-semibold text-white">Projects</h2>
+                <h2 className="font-semibold text-gray-900 dark:text-white">Projects</h2>
                 <p className="text-xs text-gray-500 mt-0.5">
                   Digital securities on Polygon Mainnet · ERC-3643
                 </p>
               </div>
               <Link
                 href="/onboarding"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white text-xs font-medium transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white text-xs font-medium transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" /> New Project
               </Link>
@@ -224,7 +224,7 @@ export default function OnboardingDashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-800">
+                  <tr className="border-b border-gray-200 dark:border-gray-800">
                     {[
                       'Project',
                       'Capital Raised',
@@ -243,12 +243,17 @@ export default function OnboardingDashboardPage() {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-800/60">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-800/60">
                   {mockCampaigns.map((c) => (
-                    <tr key={c.id} className="hover:bg-gray-800/30 transition-colors">
+                    <tr
+                      key={c.id}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors"
+                    >
                       <td className="px-6 py-4">
                         <div>
-                          <p className="text-sm font-medium text-white">{c.name}</p>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">
+                            {c.name}
+                          </p>
                           <p className="text-xs text-gray-500">
                             {c.location} · {c.tokenSymbol}
                           </p>
@@ -257,40 +262,46 @@ export default function OnboardingDashboardPage() {
                       <td className="px-6 py-4">
                         <div>
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm text-white">€{c.raised}</span>
+                            <span className="text-sm text-gray-900 dark:text-white">
+                              €{c.raised}
+                            </span>
                             <span className="text-xs text-gray-500">{c.raisedPct}%</span>
                           </div>
-                          <div className="w-32 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                          <div className="w-32 h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-purple-500 rounded-full"
+                              className="h-full bg-blue-500 rounded-full"
                               style={{ width: `${c.raisedPct}%` }}
                             />
                           </div>
                           <p className="text-xs text-gray-600 mt-1">de €{c.totalValue}</p>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-white">{c.investors}</td>
+                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                        {c.investors}
+                      </td>
                       <td className="px-6 py-4">
                         <div>
-                          <span className="text-sm text-gray-300 font-medium">{c.apy}% p.a.</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                            {c.apy}% p.a.
+                          </span>
                           <p className="text-xs text-gray-600">issuer projection</p>
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         <StatusBadge status={c.status} />
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-400">
+                      <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                         {new Date(c.deadline).toLocaleDateString('es-ES')}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <button className="p-1.5 text-gray-500 hover:text-purple-400 hover:bg-gray-800 rounded-lg transition-colors">
+                          <button className="p-1.5 text-gray-500 hover:text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button className="p-1.5 text-gray-500 hover:text-blue-400 hover:bg-gray-800 rounded-lg transition-colors">
+                          <button className="p-1.5 text-gray-500 hover:text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
                             <Settings className="w-4 h-4" />
                           </button>
-                          <button className="p-1.5 text-gray-500 hover:text-green-400 hover:bg-gray-800 rounded-lg transition-colors">
+                          <button className="p-1.5 text-gray-500 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
                             <BarChart3 className="w-4 h-4" />
                           </button>
                         </div>
@@ -303,8 +314,8 @@ export default function OnboardingDashboardPage() {
           </div>
 
           {/* Activity feed */}
-          <div className="bg-gray-900/60 border border-gray-800/60 rounded-2xl p-6">
-            <h2 className="font-semibold text-white mb-4">Actividad reciente</h2>
+          <div className="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/60 rounded-2xl p-6">
+            <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Actividad reciente</h2>
             <div className="space-y-3">
               {mockActivity.map((act, i) => (
                 <div key={i} className="flex items-start gap-3">
@@ -320,7 +331,7 @@ export default function OnboardingDashboardPage() {
                     <act.icon className="w-3.5 h-3.5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-300">{act.text}</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">{act.text}</p>
                     <p className="text-xs text-gray-600 mt-0.5 flex items-center gap-1">
                       <Clock className="w-3 h-3" /> {act.time}
                     </p>
