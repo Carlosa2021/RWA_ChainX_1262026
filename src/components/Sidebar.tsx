@@ -25,6 +25,7 @@ import {
   Palette,
   History,
   ClipboardCheck,
+  CheckSquare,
   ArrowLeftRight,
   Vault,
   Rocket,
@@ -180,6 +181,13 @@ const NAV_SECTIONS: NavSection[] = [
         icon: History,
         ownerOnly: true,
         requiredPermission: Permission.AUDIT_VIEW,
+      },
+      {
+        name: 'Approvals',
+        href: '/admin/approvals',
+        icon: CheckSquare,
+        ownerOnly: true,
+        requiredPermission: Permission.APPROVAL_VIEW,
       },
       {
         name: 'Compliance Reports',

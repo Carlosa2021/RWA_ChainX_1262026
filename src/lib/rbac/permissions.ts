@@ -64,6 +64,10 @@ export enum Permission {
   AUDIT_VIEW = 'audit:view',
   AUDIT_EXPORT = 'audit:export',
 
+  // ── Approval Workflows (Dual Authorization) ────────────────
+  APPROVAL_VIEW = 'approval:view',
+  APPROVAL_MANAGE = 'approval:manage',
+
   // ── Platform settings ──────────────────────────────────────
   SETTINGS_MANAGE = 'settings:manage',
 }
@@ -94,6 +98,8 @@ export const ROLE_PERMISSIONS: Readonly<Record<Role, readonly Permission[]>> = {
     Permission.ANALYTICS_VIEW,
     Permission.REPORTING_VIEW,
     Permission.AUDIT_VIEW, // read-only audit access
+    Permission.APPROVAL_VIEW,
+    Permission.APPROVAL_MANAGE, // four-eyes reviewer
     Permission.PROJECTS_VIEW, // read-only
   ],
 
