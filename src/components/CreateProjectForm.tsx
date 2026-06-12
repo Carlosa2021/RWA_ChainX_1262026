@@ -556,7 +556,7 @@ export function CreateProjectForm({ onSubmit, isLoading }: CreateProjectFormProp
                 Revisar y Confirmar
               </h3>
               
-              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-2xl p-6 border border-purple-200 dark:border-purple-800">
+              <div className="bg-linear-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-2xl p-6 border border-purple-200 dark:border-purple-800">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Información Básica</h4>
@@ -597,7 +597,7 @@ export function CreateProjectForm({ onSubmit, isLoading }: CreateProjectFormProp
                 
                 <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 shrink-0 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-semibold text-yellow-800 dark:text-yellow-200 mb-1">
                         Antes de crear el proyecto:
@@ -714,7 +714,7 @@ export function CreateProjectForm({ onSubmit, isLoading }: CreateProjectFormProp
             <button
               onClick={handleSubmit}
               disabled={isLoading || !validateStep(4)}
-              className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="flex items-center gap-2 px-8 py-3 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               {isLoading ? (
                 <>

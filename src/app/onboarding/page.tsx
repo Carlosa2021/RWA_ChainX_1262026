@@ -361,7 +361,7 @@ function StepRegistro({
         ].map(({ key, label }) => (
           <label key={key} className="flex items-start gap-3 cursor-pointer group">
             <div
-              className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+              className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
                 data[key]
                   ? 'bg-purple-600 border-purple-600'
                   : 'border-gray-600 group-hover:border-purple-500'
@@ -469,7 +469,7 @@ function StepPlan({
               <ul className="space-y-2">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm text-gray-300">
-                    <Check className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
                     {feature}
                   </li>
                 ))}
@@ -534,7 +534,7 @@ function StepVerificacion({
       {/* Status banner */}
       {data.status === 'pending' && (
         <div className="flex items-center gap-3 bg-amber-900/20 border border-amber-700/40 rounded-xl p-4">
-          <Clock className="w-5 h-5 text-amber-400 flex-shrink-0" />
+          <Clock className="w-5 h-5 text-amber-400 shrink-0" />
           <div>
             <p className="text-sm font-medium text-amber-300">Documentación en revisión</p>
             <p className="text-xs text-amber-500 mt-0.5">
@@ -545,7 +545,7 @@ function StepVerificacion({
       )}
       {data.status === 'rejected' && (
         <div className="flex items-center gap-3 bg-red-900/20 border border-red-700/40 rounded-xl p-4">
-          <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+          <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
           <div>
             <p className="text-sm font-medium text-red-300">Documentación rechazada</p>
             <p className="text-xs text-red-400 mt-0.5">
@@ -556,7 +556,7 @@ function StepVerificacion({
       )}
       {data.status === 'approved' && (
         <div className="flex items-center gap-3 bg-green-900/20 border border-green-700/40 rounded-xl p-4">
-          <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+          <CheckCircle2 className="w-5 h-5 text-green-400 shrink-0" />
           <div>
             <p className="text-sm font-medium text-green-300">Empresa verificada</p>
             <p className="text-xs text-green-500 mt-0.5">
@@ -594,7 +594,7 @@ function StepVerificacion({
                     </div>
                   )}
                 </div>
-                <label className="cursor-pointer flex-shrink-0">
+                <label className="cursor-pointer shrink-0">
                   <input
                     type="file"
                     className="hidden"
@@ -623,7 +623,7 @@ function StepVerificacion({
 
       <div className="bg-blue-900/10 border border-blue-700/30 rounded-xl p-4">
         <div className="flex items-start gap-2">
-          <Shield className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+          <Shield className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
           <p className="text-xs text-blue-300">
             Todos los documentos se transmiten cifrados (TLS 1.3) y se almacenan con cifrado
             AES-256. Sólo el equipo de compliance tiene acceso. Se eliminan según la normativa RGPD
@@ -775,7 +775,7 @@ function StepKYCConfig({
 
           {data.testMode && (
             <div className="flex items-center gap-2 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
-              <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0" />
+              <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
               <p className="text-xs text-amber-300">
                 Modo sandbox activo. Las verificaciones no tendrán efecto real hasta que cambies a
                 producción.
@@ -1277,7 +1277,7 @@ function StepFinanciero({
                     : [...methods, method.id];
                   onChange({ ...data, paymentMethods: updated });
                 }}
-                className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer ${
+                className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors cursor-pointer ${
                   isSelected ? 'bg-purple-600 border-purple-600' : 'border-gray-600'
                 }`}
               >
@@ -1319,7 +1319,7 @@ function StepTokenizacion({ data }: { data: TokenizationData }) {
         </div>
         <div className="h-3 bg-gray-900 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-purple-600 to-purple-400 rounded-full transition-all duration-700"
+            className="h-full bg-linear-to-r from-purple-600 to-purple-400 rounded-full transition-all duration-700"
             style={{ width: `${data.progress}%` }}
           />
         </div>
@@ -1329,7 +1329,7 @@ function StepTokenizacion({ data }: { data: TokenizationData }) {
           {steps.map((step, i) => (
             <div key={i} className="flex items-center gap-3">
               <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold ${
+                className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-sm font-bold ${
                   step.status === 'done'
                     ? 'bg-green-900/40 text-green-400 border border-green-700/40'
                     : step.status === 'running'
@@ -1458,7 +1458,7 @@ function StepPublicacion({
 
       {/* Campaign preview */}
       <div className="bg-gray-800/50 rounded-xl border border-gray-700/50 overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-900/40 to-gray-800/40 p-4 border-b border-gray-700/50">
+        <div className="bg-linear-to-r from-purple-900/40 to-gray-800/40 p-4 border-b border-gray-700/50">
           <div className="flex items-center gap-2">
             <Eye className="w-4 h-4 text-purple-400" />
             <span className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
@@ -1533,7 +1533,7 @@ function StepPublicacion({
         ].map(({ key, label }) => (
           <label key={key} className="flex items-start gap-3 cursor-pointer group">
             <div
-              className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+              className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
                 confirmations[key]
                   ? 'bg-purple-600 border-purple-600'
                   : 'border-gray-600 group-hover:border-purple-500'
@@ -1554,7 +1554,7 @@ function StepPublicacion({
 
       {allConfirmed && (
         <div className="flex items-center gap-3 bg-green-900/20 border border-green-700/40 rounded-xl p-4">
-          <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+          <CheckCircle2 className="w-5 h-5 text-green-400 shrink-0" />
           <p className="text-sm text-green-300 font-medium">
             Todo listo. Haz clic en <strong>Publicar campaña</strong> para que tu propiedad esté
             disponible para inversores.

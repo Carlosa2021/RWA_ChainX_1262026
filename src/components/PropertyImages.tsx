@@ -183,7 +183,7 @@ export function PropertyImages({ images, projectName, className = "" }: Property
                       <button
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`flex-shrink-0 w-16 h-12 rounded overflow-hidden border-2 transition-colors duration-200 ${
+                        className={`shrink-0 w-16 h-12 rounded overflow-hidden border-2 transition-colors duration-200 ${
                           index === currentIndex 
                             ? "border-white" 
                             : "border-white/30 hover:border-white/60"

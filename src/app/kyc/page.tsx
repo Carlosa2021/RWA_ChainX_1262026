@@ -247,7 +247,7 @@ export default function KYCPage() {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -326,7 +326,7 @@ export default function KYCPage() {
           {!isLoadingStatus && kycStatus?.status === 'rejected' && (
             <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-2xl p-8 mb-8">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center shrink-0">
                   <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
                 </div>
                 <div className="flex-1">
@@ -505,7 +505,7 @@ export default function KYCPage() {
               <button
                 type="submit"
                 disabled={isSubmitting || !address}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -535,19 +535,19 @@ export default function KYCPage() {
             </h3>
             <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
               <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <span>Cumplimiento con regulaciones MiCA y AML/KYC europeas</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <span>Protección contra fraude y lavado de dinero</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <span>Garantía de seguridad para todos los inversores</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <span>Tus datos están encriptados y protegidos</span>
               </li>
             </ul>

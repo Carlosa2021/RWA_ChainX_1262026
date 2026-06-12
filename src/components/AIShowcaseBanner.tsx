@@ -10,7 +10,7 @@ export function AIShowcaseBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="relative bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white overflow-hidden">
+    <div className="relative bg-linear-to-r from-purple-600 via-blue-600 to-indigo-600 text-white overflow-hidden">
       {/* Efectos de fondo */}
       <div className="absolute inset-0">
         <div className="absolute top-4 left-10 w-4 h-4 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
@@ -24,7 +24,7 @@ export function AIShowcaseBanner() {
           <div className="flex items-center gap-6">
             {/* Icono principal */}
             <div className="relative">
-              <div className="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
                 <Brain className="w-8 h-8 text-white" />
               </div>
               <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
@@ -36,7 +36,7 @@ export function AIShowcaseBanner() {
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <h3 className="text-2xl font-bold">🚀 Nueva Experiencia AI + Payments</h3>
-                <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+                <span className="bg-linear-to-r from-yellow-400 to-orange-400 text-gray-900 px-3 py-1 rounded-full text-sm font-bold animate-pulse">
                   ¡NUEVO!
                 </span>
               </div>
@@ -87,7 +87,7 @@ export function AIShowcaseBanner() {
 
       {/* Barra de progreso animada */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20">
-        <div className="h-full bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 animate-pulse"></div>
+        <div className="h-full bg-linear-to-r from-yellow-400 via-orange-400 to-pink-400 animate-pulse"></div>
       </div>
     </div>
   );

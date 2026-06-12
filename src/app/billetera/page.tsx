@@ -91,7 +91,7 @@ export default function BilleteraPage() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Wallet className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -104,7 +104,7 @@ export default function BilleteraPage() {
           {/* Balance Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {/* Total Portfolio */}
-            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
+            <div className="bg-linear-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <PieChart className="w-5 h-5" />

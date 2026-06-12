@@ -148,7 +148,7 @@ export default function PagosAdmin() {
             {/* Header */}
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-linear-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
                   <DollarSign className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -237,7 +237,7 @@ export default function PagosAdmin() {
                       <button
                         onClick={() => handleDistributePayout(schedule)}
                         disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-400 disabled:to-gray-400 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
+                        className="w-full bg-linear-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-400 disabled:to-gray-400 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
                       >
                         <Send className="w-5 h-5" />
                         Distribuir Pago Mensual

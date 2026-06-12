@@ -186,7 +186,7 @@ export default function DocumentosPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {expiredCount > 0 && (
                 <div className="flex items-center gap-3 bg-red-900/20 border border-red-700/40 rounded-xl p-4">
-                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-red-300">
                       {expiredCount} documento(s) expirado(s)
@@ -199,7 +199,7 @@ export default function DocumentosPage() {
               )}
               {requiredCount > 0 && (
                 <div className="flex items-center gap-3 bg-amber-900/20 border border-amber-700/40 rounded-xl p-4">
-                  <Clock className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                  <Clock className="w-5 h-5 text-amber-400 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-amber-300">
                       {requiredCount} documento(s) pendiente(s) de subir
@@ -271,7 +271,7 @@ export default function DocumentosPage() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-lg bg-gray-800 flex-shrink-0 ${catMeta.color}`}>
+                    <div className={`p-2 rounded-lg bg-gray-800 shrink-0 ${catMeta.color}`}>
                       {doc.status === 'required' ? (
                         <Upload className="w-4 h-4" />
                       ) : (

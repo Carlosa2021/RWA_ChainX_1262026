@@ -37,8 +37,8 @@ export function ProjectCard({
 
   return (
     <div className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 flex flex-col h-full">
-      {/* Image Gallery - Aumentamos la altura y hacemos flex-shrink-0 */}
-      <div className="relative h-64 flex-shrink-0">
+      {/* Image Gallery - Aumentamos la altura y hacemos shrink-0 */}
+      <div className="relative h-64 shrink-0">
         <PropertyImages
           images={images && images.length > 0 ? images : [image]}
           projectName={name}
@@ -52,7 +52,7 @@ export function ProjectCard({
           </div>
         )}
         {!isFullyFunded && (
-          <div className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-3 py-1.5 rounded-full font-semibold shadow-lg z-10 text-sm">
+          <div className="absolute top-4 left-4 bg-linear-to-r from-orange-500 to-pink-500 text-white px-3 py-1.5 rounded-full font-semibold shadow-lg z-10 text-sm">
             Activo
           </div>
         )}
@@ -66,7 +66,7 @@ export function ProjectCard({
             {name}
           </h3>
           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <MapPin className="w-4 h-4 flex-shrink-0" />
+            <MapPin className="w-4 h-4 shrink-0" />
             <span className="text-sm line-clamp-1">{location}</span>
           </div>
         </div>
@@ -95,7 +95,7 @@ export function ProjectCard({
           </div>
           <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-orange-500 to-pink-500 transition-all duration-500 rounded-full"
+              className="h-full bg-linear-to-r from-orange-500 to-pink-500 transition-all duration-500 rounded-full"
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
@@ -120,7 +120,7 @@ export function ProjectCard({
               px-6 py-2 rounded-lg font-semibold transition-all text-sm
               ${isFullyFunded 
                 ? "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed" 
-                : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105"
+                : "bg-linear-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105"
               }
             `}
           >

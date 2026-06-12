@@ -288,7 +288,7 @@ export default function AdminPage() {
     <div className="space-y-6">
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-xl text-white">
+        <div className="bg-linear-to-r from-orange-500 to-orange-600 p-6 rounded-xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-orange-100 text-sm font-medium">Pendientes</p>
@@ -298,7 +298,7 @@ export default function AdminPage() {
           </div>
         </div>
         
-        <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl text-white">
+        <div className="bg-linear-to-r from-green-500 to-green-600 p-6 rounded-xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-green-100 text-sm font-medium">Aprobados</p>
@@ -308,7 +308,7 @@ export default function AdminPage() {
           </div>
         </div>
         
-        <div className="bg-gradient-to-r from-red-500 to-red-600 p-6 rounded-xl text-white">
+        <div className="bg-linear-to-r from-red-500 to-red-600 p-6 rounded-xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-red-100 text-sm font-medium">Rechazados</p>
@@ -486,7 +486,7 @@ export default function AdminPage() {
 
       {/* Estadísticas de proyectos */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-xl text-white">
+        <div className="bg-linear-to-r from-purple-500 to-purple-600 p-6 rounded-xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-purple-100 text-sm font-medium">Total Proyectos</p>
@@ -496,7 +496,7 @@ export default function AdminPage() {
           </div>
         </div>
         
-        <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl text-white">
+        <div className="bg-linear-to-r from-green-500 to-green-600 p-6 rounded-xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-green-100 text-sm font-medium">Activos</p>
@@ -506,7 +506,7 @@ export default function AdminPage() {
           </div>
         </div>
         
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl text-white">
+        <div className="bg-linear-to-r from-blue-500 to-blue-600 p-6 rounded-xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-blue-100 text-sm font-medium">Valor Total</p>
@@ -520,7 +520,7 @@ export default function AdminPage() {
           </div>
         </div>
         
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-xl text-white">
+        <div className="bg-linear-to-r from-orange-500 to-orange-600 p-6 rounded-xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-orange-100 text-sm font-medium">Inversores</p>
@@ -569,7 +569,7 @@ export default function AdminPage() {
                   <tr key={project.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center text-white text-sm font-bold">
+                        <div className="w-10 h-10 bg-linear-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center text-white text-sm font-bold">
                           {project.name?.slice(0, 2)?.toUpperCase() || "IN"}
                         </div>
                         <div>
@@ -605,7 +605,7 @@ export default function AdminPage() {
                     <td className="px-6 py-4">
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div
-                          className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full transition-all duration-300"
+                          className="bg-linear-to-r from-purple-500 to-indigo-500 h-2 rounded-full transition-all duration-300"
                           style={{ width: `${Math.min(project.progress || 0, 100)}%` }}
                         />
                       </div>

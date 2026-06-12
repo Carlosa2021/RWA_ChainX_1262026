@@ -112,7 +112,7 @@ export default function VaultPage() {
             <div className="p-6">
               <div className="max-w-4xl mx-auto">
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
-                  <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <div className="w-20 h-20 bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <Lock className="w-10 h-10 text-white" />
                   </div>
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -123,7 +123,7 @@ export default function VaultPage() {
                   </p>
                   <button
                     onClick={showUpgradePrompt}
-                    className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all transform hover:scale-105"
+                    className="px-8 py-4 bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all transform hover:scale-105"
                   >
                     Upgrade to Enterprise
                   </button>
@@ -166,7 +166,7 @@ export default function VaultPage() {
         <main className="flex-1 overflow-auto">
           <div className="p-6">
             {/* Hero Section */}
-            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white mb-8">
+            <div className="bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white mb-8">
               <div className="flex items-center gap-3 mb-4">
                 <Vault className="w-8 h-8" />
                 <h1 className="text-3xl font-bold">thirdweb Vault</h1>
@@ -254,7 +254,7 @@ export default function VaultPage() {
                 </div>
 
                 {/* Security Notice */}
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                <div className="bg-linear-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
                   <div className="flex items-start gap-3">
                     <Shield className="w-6 h-6 text-green-600 mt-1" />
                     <div>
@@ -353,7 +353,7 @@ export default function VaultPage() {
           </div>
 
           {/* Benefits Section */}
-          <div className="mt-8 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-8">
+          <div className="mt-8 bg-linear-to-r from-gray-50 to-gray-100 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
               ¿Por qué elegir thirdweb Vault?
             </h2>

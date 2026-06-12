@@ -98,7 +98,7 @@ export default function BridgePage() {
             <div className="p-6">
               <div className="max-w-4xl mx-auto">
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
-                  <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <div className="w-20 h-20 bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <Lock className="w-10 h-10 text-white" />
                   </div>
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -109,7 +109,7 @@ export default function BridgePage() {
                   </p>
                   <button
                     onClick={showUpgradePrompt}
-                    className="px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all transform hover:scale-105"
+                    className="px-8 py-4 bg-linear-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all transform hover:scale-105"
                   >
                     Upgrade Plan
                   </button>
@@ -153,7 +153,7 @@ export default function BridgePage() {
         <main className="flex-1 overflow-auto">
           <div className="p-6">
             {/* Hero Section */}
-            <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-8 text-white mb-8">
+            <div className="bg-linear-to-r from-emerald-600 to-teal-600 rounded-2xl p-8 text-white mb-8">
               <div className="flex items-center gap-3 mb-4">
                 <ArrowLeftRight className="w-8 h-8" />
                 <h1 className="text-3xl font-bold">thirdweb Bridge</h1>
@@ -354,7 +354,7 @@ export default function BridgePage() {
           </div>
 
           {/* Casos de Uso */}
-          <div className="mt-8 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-8">
+          <div className="mt-8 bg-linear-to-r from-gray-50 to-gray-100 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
               Casos de Uso para Inversores Inmobiliarios
             </h2>

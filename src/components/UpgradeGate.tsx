@@ -74,7 +74,7 @@ function UpgradeModal({
       <div className="relative bg-gray-900 border border-gray-700/60 rounded-2xl w-full max-w-lg shadow-2xl">
         {/* Header */}
         <div
-          className={`bg-gradient-to-r ${style.bg} rounded-t-2xl p-6 border-b ${style.border}/30`}
+          className={`bg-linear-to-r ${style.bg} rounded-t-2xl p-6 border-b ${style.border}/30`}
         >
           <button
             onClick={onClose}
@@ -110,7 +110,7 @@ function UpgradeModal({
                 key={planId}
                 className={`rounded-xl border p-4 ${
                   isRecommended
-                    ? `bg-gradient-to-r ${s.bg} ${s.border}/50`
+                    ? `bg-linear-to-r ${s.bg} ${s.border}/50`
                     : 'bg-gray-800/50 border-gray-700/50'
                 }`}
               >
@@ -278,7 +278,7 @@ export function UpgradeGate({
             </p>
           </div>
           <button
-            className={`relative text-xs px-4 py-1.5 rounded-full bg-gradient-to-r ${style.bg} border ${style.border}/50 ${style.text} font-semibold hover:opacity-90 transition-opacity`}
+            className={`relative text-xs px-4 py-1.5 rounded-full bg-linear-to-r ${style.bg} border ${style.border}/50 ${style.text} font-semibold hover:opacity-90 transition-opacity`}
           >
             Actualizar plan
           </button>

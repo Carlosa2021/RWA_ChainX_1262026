@@ -4,7 +4,7 @@ import { Brain, Sparkles, TrendingUp, CreditCard, Shield, Globe, Zap, Target } f
 
 export function SalesShowcaseBanner() {
   return (
-    <div className="relative bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden">
+    <div className="relative bg-linear-to-r from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden">
       {/* Efectos de fondo animados */}
       <div className="absolute inset-0">
         <div className="absolute top-8 left-16 w-4 h-4 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
@@ -19,7 +19,7 @@ export function SalesShowcaseBanner() {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-6">
             <div className="relative">
-              <div className="w-24 h-24 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-2xl">
+              <div className="w-24 h-24 bg-linear-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-2xl">
                 <Brain className="w-12 h-12 text-white" />
               </div>
               <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center animate-pulse shadow-lg">
@@ -31,7 +31,7 @@ export function SalesShowcaseBanner() {
             </div>
           </div>
           
-          <h1 className="text-6xl md:text-7xl font-black mb-4 bg-gradient-to-r from-yellow-200 via-orange-200 to-pink-200 bg-clip-text text-transparent leading-tight">
+          <h1 className="text-6xl md:text-7xl font-black mb-4 bg-linear-to-r from-yellow-200 via-orange-200 to-pink-200 bg-clip-text text-transparent leading-tight">
             LA PLATAFORMA RWA
           </h1>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-blue-100">
@@ -72,22 +72,22 @@ export function SalesShowcaseBanner() {
         </div>
 
         {/* Propuesta de valor única */}
-        <div className="bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-lg border border-white/30 rounded-3xl p-8 mb-8">
+        <div className="bg-linear-to-r from-white/20 to-white/10 backdrop-blur-lg border border-white/30 rounded-3xl p-8 mb-8">
           <div className="text-center">
             <h3 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
               <Target className="w-8 h-8 text-orange-400" />
               ¿POR QUÉ ES IRRESISTIBLE?
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-              <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl p-4">
+              <div className="bg-linear-to-br from-yellow-500/20 to-orange-500/20 rounded-xl p-4">
                 <h4 className="font-bold text-yellow-300 mb-2">🚀 VENTAJA COMPETITIVA</h4>
                 <p className="text-sm">Ninguna otra plataforma RWA tiene IA integrada. Te pone 2-3 años por delante.</p>
               </div>
-              <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-4">
+              <div className="bg-linear-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-4">
                 <h4 className="font-bold text-green-300 mb-2">💰 CONVERSIÓN MÁXIMA</h4>
                 <p className="text-sm">Pagos sin fricciones = más inversores. UX que convierte visitantes en clientes.</p>
               </div>
-              <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-4">
+              <div className="bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-4">
                 <h4 className="font-bold text-blue-300 mb-2">⚡ ESCALABILIDAD GLOBAL</h4>
                 <p className="text-sm">ChainX + Polygon = infraestructura para millones de usuarios y transacciones.</p>
               </div>
@@ -99,19 +99,19 @@ export function SalesShowcaseBanner() {
         <div className="text-center">
           <h3 className="text-2xl font-bold mb-6 text-yellow-300">📊 NÚMEROS QUE CONVENCEN</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-xl p-4">
+            <div className="bg-linear-to-br from-purple-500/30 to-pink-500/30 rounded-xl p-4">
               <div className="text-3xl font-black text-white">95%</div>
               <div className="text-sm text-gray-200">Precisión IA</div>
             </div>
-            <div className="bg-gradient-to-br from-green-500/30 to-emerald-500/30 rounded-xl p-4">
+            <div className="bg-linear-to-br from-green-500/30 to-emerald-500/30 rounded-xl p-4">
               <div className="text-3xl font-black text-white">&lt;30s</div>
               <div className="text-sm text-gray-200">Tiempo inversión</div>
             </div>
-            <div className="bg-gradient-to-br from-blue-500/30 to-cyan-500/30 rounded-xl p-4">
+            <div className="bg-linear-to-br from-blue-500/30 to-cyan-500/30 rounded-xl p-4">
               <div className="text-3xl font-black text-white">6</div>
               <div className="text-sm text-gray-200">Métodos pago</div>
             </div>
-            <div className="bg-gradient-to-br from-orange-500/30 to-red-500/30 rounded-xl p-4">
+            <div className="bg-linear-to-br from-orange-500/30 to-red-500/30 rounded-xl p-4">
               <div className="text-3xl font-black text-white">24/7</div>
               <div className="text-sm text-gray-200">Analytics IA</div>
             </div>
@@ -139,8 +139,8 @@ export function SalesShowcaseBanner() {
       </div>
 
       {/* Barra de progreso animada de alta intensidad */}
-      <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white/30 to-transparent">
-        <div className="h-full bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 animate-pulse"></div>
+      <div className="absolute bottom-0 left-0 w-full h-2 bg-linear-to-r from-transparent via-white/30 to-transparent">
+        <div className="h-full bg-linear-to-r from-orange-500 via-pink-500 to-purple-500 animate-pulse"></div>
       </div>
     </div>
   );

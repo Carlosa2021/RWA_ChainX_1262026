@@ -51,7 +51,7 @@ export function PowerBadge() {
     <div className="relative group">
       <div className={`
         inline-flex items-center gap-2 px-4 py-2 
-        bg-gradient-to-r ${config.gradient} 
+        bg-linear-to-r ${config.gradient} 
         text-white rounded-full font-bold text-sm
         shadow-lg ${config.glow} hover:shadow-xl
         transition-all duration-300 cursor-pointer
@@ -97,7 +97,7 @@ export function FeatureCounter() {
       
       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
         <div 
-          className="h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-1000 ease-out"
+          className="h-2 rounded-full bg-linear-to-r from-purple-500 to-pink-500 transition-all duration-1000 ease-out"
           style={{ width: `${percentage}%` }}
         ></div>
       </div>

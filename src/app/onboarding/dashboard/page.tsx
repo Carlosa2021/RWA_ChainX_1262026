@@ -284,7 +284,7 @@ export default function OnboardingDashboardPage() {
               {mockActivity.map((act, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div
-                    className={`mt-0.5 p-1.5 rounded-lg flex-shrink-0 ${
+                    className={`mt-0.5 p-1.5 rounded-lg shrink-0 ${
                       act.type === 'investment'
                         ? 'bg-green-900/30 text-green-400'
                         : act.type === 'kyc'

@@ -7,12 +7,12 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 text-white mt-auto">
+    <footer className="bg-linear-to-r from-gray-900 via-blue-900 to-purple-900 text-white mt-auto">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Línea superior con logo y tecnología */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 pb-6 border-b border-gray-700">
           <div className="mb-4 md:mb-0">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h3 className="text-2xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               ChainX
             </h3>
             <p className="text-gray-300 text-sm mt-1">

@@ -120,7 +120,7 @@ export default function AIPaymentsShowcase() {
             <div className="p-6">
               <div className="max-w-4xl mx-auto">
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
-                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <div className="w-20 h-20 bg-linear-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <Lock className="w-10 h-10 text-white" />
                   </div>
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -131,7 +131,7 @@ export default function AIPaymentsShowcase() {
                   </p>
                   <button
                     onClick={showUpgradePrompt}
-                    className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all transform hover:scale-105"
+                    className="px-8 py-4 bg-linear-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all transform hover:scale-105"
                   >
                     Upgrade Plan
                   </button>
@@ -164,7 +164,7 @@ export default function AIPaymentsShowcase() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
+    <div className="min-h-screen bg-linear-to-br from-purple-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
       {/* Header Espectacular para Ventas */}
       <SalesShowcaseBanner />
 
@@ -183,7 +183,7 @@ export default function AIPaymentsShowcase() {
                   onClick={() => setView(tab.id as 'properties' | 'dashboard' | 'ai')}
                   className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all ${
                     view === tab.id
-                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                      ? 'bg-linear-to-r from-purple-500 to-blue-500 text-white shadow-lg'
                       : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
@@ -234,13 +234,13 @@ export default function AIPaymentsShowcase() {
             </div>
 
             {/* Características destacadas */}
-            <div className="mt-16 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-2xl p-8">
+            <div className="mt-16 bg-linear-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">
                 🚀 Características Revolucionarias
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-linear-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Brain className="w-8 h-8 text-white" />
                   </div>
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Análisis AI</h4>
@@ -249,7 +249,7 @@ export default function AIPaymentsShowcase() {
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-linear-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <CreditCard className="w-8 h-8 text-white" />
                   </div>
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Pagos Instantáneos</h4>
@@ -258,7 +258,7 @@ export default function AIPaymentsShowcase() {
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-linear-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <TrendingUp className="w-8 h-8 text-white" />
                   </div>
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">ROI Superior</h4>

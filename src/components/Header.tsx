@@ -65,7 +65,7 @@ export function Header() {
           {/* AI Showcase Quick Access */}
           <Link
             href="/ai-showcase"
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white rounded-xl hover:shadow-lg hover:shadow-blue-500/40 transition-all group"
+            className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-purple-600 via-blue-600 to-indigo-600 text-white rounded-xl hover:shadow-lg hover:shadow-blue-500/40 transition-all group"
           >
             <Brain className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             <span className="font-semibold hidden sm:block">AI Showcase</span>
@@ -100,7 +100,7 @@ export function Header() {
             theme={theme === "dark" ? darkTheme() : lightTheme()}
             connectButton={{
               label: "Conectar Wallet",
-              className: "!bg-gradient-to-r !from-orange-500 !to-pink-500 !text-white !font-semibold !px-6 !py-3 !rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all",
+              className: "!bg-linear-to-r !from-orange-500 !to-pink-500 !text-white !font-semibold !px-6 !py-3 !rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all",
             }}
             connectModal={{
               size: "wide",

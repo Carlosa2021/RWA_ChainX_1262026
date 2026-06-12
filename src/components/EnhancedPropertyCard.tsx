@@ -251,7 +251,7 @@ export function EnhancedPropertyCard({
             </div>
             <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-orange-500 to-pink-500 transition-all duration-500"
+                className="h-full bg-linear-to-r from-orange-500 to-pink-500 transition-all duration-500"
                 style={{ width: `${Math.min(progress, 100)}%` }}
               />
             </div>
@@ -325,7 +325,7 @@ export function EnhancedPropertyCard({
                 className={`px-8 py-2.5 rounded-lg font-bold text-sm transition-all ${
                   isFullyFunded
                     ? "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105"
+                    : "bg-linear-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105"
                 }`}
               >
                 {isFullyFunded ? "Completo" : "Invertir"}

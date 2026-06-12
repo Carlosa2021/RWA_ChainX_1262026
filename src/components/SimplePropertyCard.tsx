@@ -60,7 +60,7 @@ export function SimplePropertyCard({
       <div className="group relative bg-white dark:bg-gray-900 rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-purple-500 dark:hover:border-purple-500 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10">
         
         {/* Sección de Imagen */}
-        <div className="relative h-72 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+        <div className="relative h-72 bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
           <img
             src={propertyImages[currentImageIndex]}
             alt={`${name} - Imagen ${currentImageIndex + 1}`}
@@ -68,7 +68,7 @@ export function SimplePropertyCard({
           />
           
           {/* Overlay gradiente sutil */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
           
           {/* Badge de Estado - Minimalista */}
           <div className="absolute top-4 left-4">
@@ -165,7 +165,7 @@ export function SimplePropertyCard({
             </div>
             <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 transition-all duration-500 shadow-lg"
+                className="h-full bg-linear-to-r from-purple-500 via-pink-500 to-purple-600 transition-all duration-500 shadow-lg"
                 style={{ width: `${Math.min(progress, 100)}%` }}
               />
             </div>
@@ -189,7 +189,7 @@ export function SimplePropertyCard({
               className={`px-6 py-2.5 rounded-full font-semibold text-sm transition-all ${
                 isFullyFunded
                   ? "bg-gray-200 dark:bg-gray-800 text-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105 active:scale-95"
+                  : "bg-linear-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105 active:scale-95"
               }`}
             >
               {isFullyFunded ? "Completo" : "Invertir"}

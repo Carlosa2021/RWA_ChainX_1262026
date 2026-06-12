@@ -172,7 +172,7 @@ export default function PaymentSystem({
       </div>
 
       {/* Resumen de Tokens */}
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4 mb-6">
+      <div className="bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4 mb-6">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm text-gray-600 dark:text-gray-300">Tokens a recibir:</span>
           <span className="text-lg font-bold text-purple-800 dark:text-purple-200">
@@ -281,7 +281,7 @@ export default function PaymentSystem({
       <button
         onClick={handlePayment}
         disabled={loading || amount < minInvestment || amount > maxInvestment}
-        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2"
+        className="w-full bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2"
       >
         {loading ? (
           <>

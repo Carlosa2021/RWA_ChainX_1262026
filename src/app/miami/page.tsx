@@ -60,10 +60,10 @@ export default function MiamiPresentationPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Header */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-purple-500/20 to-pink-500/20"></div>
         <div className="relative max-w-7xl mx-auto px-6 py-12">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-6">
@@ -146,7 +146,7 @@ export default function MiamiPresentationPage() {
         </div>
 
         {/* Platform Status */}
-        <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-2xl p-8 border border-purple-400/30 mb-12">
+        <div className="bg-linear-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-2xl p-8 border border-purple-400/30 mb-12">
           <div className="text-center">
             <Star className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-4">
@@ -172,7 +172,7 @@ export default function MiamiPresentationPage() {
               </div>
             </div>
 
-            <button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-2xl transition-all inline-flex items-center gap-3">
+            <button className="bg-linear-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-2xl transition-all inline-flex items-center gap-3">
               <span>Schedule Your Demo Call</span>
               <ArrowRight className="w-5 h-5" />
             </button>

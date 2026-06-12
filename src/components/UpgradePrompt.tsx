@@ -124,7 +124,7 @@ export function UpgradePrompt({ feature, onClose, isOpen }: UpgradePromptProps) 
                 >
                   {isRecommended && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      <span className="bg-linear-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
                         POPULAR
                       </span>
                     </div>
@@ -219,7 +219,7 @@ export function UpgradePrompt({ feature, onClose, isOpen }: UpgradePromptProps) 
               </button>
               <button
                 onClick={() => handleUpgrade(selectedPlan)}
-                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold"
+                className="px-6 py-2 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold"
               >
                 Upgrade Now
               </button>

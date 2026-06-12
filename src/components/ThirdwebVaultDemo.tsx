@@ -232,7 +232,7 @@ export default function ThirdwebVaultDemo({
   return (
     <div className={`bg-white rounded-xl overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white">
+      <div className="bg-linear-to-r from-indigo-600 to-purple-600 p-6 text-white">
         <div className="flex items-center gap-3 mb-4">
           <Vault className="w-6 h-6" />
           <h2 className="text-xl font-bold">thirdweb Vault</h2>
@@ -525,7 +525,7 @@ export default function ThirdwebVaultDemo({
             
             {/* Performance Metrics */}
             <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg p-4">
+              <div className="bg-linear-to-r from-green-100 to-emerald-100 rounded-lg p-4">
                 <div className="flex items-center gap-3">
                   <TrendingUp className="w-8 h-8 text-green-600" />
                   <div>
@@ -535,7 +535,7 @@ export default function ThirdwebVaultDemo({
                 </div>
               </div>
               
-              <div className="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg p-4">
+              <div className="bg-linear-to-r from-blue-100 to-indigo-100 rounded-lg p-4">
                 <div className="flex items-center gap-3">
                   <Shield className="w-8 h-8 text-blue-600" />
                   <div>
@@ -545,7 +545,7 @@ export default function ThirdwebVaultDemo({
                 </div>
               </div>
               
-              <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-4">
+              <div className="bg-linear-to-r from-purple-100 to-pink-100 rounded-lg p-4">
                 <div className="flex items-center gap-3">
                   <Zap className="w-8 h-8 text-purple-600" />
                   <div>

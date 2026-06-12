@@ -16,7 +16,7 @@ export default function SimpleHeader() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-linear-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">CX</span>
             </div>
             <span className="font-bold text-gray-900">ChainX RWA</span>

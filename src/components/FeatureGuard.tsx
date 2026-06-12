@@ -77,7 +77,7 @@ export function FeatureGuard({ feature, children, fallback, showUpgrade = true }
             </p>
             <button 
               onClick={handleUpgradeClick}
-              className="px-4 py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-lg text-sm font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+              className="px-4 py-2 bg-linear-to-r from-orange-500 to-pink-500 text-white rounded-lg text-sm font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 group"
             >
               <Sparkles className="w-4 h-4 inline mr-1 group-hover:animate-spin" />
               Upgrade ahora

@@ -56,7 +56,7 @@ export default function Home() {
         <main className="px-6 py-8 max-w-7xl mx-auto">
           {/* Hero Section - Estilo Apple minimalista */}
           <div className="mb-12 text-center">
-            <h1 className="text-6xl font-semibold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <h1 className="text-6xl font-semibold mb-4 bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               Invierte en Real Estate
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
@@ -116,7 +116,7 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-3">
                 {isOwner && (
-                  <button className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all">
+                  <button className="px-6 py-2.5 rounded-xl bg-linear-to-r from-purple-600 to-indigo-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all">
                     + Nuevo Proyecto
                   </button>
                 )}

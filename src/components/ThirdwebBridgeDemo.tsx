@@ -209,7 +209,7 @@ export default function ThirdwebBridgeDemo({
   return (
     <div className={`bg-white rounded-xl overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 text-white">
+      <div className="bg-linear-to-r from-emerald-600 to-teal-600 p-6 text-white">
         <div className="flex items-center gap-3 mb-4">
           <ArrowLeftRight className="w-6 h-6" />
           <h2 className="text-xl font-bold">thirdweb Bridge</h2>
@@ -433,7 +433,7 @@ export default function ThirdwebBridgeDemo({
             <button
               onClick={simulateBridge}
               disabled={!amount || parseFloat(amount) <= 0 || isProcessing || fromChain.id === toChain.id}
-              className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-4 px-6 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-emerald-700 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+              className="w-full bg-linear-to-r from-emerald-600 to-teal-600 text-white py-4 px-6 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-emerald-700 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
             >
               {isProcessing ? (
                 <>
@@ -464,7 +464,7 @@ export default function ThirdwebBridgeDemo({
             </p>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
-                className="bg-gradient-to-r from-emerald-600 to-teal-600 h-2 rounded-full transition-all duration-1000"
+                className="bg-linear-to-r from-emerald-600 to-teal-600 h-2 rounded-full transition-all duration-1000"
                 style={{ width: '60%' }}
               ></div>
             </div>

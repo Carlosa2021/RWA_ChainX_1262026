@@ -45,7 +45,7 @@ export default function UsuarioPage() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-linear-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
                 <User className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -60,7 +60,7 @@ export default function UsuarioPage() {
             <div className="lg:col-span-1 space-y-6">
               {/* Avatar Card */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 text-center">
-                <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
+                <div className="w-24 h-24 mx-auto mb-4 bg-linear-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
                   <User className="w-12 h-12 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
@@ -212,7 +212,7 @@ export default function UsuarioPage() {
                   </div>
                   <button
                     onClick={toggleTheme}
-                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all"
+                    className="px-6 py-3 rounded-xl bg-linear-to-r from-purple-500 to-pink-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all"
                   >
                     Cambiar Tema
                   </button>

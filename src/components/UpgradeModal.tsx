@@ -67,7 +67,7 @@ export function UpgradeModal({ isOpen, onClose, requiredPlan, feature }: Upgrade
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="relative bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 p-6 text-white rounded-t-2xl">
+        <div className="relative bg-linear-to-r from-orange-500 via-pink-500 to-purple-600 p-6 text-white rounded-t-2xl">
           <button 
             onClick={onClose}
             className="absolute top-4 right-4 p-1 hover:bg-white/20 rounded-full transition-colors"
@@ -113,14 +113,14 @@ export function UpgradeModal({ isOpen, onClose, requiredPlan, feature }: Upgrade
                 >
                   {plan.highlight && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                      <div className="bg-linear-to-r from-purple-500 to-pink-500 text-white px-4 py-1 rounded-full text-sm font-bold">
                         ⭐ MÁS POPULAR
                       </div>
                     </div>
                   )}
                   
                   <div className="text-center mb-4">
-                    <div className={`w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-r ${plan.color} flex items-center justify-center`}>
+                    <div className={`w-16 h-16 mx-auto mb-3 rounded-full bg-linear-to-r ${plan.color} flex items-center justify-center`}>
                       <Icon className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{plan.name}</h3>
@@ -133,7 +133,7 @@ export function UpgradeModal({ isOpen, onClose, requiredPlan, feature }: Upgrade
                   <ul className="space-y-3 mb-6">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-center gap-2">
-                        <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                        <Check className="w-5 h-5 text-green-500 shrink-0" />
                         <span className="text-gray-700 dark:text-gray-300">{feature}</span>
                       </li>
                     ))}
@@ -149,7 +149,7 @@ export function UpgradeModal({ isOpen, onClose, requiredPlan, feature }: Upgrade
 
           {/* Action Buttons */}
           <div className="mt-8 text-center space-y-4">
-            <button className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold text-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group">
+            <button className="w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold text-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group">
               <ArrowUp className="w-6 h-6 inline mr-2 group-hover:animate-bounce" />
               Upgrade a {selectedPlan} - €{plans.find(p => p.name === selectedPlan)?.price}/mes
             </button>

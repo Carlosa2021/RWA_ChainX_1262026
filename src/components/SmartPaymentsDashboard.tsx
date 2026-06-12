@@ -209,7 +209,7 @@ export default function SmartPaymentsDashboard({
             {/* Métricas */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {metrics.map((metric, index) => (
-                <div key={index} className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                <div key={index} className="bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <metric.icon className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                     <div className={`flex items-center gap-1 text-sm ${
@@ -235,7 +235,7 @@ export default function SmartPaymentsDashboard({
             </div>
 
             {/* Gráfico de Rendimiento */}
-            <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-6">
+            <div className="bg-linear-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 Rendimiento de Cartera (12 meses)
               </h3>
@@ -253,7 +253,7 @@ export default function SmartPaymentsDashboard({
             </div>
 
             {/* Alertas AI */}
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-4">
+            <div className="bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Bell className="w-5 h-5 text-green-600 dark:text-green-400" />
                 <h4 className="font-semibold text-green-800 dark:text-green-200">
@@ -328,7 +328,7 @@ export default function SmartPaymentsDashboard({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Distribución por Ubicación */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-6">
+              <div className="bg-linear-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-6">
                 <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
                   Distribución Geográfica
                 </h4>
@@ -356,7 +356,7 @@ export default function SmartPaymentsDashboard({
               </div>
 
               {/* ROI por Categoría */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-6">
+              <div className="bg-linear-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-6">
                 <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
                   ROI por Tipo de Propiedad
                 </h4>
@@ -385,7 +385,7 @@ export default function SmartPaymentsDashboard({
         {activeTab === 'ai' && (
           <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-linear-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -400,9 +400,9 @@ export default function SmartPaymentsDashboard({
 
             <div className="space-y-4">
               {aiInsights.map((insight, index) => (
-                <div key={index} className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4">
+                <div key={index} className="bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-8 h-8 bg-linear-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center shrink-0 mt-1">
                       <span className="text-white text-sm font-semibold">{index + 1}</span>
                     </div>
                     <p className="text-gray-800 dark:text-gray-200">{insight}</p>
@@ -412,19 +412,19 @@ export default function SmartPaymentsDashboard({
             </div>
 
             {/* Acciones Recomendadas */}
-            <div className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg p-6">
+            <div className="bg-linear-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg p-6">
               <h4 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Target className="w-5 h-5 text-orange-600" />
                 Acciones Recomendadas
               </h4>
               <div className="space-y-3">
-                <button className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white p-3 rounded-lg font-medium transition-all">
+                <button className="w-full bg-linear-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white p-3 rounded-lg font-medium transition-all">
                   🏠 Explorar Propiedad en Sevilla (ROI 14%)
                 </button>
-                <button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white p-3 rounded-lg font-medium transition-all">
+                <button className="w-full bg-linear-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white p-3 rounded-lg font-medium transition-all">
                   📊 Rebalancear Cartera Automáticamente
                 </button>
-                <button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white p-3 rounded-lg font-medium transition-all">
+                <button className="w-full bg-linear-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white p-3 rounded-lg font-medium transition-all">
                   💰 Configurar Auto-Reinversión
                 </button>
               </div>

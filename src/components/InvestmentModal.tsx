@@ -215,7 +215,7 @@ export function InvestmentModal({
                 </button>
                 <button
                   onClick={() => window.location.href = "/kyc"}
-                  className="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold hover:shadow-lg transition-all"
+                  className="flex-1 px-6 py-3 rounded-xl bg-linear-to-r from-orange-500 to-pink-500 text-white font-semibold hover:shadow-lg transition-all"
                 >
                   Completar KYC
                 </button>
@@ -241,7 +241,7 @@ export function InvestmentModal({
                 />
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 rounded-2xl p-6 border border-purple-100 dark:border-purple-900/30">
+              <div className="bg-linear-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 rounded-2xl p-6 border border-purple-100 dark:border-purple-900/30">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600 dark:text-gray-400 text-sm">Precio por token:</span>
@@ -251,10 +251,10 @@ export function InvestmentModal({
                     <span className="text-gray-600 dark:text-gray-400 text-sm">Cantidad:</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{qty} tokens</span>
                   </div>
-                  <div className="h-px bg-gradient-to-r from-transparent via-purple-200 dark:via-purple-800 to-transparent"></div>
+                  <div className="h-px bg-linear-to-r from-transparent via-purple-200 dark:via-purple-800 to-transparent"></div>
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-semibold text-gray-900 dark:text-white">Total USDC:</span>
-                    <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    <span className="text-2xl font-bold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                       {need !== null ? formatUnits(need, 6) : "—"}
                     </span>
                   </div>
@@ -283,7 +283,7 @@ export function InvestmentModal({
 
               {err && (
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                  <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
                   <p className="text-sm text-red-600 dark:text-red-400">{err}</p>
                 </div>
               )}
@@ -291,7 +291,7 @@ export function InvestmentModal({
               <button
                 disabled={!account || need === null || (usdcBalance !== null && need !== null && need > usdcBalance)}
                 onClick={handleInvest}
-                className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-xl font-bold text-lg bg-linear-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
               >
                 {usdcBalance !== null && need !== null && need > usdcBalance ? "Balance Insuficiente" : "Continuar"}
                 <ArrowRight className="w-5 h-5" />
@@ -352,7 +352,7 @@ export function InvestmentModal({
               {/* Botón para agregar token a Metamask */}
               <button
                 onClick={addTokenToWallet}
-                className="w-full mb-3 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                className="w-full mb-3 py-3 rounded-xl bg-linear-to-r from-purple-500 to-blue-500 text-white font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
               >
                 <Plus className="w-5 h-5" />
                 Agregar Token a Metamask
@@ -360,7 +360,7 @@ export function InvestmentModal({
               
               <button
                 onClick={onClose}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold hover:shadow-lg transition-all"
+                className="w-full py-3 rounded-xl bg-linear-to-r from-green-500 to-emerald-500 text-white font-semibold hover:shadow-lg transition-all"
               >
                 Ver Mi Inversión
               </button>

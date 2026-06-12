@@ -66,7 +66,7 @@ export default function RetirosPage() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-linear-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
                 <TrendingDown className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -104,7 +104,7 @@ export default function RetirosPage() {
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Nuevo Retiro</h2>
                 
                 {/* Available Balance */}
-                <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-4 mb-6 text-white">
+                <div className="bg-linear-to-br from-green-500 to-emerald-600 rounded-xl p-4 mb-6 text-white">
                   <div className="text-sm opacity-90 mb-1">Disponible para retirar</div>
                   <div className="text-3xl font-bold">${availableBalance.toLocaleString()}</div>
                 </div>
@@ -153,7 +153,7 @@ export default function RetirosPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting || !isKYCVerified || !address}
-                    className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-yellow-500 to-orange-600 text-white hover:shadow-lg hover:shadow-yellow-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                    className="w-full py-4 rounded-xl font-bold text-lg bg-linear-to-r from-yellow-500 to-orange-600 text-white hover:shadow-lg hover:shadow-yellow-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <>

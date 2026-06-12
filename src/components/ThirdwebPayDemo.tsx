@@ -121,7 +121,7 @@ export default function ThirdwebPayDemo({
   return (
     <div className={`bg-white rounded-xl overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
+      <div className="bg-linear-to-r from-blue-600 to-purple-600 p-6 text-white">
         <div className="flex items-center gap-3 mb-4">
           <Shield className="w-6 h-6" />
           <h2 className="text-xl font-bold">thirdweb Pay</h2>
@@ -234,7 +234,7 @@ export default function ThirdwebPayDemo({
             <button
               onClick={() => selectedMethod && simulatePayment(selectedMethod)}
               disabled={!selectedMethod || isProcessing}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-blue-700 hover:to-purple-700 transition-all"
+              className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-blue-700 hover:to-purple-700 transition-all"
             >
               {isProcessing ? (
                 <div className="flex items-center justify-center gap-2">
@@ -262,7 +262,7 @@ export default function ThirdwebPayDemo({
             </p>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-1000"
+                className="bg-linear-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-1000"
                 style={{ width: '75%' }}
               ></div>
             </div>
