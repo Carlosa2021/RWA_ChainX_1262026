@@ -54,6 +54,37 @@ function resolvePlanFromEnv(): PlanType {
   return 'STARTER';
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// PHASE 2 INSERTION POINTS — Do not implement here, only document
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// [RBAC] Role-Based Access Control
+//   Extend LicenseContextType to include: userRole: 'admin' | 'compliance' | 'operator' | 'readonly'
+//   Read role from: JWT claim (thirdweb Auth) or operator config table (API)
+//   Guard UI actions by role, not only by plan.
+//   Required by: banks, regulated funds, institutional operators.
+//
+// [AUDIT TRAIL] Immutable Action Log
+//   Every write action (KYC approve, doc upload, offering publish, forced transfer) must emit:
+//   { actor, action, target, timestamp, ipHash }
+//   Storage options: append-only DB table (API side) or on-chain event index.
+//   Expose as: read-only audit log page (compliance officer role only).
+//   Required by: institutional buyers, MiCA compliance, AML auditors.
+//
+// [WHITE LABEL MANAGEMENT]
+//   Add operator-facing settings page at /admin/whitelabel
+//   Fields: logoUrl, primaryColor, platformName, customDomain, supportEmail
+//   Store in: operator config (API) or environment override at deploy time.
+//   Gate behind: plan ENTERPRISE (whiteLabel feature flag already exists).
+//
+// [COMPLIANCE REPORTING]
+//   MiCA White Paper generator: PDF export of offering terms + participant list
+//   Fields: issuer, offering details, KYC summary, jurisdiction breakdown
+//   Gate behind: analyticsCompliance (ENTERPRISE plan feature flag)
+//   Trigger from: /onboarding/metricas "Export MiCA Report" button
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
 interface LicenseProviderProps {
   children: ReactNode;
 }

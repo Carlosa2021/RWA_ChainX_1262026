@@ -53,17 +53,17 @@ interface NavSection {
 
 const NAV_SECTIONS: NavSection[] = [
   {
-    label: 'Plataforma',
+    label: 'Platform',
     items: [
       { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-      { name: 'Billetera', href: '/billetera', icon: Wallet },
-      { name: 'KYC', href: '/kyc', icon: ShieldCheck },
-      { name: 'Retiros', href: '/retiros', icon: TrendingDown },
-      { name: 'Usuario', href: '/usuario', icon: User },
+      { name: 'Wallet', href: '/billetera', icon: Wallet },
+      { name: 'KYC Verification', href: '/kyc', icon: ShieldCheck },
+      { name: 'Withdrawals', href: '/retiros', icon: TrendingDown },
+      { name: 'Account', href: '/usuario', icon: User },
     ],
   },
   {
-    label: 'Thirdweb',
+    label: 'Infrastructure',
     items: [
       {
         name: 'Pay',
@@ -90,59 +90,59 @@ const NAV_SECTIONS: NavSection[] = [
         lockedFeature: 'vaultEnabled',
       },
       {
-        name: 'AI Showcase',
+        name: 'AI Analytics',
         href: '/ai-showcase',
         icon: Brain,
-        badge: 'NEW',
-        badgeColor: 'from-yellow-400 to-orange-400',
+        badge: 'AI',
+        badgeColor: 'from-gray-500 to-gray-600',
         lockedFeature: 'aiEnabled',
       },
     ],
   },
   {
-    label: 'Administracion',
+    label: 'Administration',
     ownerOnly: true,
     items: [
       {
-        name: 'Admin',
+        name: 'Admin Panel',
         href: '/admin',
         icon: Settings,
         badge: 'Owner',
         badgeColor: 'purple',
         ownerOnly: true,
       },
-      { name: 'Pagos', href: '/admin/pagos', icon: DollarSign, ownerOnly: true },
+      { name: 'Billing', href: '/admin/pagos', icon: DollarSign, ownerOnly: true },
     ],
   },
   {
-    label: 'Tokenizacion RWA',
+    label: 'Issuance',
     ownerOnly: true,
     items: [
       {
-        name: 'Onboarding',
+        name: 'Issuer Setup',
         href: '/onboarding',
         icon: Rocket,
         badge: 'RWA',
         badgeColor: 'rose',
         ownerOnly: true,
       },
-      { name: 'Campannas', href: '/onboarding/dashboard', icon: Building2, ownerOnly: true },
+      { name: 'Offerings', href: '/onboarding/dashboard', icon: Building2, ownerOnly: true },
       {
-        name: 'Inversores',
+        name: 'Participants',
         href: '/onboarding/inversores',
         icon: Users,
         lockedFeature: 'investorManagement',
         ownerOnly: true,
       },
       {
-        name: 'Documentos',
+        name: 'Documents',
         href: '/onboarding/documentos',
         icon: FileText,
         lockedFeature: 'documentManagement',
         ownerOnly: true,
       },
       {
-        name: 'Metricas',
+        name: 'Analytics',
         href: '/onboarding/metricas',
         icon: BarChart3,
         lockedFeature: 'analyticsAdvanced',
@@ -248,8 +248,7 @@ export function Sidebar() {
                 {visibleItems.map((item) => {
                   const Icon = item.icon;
                   const isActive =
-                    pathname === item.href ||
-                    (item.href !== '/' && pathname.startsWith(item.href));
+                    pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
                   const isLocked = item.lockedFeature ? !hasFeature(item.lockedFeature) : false;
 
                   if (isLocked && item.lockedFeature) {
@@ -387,11 +386,27 @@ const PLAN_HIGHLIGHTS: Record<PlanType, string[]> = {
   ],
 };
 
-const PLAN_STYLES: Record<PlanType, { grad: string; border: string; text: string; check: string }> = {
-  STARTER: { grad: 'from-gray-800 to-gray-900', border: 'border-gray-600', text: 'text-gray-300', check: 'text-gray-400' },
-  BUSINESS: { grad: 'from-blue-900 to-indigo-900', border: 'border-blue-500', text: 'text-blue-300', check: 'text-blue-400' },
-  ENTERPRISE: { grad: 'from-purple-900 to-rose-900', border: 'border-purple-500', text: 'text-purple-300', check: 'text-purple-400' },
-};
+const PLAN_STYLES: Record<PlanType, { grad: string; border: string; text: string; check: string }> =
+  {
+    STARTER: {
+      grad: 'from-gray-800 to-gray-900',
+      border: 'border-gray-600',
+      text: 'text-gray-300',
+      check: 'text-gray-400',
+    },
+    BUSINESS: {
+      grad: 'from-blue-900 to-indigo-900',
+      border: 'border-blue-500',
+      text: 'text-blue-300',
+      check: 'text-blue-400',
+    },
+    ENTERPRISE: {
+      grad: 'from-purple-900 to-rose-900',
+      border: 'border-purple-500',
+      text: 'text-purple-300',
+      check: 'text-purple-400',
+    },
+  };
 
 function UpgradeModalInline({
   feature,
@@ -448,7 +463,9 @@ function UpgradeModalInline({
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-white">{p.name}</span>
                     {isRec && (
-                      <span className={`text-xs px-2 py-0.5 rounded-full bg-white/10 ${s.text} font-semibold`}>
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded-full bg-white/10 ${s.text} font-semibold`}
+                      >
                         Recomendado
                       </span>
                     )}

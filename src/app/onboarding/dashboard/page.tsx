@@ -62,16 +62,20 @@ function StatCard({
 }
 
 // ─── Campaign Status Badge ────────────────────────────────────
+// Capital markets vocabulary (replaces generic "Activa/Borrador")
 function StatusBadge({ status }: { status: 'active' | 'pending' | 'closed' | 'draft' }) {
   const map = {
-    active: { label: 'Activa', cls: 'bg-green-900/40 text-green-400 border-green-700/40' },
-    pending: { label: 'Pendiente', cls: 'bg-amber-900/40 text-amber-400 border-amber-700/40' },
-    closed: { label: 'Cerrada', cls: 'bg-gray-800 text-gray-500 border-gray-700' },
-    draft: { label: 'Borrador', cls: 'bg-blue-900/40 text-blue-400 border-blue-700/40' },
+    active: {
+      label: 'Open for Subscription',
+      cls: 'bg-emerald-950 text-emerald-400 border-emerald-800',
+    },
+    pending: { label: 'In Review', cls: 'bg-amber-950 text-amber-400 border-amber-800' },
+    closed: { label: 'Closed', cls: 'bg-gray-900 text-gray-500 border-gray-800' },
+    draft: { label: 'In Structuring', cls: 'bg-gray-900 text-gray-400 border-gray-700' },
   };
   const { label, cls } = map[status];
   return (
-    <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${cls}`}>{label}</span>
+    <span className={`text-xs font-medium px-2.5 py-1 rounded-md border ${cls}`}>{label}</span>
   );
 }
 
@@ -152,37 +156,50 @@ export default function OnboardingDashboardPage() {
     <div className="flex h-screen bg-gray-950 text-white overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header title="Gestión de Campañas" subtitle="Administra tus propiedades tokenizadas" />
+        <Header
+          title="Offerings Management"
+          subtitle="Digital securities issuance and lifecycle · ERC-3643 compliant"
+        />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* Stats */}
+          {/* Stats — 🟡 DEMO DATA (replace with real blockchain reads in production) */}
+          {/* PHASE 2 INSERTION POINT: replace mock values with useProjects() + useVerifiedWallets() */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* DEMO badge — visible indicator that data is illustrative */}
+            <div className="col-span-full flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 w-fit">
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Demo Data
+              </span>
+              <span className="text-xs text-gray-600">
+                · Sample values for illustration. No live data displayed.
+              </span>
+            </div>
             <StatCard
-              label="Campañas activas"
+              label="Active Offerings"
               value="2"
-              sub="1 en borrador"
+              sub="1 in structuring"
               icon={Building2}
               color="purple"
             />
             <StatCard
-              label="Inversión total"
+              label="Capital Raised"
               value="€2.235.000"
-              sub="En 3 campañas"
+              sub="Across 3 offerings"
               icon={DollarSign}
-              trend="+12% este mes"
+              trend="+12% this month"
               color="green"
             />
             <StatCard
-              label="Inversores KYC"
+              label="Verified Participants"
               value="60"
-              sub="Verificados activos"
+              sub="Identity verified (KYC)"
               icon={Users}
-              trend="+8 esta semana"
+              trend="+8 this week"
               color="blue"
             />
             <StatCard
-              label="APY promedio"
-              value="7.1%"
-              sub="Ponderado por volumen"
+              label="Avg. Target Return"
+              value="7.1% p.a."
+              sub="Issuer projection · not guaranteed"
               icon={TrendingUp}
               color="amber"
             />
@@ -191,12 +208,17 @@ export default function OnboardingDashboardPage() {
           {/* Campaigns table */}
           <div className="bg-gray-900/60 border border-gray-800/60 rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-              <h2 className="font-semibold text-white">Mis campañas</h2>
+              <div>
+                <h2 className="font-semibold text-white">Offerings</h2>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Digital securities on Polygon Mainnet · ERC-3643
+                </p>
+              </div>
               <Link
                 href="/onboarding"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white text-xs font-medium transition-colors"
               >
-                <Plus className="w-3.5 h-3.5" /> Nueva campaña
+                <Plus className="w-3.5 h-3.5" /> New Offering
               </Link>
             </div>
             <div className="overflow-x-auto">
@@ -204,13 +226,13 @@ export default function OnboardingDashboardPage() {
                 <thead>
                   <tr className="border-b border-gray-800">
                     {[
-                      'Campaña',
-                      'Recaudación',
-                      'Inversores',
-                      'APY',
-                      'Estado',
-                      'Fecha límite',
-                      'Acciones',
+                      'Offering',
+                      'Capital Raised',
+                      'Participants',
+                      'Target Return',
+                      'Status',
+                      'Closing Date',
+                      'Actions',
                     ].map((h) => (
                       <th
                         key={h}
@@ -249,7 +271,10 @@ export default function OnboardingDashboardPage() {
                       </td>
                       <td className="px-6 py-4 text-sm text-white">{c.investors}</td>
                       <td className="px-6 py-4">
-                        <span className="text-sm text-green-400 font-medium">{c.apy}%</span>
+                        <div>
+                          <span className="text-sm text-gray-300 font-medium">{c.apy}% p.a.</span>
+                          <p className="text-xs text-gray-600">issuer projection</p>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <StatusBadge status={c.status} />

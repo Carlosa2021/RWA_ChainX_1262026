@@ -185,9 +185,15 @@ export default function MetricasPage() {
     <div className="flex h-screen bg-gray-950 text-white overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header title="Métricas y Reporting" subtitle="KPIs, rendimiento y distribuciones" />
+        <Header title="Analytics & Reporting" subtitle="Portfolio performance, asset distributions and MiCA compliance reporting" />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* Period selector */}
+          {/* DEMO badge — PHASE 2: replace mock data with blockchain event reads + InvestmentController */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 w-fit">
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Demo Data</span>
+            <span className="text-xs text-gray-600">· Sample metrics for illustration. No live data displayed.</span>
+          </div>
+
+          {/* Period selector */}}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {periods.map((p) => (
@@ -212,40 +218,40 @@ export default function MetricasPage() {
           {/* KPI cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <KPICard
-              label="Inversión captada"
+              label="Capital Raised"
               value="€2.235.000"
-              sub="Total acumulado"
-              trend="+€87.000 este período"
+              sub="Total committed"
+              trend="+€87.000 this period"
               trendPositive
               chartValues={investmentHistory}
               color="purple"
               icon={DollarSign}
             />
             <KPICard
-              label="Inversores activos"
+              label="Verified Participants"
               value="60"
-              sub="KYC verificados"
-              trend="+8 nuevos"
+              sub="Identity verified (KYC)"
+              trend="+8 new"
               trendPositive
               chartValues={investorGrowth}
               color="blue"
               icon={Users}
             />
             <KPICard
-              label="APY promedio real"
+              label="Avg. Target Return (p.a.)"
               value="7.1%"
-              sub="Ponderado por volumen"
-              trend="+0.3% vs período anterior"
+              sub="Issuer projection · not guaranteed"
+              trend="+0.3% vs prior period"
               trendPositive
               chartValues={apyPerf}
               color="green"
               icon={TrendingUp}
             />
             <KPICard
-              label="Tasa de conversión"
+              label="Conversion Rate"
               value="65%"
-              sub="Visitas → inversión"
-              trend="+4% vs período anterior"
+              sub="Sessions → subscriptions"
+              trend="+4% vs prior period"
               trendPositive
               chartValues={conversionRate}
               color="amber"
@@ -257,7 +263,7 @@ export default function MetricasPage() {
           <div className="bg-gray-900/60 border border-gray-800/60 rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-800 flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-purple-400" />
-              <h2 className="font-semibold text-white">Rendimiento por campaña</h2>
+              <h2 className="font-semibold text-white">Offering Performance</h2>
             </div>
             <div className="p-6 space-y-5">
               {campaignMetrics.map((c) => (
@@ -266,7 +272,7 @@ export default function MetricasPage() {
                     <div>
                       <p className="text-sm font-medium text-white">{c.name}</p>
                       <p className="text-xs text-gray-500">
-                        {c.investors} inversores · APY {c.apy}% · Distribuido: €
+                        {c.investors} participants · Target {c.apy}% p.a. · Distributed: €
                         {c.distributed.toLocaleString('es-ES')}
                       </p>
                     </div>
@@ -293,19 +299,19 @@ export default function MetricasPage() {
                   </div>
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { label: 'Conversión', value: `${c.convRate}%`, color: 'text-amber-400' },
+                      { label: 'Conversion', value: `${c.convRate}%`, color: 'text-amber-400' },
                       {
-                        label: 'Ticket medio',
+                        label: 'Avg. Ticket',
                         value: `€${Math.round(c.raised / (c.investors || 1)).toLocaleString('es-ES')}`,
                         color: 'text-blue-400',
                       },
                       {
-                        label: 'Distribuido',
+                        label: 'Distributed',
                         value: `€${c.distributed.toLocaleString('es-ES')}`,
-                        color: 'text-green-400',
+                        color: 'text-emerald-400',
                       },
                     ].map(({ label, value, color }) => (
-                      <div key={label} className="bg-gray-800/50 rounded-lg p-2.5 text-center">
+                      <div key={label} className="bg-gray-900 border border-gray-800 rounded-lg p-2.5 text-center">
                         <p className={`text-sm font-bold ${color}`}>{value}</p>
                         <p className="text-xs text-gray-600 mt-0.5">{label}</p>
                       </div>
@@ -320,13 +326,13 @@ export default function MetricasPage() {
           <div className="bg-gray-900/60 border border-gray-800/60 rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-800 flex items-center gap-2">
               <Zap className="w-4 h-4 text-green-400" />
-              <h2 className="font-semibold text-white">Historial de distribuciones</h2>
+              <h2 className="font-semibold text-white">Distribution History</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-800">
-                    {['Período', 'Campaña', 'Importe total', 'Inversores', 'Estado'].map((h) => (
+                    {['Period', 'Offering', 'Total Amount', 'Participants', 'Status'].map((h) => (
                       <th
                         key={h}
                         className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"

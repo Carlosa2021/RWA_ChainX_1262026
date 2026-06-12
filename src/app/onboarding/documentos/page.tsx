@@ -177,35 +177,45 @@ export default function DocumentosPage() {
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header
-          title="Gestión Documental"
-          subtitle="Documentos legales, financieros y de compliance"
+          title="Document Management"
+          subtitle="Legal, financial and compliance documentation · Versioned and audit-ready"
         />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* DEMO badge — PHASE 2: replace mockDocs with document storage API reads */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 w-fit">
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Demo Data
+            </span>
+            <span className="text-xs text-gray-600">
+              · Sample documents for illustration. No live data displayed.
+            </span>
+          </div>
+
           {/* Alerts */}
           {(expiredCount > 0 || requiredCount > 0) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {expiredCount > 0 && (
-                <div className="flex items-center gap-3 bg-red-900/20 border border-red-700/40 rounded-xl p-4">
+                <div className="flex items-center gap-3 bg-red-950 border border-red-900 rounded-xl p-4">
                   <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-red-300">
-                      {expiredCount} documento(s) expirado(s)
+                      {expiredCount} document(s) expired
                     </p>
                     <p className="text-xs text-red-400/80 mt-0.5">
-                      Actualiza los documentos para mantener el compliance.
+                      Renew to maintain regulatory compliance standing.
                     </p>
                   </div>
                 </div>
               )}
               {requiredCount > 0 && (
-                <div className="flex items-center gap-3 bg-amber-900/20 border border-amber-700/40 rounded-xl p-4">
+                <div className="flex items-center gap-3 bg-amber-950 border border-amber-900 rounded-xl p-4">
                   <Clock className="w-5 h-5 text-amber-400 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-amber-300">
-                      {requiredCount} documento(s) pendiente(s) de subir
+                      {requiredCount} required document(s) pending upload
                     </p>
                     <p className="text-xs text-amber-400/80 mt-0.5">
-                      Estos documentos son obligatorios para compliance anual.
+                      Required for annual compliance review.
                     </p>
                   </div>
                 </div>
@@ -219,7 +229,7 @@ export default function DocumentosPage() {
               <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-500" />
               <input
                 className="w-full bg-gray-800/60 border border-gray-700/50 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-gray-600 focus:border-purple-500 focus:outline-none"
-                placeholder="Buscar documento..."
+                placeholder="Search document..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />

@@ -112,26 +112,30 @@ const mockInvestors: Investor[] = [
 function StatusBadge({ status }: { status: InvestorStatus }) {
   const map: Record<InvestorStatus, { label: string; icon: React.ElementType; cls: string }> = {
     verified: {
-      label: 'Verificado',
+      label: 'Identity Verified',
       icon: CheckCircle2,
-      cls: 'bg-green-900/40 text-green-400 border-green-700/40',
+      cls: 'bg-emerald-950 text-emerald-400 border-emerald-800',
     },
     pending: {
-      label: 'Pendiente',
+      label: 'Verification Pending',
       icon: Clock,
-      cls: 'bg-amber-900/40 text-amber-400 border-amber-700/40',
+      cls: 'bg-amber-950 text-amber-400 border-amber-800',
     },
     rejected: {
-      label: 'Rechazado',
+      label: 'Verification Rejected',
       icon: XCircle,
-      cls: 'bg-red-900/40 text-red-400 border-red-700/40',
+      cls: 'bg-red-950 text-red-400 border-red-800',
     },
-    expired: { label: 'Expirado', icon: ShieldX, cls: 'bg-gray-800 text-gray-500 border-gray-700' },
+    expired: {
+      label: 'KYC Expired',
+      icon: ShieldX,
+      cls: 'bg-gray-900 text-gray-500 border-gray-800',
+    },
   };
   const { label, icon: Icon, cls } = map[status];
   return (
     <span
-      className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border ${cls}`}
+      className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-md border ${cls}`}
     >
       <Icon className="w-3 h-3" /> {label}
     </span>
@@ -163,19 +167,32 @@ export default function InversoresPage() {
     <div className="flex h-screen bg-gray-950 text-white overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header title="Gestión de Inversores" subtitle="KYC, wallets y posiciones de inversión" />
+        <Header
+          title="Participant Management"
+          subtitle="Identity verification, wallet registry and investment positions · ERC-3643"
+        />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* DEMO badge — PHASE 2: replace mockInvestors with useVerifiedWallets() + IdentityRegistry reads */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 w-fit">
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Demo Data
+            </span>
+            <span className="text-xs text-gray-600">
+              · Sample participants for illustration. No live data displayed.
+            </span>
+          </div>
+
           {/* Summary stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Verificados', count: counts.verified, cls: 'text-green-400' },
-              { label: 'Pendientes', count: counts.pending, cls: 'text-amber-400' },
-              { label: 'Rechazados', count: counts.rejected, cls: 'text-red-400' },
-              { label: 'Expirados', count: counts.expired, cls: 'text-gray-500' },
+              { label: 'Identity Verified', count: counts.verified, cls: 'text-emerald-400' },
+              { label: 'Pending Verification', count: counts.pending, cls: 'text-amber-400' },
+              { label: 'Rejected', count: counts.rejected, cls: 'text-red-400' },
+              { label: 'KYC Expired', count: counts.expired, cls: 'text-gray-500' },
             ].map(({ label, count, cls }) => (
               <div
                 key={label}
-                className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 text-center"
+                className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center"
               >
                 <p className={`text-2xl font-bold ${cls}`}>{count}</p>
                 <p className="text-xs text-gray-500 mt-1">{label}</p>
@@ -189,7 +206,7 @@ export default function InversoresPage() {
               <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-500" />
               <input
                 className="w-full bg-gray-800/60 border border-gray-700/50 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-gray-600 focus:border-purple-500 focus:outline-none"
-                placeholder="Buscar por nombre, email o wallet..."
+                placeholder="Search by name, email or wallet address..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
