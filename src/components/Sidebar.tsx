@@ -24,6 +24,7 @@ import {
   CreditCard,
   Palette,
   History,
+  ClipboardCheck,
   ArrowLeftRight,
   Vault,
   Rocket,
@@ -179,6 +180,13 @@ const NAV_SECTIONS: NavSection[] = [
         icon: History,
         ownerOnly: true,
         requiredPermission: Permission.AUDIT_VIEW,
+      },
+      {
+        name: 'Compliance Reports',
+        href: '/compliance/reports',
+        icon: ClipboardCheck,
+        ownerOnly: true,
+        requiredPermission: Permission.COMPLIANCE_VIEW,
       },
       {
         name: 'Billing',
