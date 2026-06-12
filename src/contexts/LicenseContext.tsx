@@ -1,131 +1,113 @@
-"use client";
+'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { PlanType, Plan, getPlan, isFeatureEnabled, getLimit, canExceedLimit } from '@/config/plans';
+import {
+  PlanType,
+  Plan,
+  PlanFeatures,
+  getPlan,
+  isFeatureEnabled,
+  getLimit,
+  canExceedLimit,
+  normalisePlan,
+  planAtLeast,
+  requiredPlanFor,
+} from '@/config/plans';
 import { logger } from '@/lib/logger';
 
 interface LicenseContextType {
-  // Current Plan
   currentPlan: PlanType;
   planDetails: Plan;
-  
-  // Plan Management
   setPlan: (plan: PlanType) => void;
-  
-  // Feature Checking
-  hasFeature: (feature: keyof Plan['features']) => boolean;
-  getFeatureLimit: (limit: 'maxProperties' | 'maxInvestors' | 'maxTokensPerProperty') => number;
-  canExceedFeatureLimit: (limit: 'maxProperties' | 'maxInvestors' | 'maxTokensPerProperty', current: number) => boolean;
-  
-  // License Status
+  hasFeature: (feature: keyof PlanFeatures) => boolean;
+  planAtLeast: (required: PlanType) => boolean;
+  requiredPlanFor: (feature: keyof PlanFeatures) => PlanType;
+  getFeatureLimit: (
+    limit: 'maxProperties' | 'maxInvestors' | 'maxActiveWallets' | 'maxTokensPerProperty'
+  ) => number;
+  canExceedFeatureLimit: (
+    limit: 'maxProperties' | 'maxInvestors' | 'maxActiveWallets' | 'maxTokensPerProperty',
+    current: number
+  ) => boolean;
   isValid: boolean;
   expiresAt?: Date;
-  
-  // License Key (for validation)
   licenseKey?: string;
   setLicenseKey: (key: string) => void;
 }
 
 const LicenseContext = createContext<LicenseContextType | undefined>(undefined);
 
-interface LicenseProviderProps {
-  children: ReactNode;
-  defaultPlan?: PlanType;
-  licenseKey?: string;
+// ─── Resolve plan from .env ──────────────────────────────────
+// Priority: NEXT_PUBLIC_PLAN_TYPE env var → license key prefix → STARTER (safe default)
+// Set NEXT_PUBLIC_PLAN_TYPE=STARTER|BUSINESS|ENTERPRISE in .env.local per client deployment
+function resolvePlanFromEnv(): PlanType {
+  const envPlan = process.env.NEXT_PUBLIC_PLAN_TYPE;
+  if (envPlan) return normalisePlan(envPlan);
+
+  // Fallback: derive from license key format "PLAN-DATE-HASH"
+  const envKey = process.env.NEXT_PUBLIC_LICENSE_KEY || '';
+  if (envKey) {
+    const prefix = envKey.split('-')[0];
+    return normalisePlan(prefix);
+  }
+
+  return 'STARTER';
 }
 
-export function LicenseProvider({ 
-  children, 
-  defaultPlan = 'ENTERPRISE', // SIEMPRE ENTERPRISE
-  licenseKey: initialLicenseKey 
-}: LicenseProviderProps) {
-  // Estado inicial FORZADO a ENTERPRISE
-  const [currentPlan, setCurrentPlan] = useState<PlanType>('ENTERPRISE');
-  const [licenseKey, setLicenseKey] = useState<string | undefined>('ENTERPRISE_DEV_2024_CHAINX');
+interface LicenseProviderProps {
+  children: ReactNode;
+}
+
+export function LicenseProvider({ children }: LicenseProviderProps) {
+  const [currentPlan, setCurrentPlan] = useState<PlanType>(() => resolvePlanFromEnv());
+  const [licenseKey, setLicenseKeyState] = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_LICENSE_KEY
+  );
   const [isValid, setIsValid] = useState(true);
   const [expiresAt, setExpiresAt] = useState<Date | undefined>();
 
-  // Get plan from environment variables or license key
   useEffect(() => {
-    // FORZAR ENTERPRISE MODE - Sin condiciones
-    setCurrentPlan('ENTERPRISE');
-    logger.info('🚀 LICENSE: ENTERPRISE MODE FORCED');
-    
-    // Set default ENTERPRISE license for development
-    const devLicense = 'ENTERPRISE_DEV_2024_CHAINX_UNLIMITED';
-    setLicenseKey(devLicense);
+    const resolved = resolvePlanFromEnv();
+    setCurrentPlan(resolved);
     setIsValid(true);
-    setExpiresAt(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)); // 1 año
-    
-    logger.info('✅ LICENSE: All features unlocked, unlimited usage');
+    // Default expiry: 1 year from now (real validation via license server in production)
+    setExpiresAt(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000));
+    logger.info(`✅ ChainX License: ${resolved} plan activated`);
   }, []);
 
-  // License validation (simplified for now)
-  const validateLicense = async (key: string) => {
-    try {
-      // In production, this would validate against your license server
-      // For now, we'll use a simple format: PLAN_CLIENTID_HASH
-      const parts = key.split('_');
-      if (parts.length >= 2) {
-        const planFromKey = parts[0] as PlanType;
-        if (['STARTER', 'PRO', 'ENTERPRISE'].includes(planFromKey)) {
-          setCurrentPlan(planFromKey);
-          setIsValid(true);
-          // Set expiration (e.g., 30 days from now)
-          setExpiresAt(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
-        }
-      }
-    } catch (error) {
-      console.error('License validation failed:', error);
-      setIsValid(false);
-    }
-  };
-
-  const setPlan = (plan: PlanType) => {
-    setCurrentPlan(plan);
-    // In production, this would update the license on the server
-  };
+  const setPlan = (plan: PlanType) => setCurrentPlan(plan);
 
   const handleSetLicenseKey = (key: string) => {
-    setLicenseKey(key);
+    setLicenseKeyState(key);
     if (typeof window !== 'undefined') {
       localStorage.setItem('chainx_license_key', key);
     }
-    validateLicense(key);
+    // Derive plan from key prefix (format: PLAN-DATE-HASH)
+    const prefix = key.split('-')[0];
+    const derived = normalisePlan(prefix);
+    setCurrentPlan(derived);
+    setIsValid(true);
+    logger.info(`🔑 License key applied: ${derived} plan`);
   };
 
   const planDetails = getPlan(currentPlan);
-
-  const hasFeature = (feature: keyof Plan['features']): boolean => {
-    return isFeatureEnabled(currentPlan, feature);
-  };
-
-  const getFeatureLimit = (limit: 'maxProperties' | 'maxInvestors' | 'maxTokensPerProperty'): number => {
-    return getLimit(currentPlan, limit);
-  };
-
-  const canExceedFeatureLimit = (limit: 'maxProperties' | 'maxInvestors' | 'maxTokensPerProperty', current: number): boolean => {
-    return canExceedLimit(currentPlan, limit, current);
-  };
 
   const value: LicenseContextType = {
     currentPlan,
     planDetails,
     setPlan,
-    hasFeature,
-    getFeatureLimit,
-    canExceedFeatureLimit,
+    hasFeature: (feature) => isFeatureEnabled(currentPlan, feature),
+    planAtLeast: (required) => planAtLeast(currentPlan, required),
+    requiredPlanFor,
+    getFeatureLimit: (limit) => getLimit(currentPlan, limit),
+    canExceedFeatureLimit: (limit, current) => canExceedLimit(currentPlan, limit, current),
     isValid,
     expiresAt,
     licenseKey,
     setLicenseKey: handleSetLicenseKey,
   };
 
-  return (
-    <LicenseContext.Provider value={value}>
-      {children}
-    </LicenseContext.Provider>
-  );
+  return <LicenseContext.Provider value={value}>{children}</LicenseContext.Provider>;
 }
 
 export function useLicense() {
@@ -145,10 +127,10 @@ export function useFeature(feature: keyof Plan['features']) {
 // Hook for limit checking
 export function useLimit(limit: 'maxProperties' | 'maxInvestors' | 'maxTokensPerProperty') {
   const { getFeatureLimit, canExceedFeatureLimit } = useLicense();
-  
+
   return {
     limit: getFeatureLimit(limit),
     canExceed: (current: number) => canExceedFeatureLimit(limit, current),
-    isUnlimited: getFeatureLimit(limit) === -1
+    isUnlimited: getFeatureLimit(limit) === -1,
   };
 }
