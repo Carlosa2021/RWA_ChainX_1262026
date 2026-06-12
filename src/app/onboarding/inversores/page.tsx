@@ -205,7 +205,7 @@ export default function InversoresPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-500" />
               <input
-                className="w-full bg-gray-800/60 border border-gray-700/50 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-gray-800/60 border border-gray-700/50 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-gray-600 focus:border-blue-500 focus:outline-none"
                 placeholder="Search by name, email or wallet address..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -218,24 +218,24 @@ export default function InversoresPage() {
                   onClick={() => setFilterStatus(s)}
                   className={`px-3 py-2 rounded-lg text-xs font-medium transition-all border ${
                     filterStatus === s
-                      ? 'bg-purple-600 border-purple-500 text-white'
+                      ? 'bg-blue-600 border-blue-500 text-white'
                       : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
                   }`}
                 >
                   {s === 'all'
-                    ? `Todos (${counts.all})`
+                    ? `All (${counts.all})`
                     : s === 'verified'
-                      ? `Verificados (${counts.verified})`
+                      ? `Verified (${counts.verified})`
                       : s === 'pending'
-                        ? `Pendientes (${counts.pending})`
+                        ? `Pending (${counts.pending})`
                         : s === 'rejected'
-                          ? `Rechazados (${counts.rejected})`
-                          : `Expirados (${counts.expired})`}
+                          ? `Rejected (${counts.rejected})`
+                          : `Expired (${counts.expired})`}
                 </button>
               ))}
             </div>
             <button className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-xs text-gray-400 border border-gray-700 hover:border-gray-600 bg-gray-800/60 transition-colors">
-              <Download className="w-3.5 h-3.5" /> Exportar CSV
+              <Download className="w-3.5 h-3.5" /> Export CSV
             </button>
           </div>
 

@@ -20,7 +20,7 @@ import {
 
 type Period = '7d' | '30d' | '90d' | '1y';
 
-function MiniChart({ values, color = 'purple' }: { values: number[]; color?: string }) {
+function MiniChart({ values, color = 'blue' }: { values: number[]; color?: string }) {
   const max = Math.max(...values);
   const min = Math.min(...values);
   const range = max - min || 1;
@@ -60,7 +60,7 @@ function KPICard({
   trendPositive,
   sub,
   chartValues,
-  color = 'purple',
+  color = 'blue',
   icon: Icon,
 }: {
   label: string;
@@ -73,17 +73,17 @@ function KPICard({
   icon: React.ElementType;
 }) {
   return (
-    <div className="bg-gray-900/60 border border-gray-800/60 rounded-2xl p-5">
+    <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
       <div className="flex items-center justify-between mb-3">
         <span className="text-sm text-gray-400">{label}</span>
         <div
           className={`p-2 rounded-lg ${
             {
-              purple: 'bg-purple-900/30 text-purple-400',
+              purple: 'bg-blue-900/30 text-blue-400',
               green: 'bg-green-900/30 text-green-400',
               blue: 'bg-blue-900/30 text-blue-400',
               amber: 'bg-amber-900/30 text-amber-400',
-            }[color] || 'bg-purple-900/30 text-purple-400'
+            }[color] || 'bg-gray-800 text-gray-400'
           }`}
         >
           <Icon className="w-4 h-4" />

@@ -19,7 +19,6 @@ import {
   Sun,
   DollarSign,
   Brain,
-  Sparkles,
   CreditCard,
   ArrowLeftRight,
   Vault,
@@ -63,58 +62,6 @@ const NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    label: 'Infrastructure',
-    items: [
-      {
-        name: 'Pay',
-        href: '/payments',
-        icon: CreditCard,
-        badge: 'PAY',
-        badgeColor: 'from-green-400 to-emerald-400',
-        lockedFeature: 'payEnabled',
-      },
-      {
-        name: 'Bridge',
-        href: '/bridge',
-        icon: ArrowLeftRight,
-        badge: 'CROSS',
-        badgeColor: 'from-emerald-400 to-teal-400',
-        lockedFeature: 'bridgeEnabled',
-      },
-      {
-        name: 'Vault',
-        href: '/vault',
-        icon: Vault,
-        badge: 'SECURE',
-        badgeColor: 'from-indigo-400 to-purple-400',
-        lockedFeature: 'vaultEnabled',
-      },
-      {
-        name: 'AI Analytics',
-        href: '/ai-showcase',
-        icon: Brain,
-        badge: 'AI',
-        badgeColor: 'from-gray-500 to-gray-600',
-        lockedFeature: 'aiEnabled',
-      },
-    ],
-  },
-  {
-    label: 'Administration',
-    ownerOnly: true,
-    items: [
-      {
-        name: 'Admin Panel',
-        href: '/admin',
-        icon: Settings,
-        badge: 'Owner',
-        badgeColor: 'purple',
-        ownerOnly: true,
-      },
-      { name: 'Billing', href: '/admin/pagos', icon: DollarSign, ownerOnly: true },
-    ],
-  },
-  {
     label: 'Projects',
     ownerOnly: true,
     items: [
@@ -123,7 +70,6 @@ const NAV_SECTIONS: NavSection[] = [
         href: '/onboarding',
         icon: Rocket,
         badge: 'RWA',
-        badgeColor: 'rose',
         ownerOnly: true,
       },
       { name: 'Projects', href: '/onboarding/dashboard', icon: Building2, ownerOnly: true },
@@ -150,39 +96,59 @@ const NAV_SECTIONS: NavSection[] = [
       },
     ],
   },
+  {
+    label: 'Infrastructure',
+    items: [
+      {
+        name: 'Pay',
+        href: '/payments',
+        icon: CreditCard,
+        badge: 'PAY',
+        lockedFeature: 'payEnabled',
+      },
+      {
+        name: 'Bridge',
+        href: '/bridge',
+        icon: ArrowLeftRight,
+        badge: 'BRIDGE',
+        lockedFeature: 'bridgeEnabled',
+      },
+      {
+        name: 'Vault',
+        href: '/vault',
+        icon: Vault,
+        badge: 'VAULT',
+        lockedFeature: 'vaultEnabled',
+      },
+      {
+        name: 'AI Analytics',
+        href: '/ai-showcase',
+        icon: Brain,
+        badge: 'AI',
+        lockedFeature: 'aiEnabled',
+      },
+    ],
+  },
+  {
+    label: 'Administration',
+    ownerOnly: true,
+    items: [
+      {
+        name: 'Admin Panel',
+        href: '/admin',
+        icon: Settings,
+        badge: 'Admin',
+        ownerOnly: true,
+      },
+      { name: 'Billing', href: '/admin/pagos', icon: DollarSign, ownerOnly: true },
+    ],
+  },
 ];
-
-function sectionActiveColor(href: string): string {
-  if (href.startsWith('/onboarding'))
-    return 'bg-linear-to-r from-rose-600 to-orange-600 text-white shadow-rose-500/25';
-  if (href === '/admin' || href.startsWith('/admin'))
-    return 'bg-linear-to-r from-purple-600 to-indigo-600 text-white shadow-purple-500/30';
-  if (href === '/payments')
-    return 'bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-blue-500/40';
-  if (href === '/bridge')
-    return 'bg-linear-to-r from-emerald-600 to-teal-600 text-white shadow-emerald-500/40';
-  if (href === '/vault')
-    return 'bg-linear-to-r from-indigo-600 to-purple-600 text-white shadow-indigo-500/40';
-  if (href === '/ai-showcase')
-    return 'bg-linear-to-r from-purple-600 via-blue-600 to-indigo-600 text-white shadow-blue-500/40';
-  return 'bg-linear-to-r from-orange-500 to-pink-500 text-white shadow-orange-500/30';
-}
-
-function iconColor(href: string, isActive: boolean): string {
-  if (isActive) return '';
-  if (href === '/admin' || href.startsWith('/admin')) return 'text-purple-500';
-  if (href.startsWith('/onboarding')) return 'text-rose-400';
-  if (href === '/payments') return 'text-blue-400';
-  if (href === '/bridge') return 'text-emerald-400';
-  if (href === '/vault') return 'text-indigo-400';
-  if (href === '/ai-showcase') return 'text-blue-400';
-  return 'text-gray-400';
-}
 
 const PLAN_BADGE: Record<string, { label: string; cls: string }> = {
   STARTER: { label: 'Starter', cls: 'bg-gray-700 text-gray-300' },
   BUSINESS: { label: 'Business', cls: 'bg-blue-900/60 text-blue-300' },
-  ENTERPRISE: { label: 'Enterprise', cls: 'bg-purple-900/60 text-purple-300' },
+  ENTERPRISE: { label: 'Enterprise', cls: 'bg-blue-900/40 text-blue-300' },
 };
 
 export function Sidebar() {
@@ -212,7 +178,7 @@ export function Sidebar() {
       <aside className="w-64 min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
         <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-linear-to-br from-orange-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shrink-0">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shrink-0">
               <Building2 className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">
@@ -277,32 +243,20 @@ export function Sidebar() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all shadow-sm ${
+                      className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${
                         isActive
-                          ? `${sectionActiveColor(item.href)} shadow-lg`
+                          ? 'bg-blue-600 text-white shadow-sm'
                           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                       }`}
                     >
-                      <Icon className={`w-4 h-4 shrink-0 ${iconColor(item.href, isActive)}`} />
+                      <Icon
+                        className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-gray-400'}`}
+                      />
                       <span className="font-medium text-sm flex-1">{item.name}</span>
-                      {item.badge &&
-                        (item.badgeColor === 'purple' ? (
-                          <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full">
-                            {item.badge}
-                          </span>
-                        ) : item.badgeColor === 'rose' ? (
-                          <span className="text-xs bg-rose-900/40 text-rose-300 border border-rose-700/40 px-2 py-0.5 rounded-full font-semibold">
-                            {item.badge}
-                          </span>
-                        ) : (
-                          <span
-                            className={`text-xs bg-linear-to-r ${item.badgeColor} text-gray-900 px-2 py-0.5 rounded-full font-semibold`}
-                          >
-                            {item.badge}
-                          </span>
-                        ))}
-                      {item.href === '/ai-showcase' && !isActive && (
-                        <Sparkles className="w-3 h-3 text-blue-400" />
+                      {item.badge && (
+                        <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-500 px-1.5 py-0.5 rounded-md font-medium">
+                          {item.badge}
+                        </span>
                       )}
                     </Link>
                   );
@@ -322,8 +276,8 @@ export function Sidebar() {
             >
               <Zap className="w-4 h-4 shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold">Actualizar plan</p>
-                <p className="text-xs text-blue-400/70 truncate">Desbloquear mas funciones</p>
+                <p className="text-xs font-semibold">Upgrade plan</p>
+                <p className="text-xs text-blue-400/70 truncate">Unlock more features</p>
               </div>
             </a>
           )}
@@ -371,18 +325,18 @@ export function Sidebar() {
 const PLAN_HIGHLIGHTS: Record<PlanType, string[]> = {
   STARTER: [],
   BUSINESS: [
-    'Campanas y proyectos ilimitados',
-    'Analytics avanzado + CSV/PDF export',
-    'White Label + dominio propio',
+    'Unlimited projects and offerings',
+    'Advanced analytics + CSV/PDF export',
+    'White Label + custom domain',
     'API Access + Webhooks',
-    'Soporte prioritario 24h',
+    'Priority support 24h',
   ],
   ENTERPRISE: [
-    'Infraestructura dedicada',
-    'Compliance MiCA + multi-jurisdiccion',
-    'KYC/AML avanzado a medida',
+    'Dedicated infrastructure',
+    'MiCA compliance + multi-jurisdiction',
+    'Custom KYC/AML workflows',
     'Account manager + SLA',
-    'Private Cloud o On-Premise',
+    'Private Cloud or On-Premise',
   ],
 };
 
@@ -401,10 +355,10 @@ const PLAN_STYLES: Record<PlanType, { grad: string; border: string; text: string
       check: 'text-blue-400',
     },
     ENTERPRISE: {
-      grad: 'from-purple-900 to-rose-900',
-      border: 'border-purple-500',
-      text: 'text-purple-300',
-      check: 'text-purple-400',
+      grad: 'from-blue-950 to-indigo-950',
+      border: 'border-blue-600',
+      text: 'text-blue-300',
+      check: 'text-blue-400',
     },
   };
 
@@ -438,14 +392,15 @@ function UpgradeModalInline({
               <Lock className="w-4 h-4" />
             </div>
             <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
-              Funcion bloqueada
+              Feature locked
             </span>
           </div>
           <p className="text-base font-bold text-white">
-            <span className="text-rose-400">{featureLabel}</span> no esta incluido en tu plan actual
+            <span className="text-blue-400">{featureLabel}</span> is not included in your current
+            plan
           </p>
           <p className="text-xs text-gray-500 mt-1">
-            Actualiza para desbloquear esta y otras funciones avanzadas.
+            Upgrade to unlock this and other advanced features.
           </p>
         </div>
 
@@ -466,7 +421,7 @@ function UpgradeModalInline({
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full bg-white/10 ${s.text} font-semibold`}
                       >
-                        Recomendado
+                        Recommended
                       </span>
                     )}
                   </div>
@@ -497,16 +452,14 @@ function UpgradeModalInline({
                   rel="noopener noreferrer"
                   className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-all ${isRec ? 'bg-white text-gray-900 hover:bg-gray-100' : 'bg-gray-700 text-white hover:bg-gray-600'}`}
                 >
-                  {p.contactSales ? 'Contactar ventas' : `Actualizar a ${p.name}`}
+                  {p.contactSales ? 'Contact sales' : `Upgrade to ${p.name}`}
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             );
           })}
         </div>
-        <p className="text-center text-xs text-gray-700 pb-4">
-          Sin permanencia - Cancela cuando quieras
-        </p>
+        <p className="text-center text-xs text-gray-700 pb-4">No lock-in · Cancel anytime</p>
       </div>
     </div>
   );

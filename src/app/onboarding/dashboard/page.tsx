@@ -42,7 +42,7 @@ function StatCard({
     amber: 'text-amber-400 bg-amber-900/30 border-amber-700/30',
   };
   return (
-    <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-5">
+    <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
       <div className="flex items-center justify-between mb-3">
         <span className="text-sm text-gray-400">{label}</span>
         <div className={`p-2 rounded-lg border ${colors[color]}`}>
@@ -178,7 +178,7 @@ export default function OnboardingDashboardPage() {
               value="2"
               sub="1 in structuring"
               icon={Building2}
-              color="purple"
+              color="blue"
             />
             <StatCard
               label="Capital Raised"
