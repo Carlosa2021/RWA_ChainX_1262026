@@ -46,7 +46,7 @@ function BrandingLocked() {
         rel="noopener noreferrer"
         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors"
       >
-        Upgrade to Business · €{business.price.toLocaleString()}/mo
+        Upgrade to Business · €{business.price.toLocaleString('es-ES')}/mo
         <ArrowRight className="w-4 h-4" />
       </a>
     </div>

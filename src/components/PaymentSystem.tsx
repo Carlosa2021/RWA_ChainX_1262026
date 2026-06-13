@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 
@@ -36,7 +36,7 @@ export default function PaymentSystem({
   maxInvestment,
   onPaymentSuccess,
   onPaymentError,
-  className = ""
+  className = '',
 }: PaymentSystemProps) {
   const [amount, setAmount] = useState<number>(minInvestment);
   const [selectedPayment, setSelectedPayment] = useState<string>('card');
@@ -49,43 +49,43 @@ export default function PaymentSystem({
       name: 'Tarjeta de Crédito/Débito',
       icon: '💳',
       type: 'fiat',
-      currencies: ['EUR', 'USD']
+      currencies: ['EUR', 'USD'],
     },
     {
       id: 'bank',
       name: 'Transferencia Bancaria',
       icon: '🏦',
       type: 'fiat',
-      currencies: ['EUR', 'USD']
+      currencies: ['EUR', 'USD'],
     },
     {
       id: 'paypal',
       name: 'PayPal',
       icon: '🔵',
       type: 'fiat',
-      currencies: ['EUR', 'USD']
+      currencies: ['EUR', 'USD'],
     },
     {
       id: 'usdc',
       name: 'USDC',
       icon: '🪙',
       type: 'crypto',
-      currencies: ['USDC']
+      currencies: ['USDC'],
     },
     {
       id: 'usdt',
       name: 'USDT',
       icon: '₮',
       type: 'crypto',
-      currencies: ['USDT']
+      currencies: ['USDT'],
     },
     {
       id: 'eth',
       name: 'Ethereum',
       icon: '⟠',
       type: 'crypto',
-      currencies: ['ETH']
-    }
+      currencies: ['ETH'],
+    },
   ];
 
   const tokensToReceive = Math.floor(amount / tokenPrice);
@@ -94,18 +94,18 @@ export default function PaymentSystem({
 
   const handlePayment = async () => {
     setLoading(true);
-    
+
     try {
       // Simular procesamiento mientras configuramos la integración completamente
       await simulatePayment();
-      
+
       onPaymentSuccess?.({
         projectId,
         amount,
         tokens: tokensToReceive,
         paymentMethod: selectedPayment,
         transactionId: `tx_${Date.now()}`,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     } catch {
       onPaymentError?.('Error procesando el pago. Inténtalo de nuevo.');
@@ -130,7 +130,7 @@ export default function PaymentSystem({
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'EUR',
     }).format(value);
   };
 
@@ -176,7 +176,7 @@ export default function PaymentSystem({
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm text-gray-600 dark:text-gray-300">Tokens a recibir:</span>
           <span className="text-lg font-bold text-purple-800 dark:text-purple-200">
-            {tokensToReceive.toLocaleString()} RWA
+            {tokensToReceive.toLocaleString('es-ES')} RWA
           </span>
         </div>
         <div className="flex justify-between items-center mb-2">
@@ -217,9 +217,7 @@ export default function PaymentSystem({
               }`}
             >
               <div className="text-2xl mb-1">{option.icon}</div>
-              <div className="text-xs font-medium text-gray-900 dark:text-white">
-                {option.name}
-              </div>
+              <div className="text-xs font-medium text-gray-900 dark:text-white">{option.name}</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">
                 {option.currencies.join(', ')}
               </div>
@@ -263,8 +261,18 @@ export default function PaymentSystem({
       {/* Información de Seguridad */}
       <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-3 mb-6">
         <div className="flex items-center">
-          <svg className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          <svg
+            className="w-5 h-5 text-green-600 dark:text-green-400 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            />
           </svg>
           <div>
             <p className="text-sm font-medium text-green-800 dark:text-green-200">
@@ -291,7 +299,12 @@ export default function PaymentSystem({
         ) : (
           <>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
             </svg>
             <span>Invertir {formatCurrency(totalAmount)}</span>
           </>
@@ -300,8 +313,8 @@ export default function PaymentSystem({
 
       {/* Disclaimer */}
       <p className="text-xs text-gray-500 dark:text-gray-400 mt-4 text-center">
-        Al continuar, aceptas nuestros términos de servicio y política de privacidad. 
-        Esta inversión conlleva riesgos. Consulta con un asesor financiero.
+        Al continuar, aceptas nuestros términos de servicio y política de privacidad. Esta inversión
+        conlleva riesgos. Consulta con un asesor financiero.
       </p>
     </div>
   );

@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Wallet, 
-  Target, 
-  Brain, 
+import {
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+  Target,
+  Brain,
   CreditCard,
   BarChart3,
   PieChart,
   DollarSign,
   Activity,
   Shield,
-  Bell
+  Bell,
 } from 'lucide-react';
 
 interface Transaction {
@@ -39,14 +39,19 @@ interface SmartPaymentsDashboardProps {
   className?: string;
 }
 
-export default function SmartPaymentsDashboard({
-  className = ""
-}: SmartPaymentsDashboardProps) {
+export default function SmartPaymentsDashboard({ className = '' }: SmartPaymentsDashboardProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [metrics, setMetrics] = useState<PortfolioMetric[]>([]);
   const [aiInsights, setAiInsights] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'transactions' | 'analytics' | 'ai'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'transactions' | 'analytics' | 'ai'>(
+    'overview'
+  );
+  const [lastUpdated, setLastUpdated] = useState('');
+
+  useEffect(() => {
+    setLastUpdated(new Date().toLocaleTimeString('es-ES'));
+  }, []);
 
   useEffect(() => {
     // Simular carga de datos
@@ -57,29 +62,29 @@ export default function SmartPaymentsDashboard({
           value: '€125,430',
           change: 8.2,
           changeType: 'positive',
-          icon: Wallet
+          icon: Wallet,
         },
         {
           label: 'ROI Promedio',
           value: '12.5%',
           change: 2.1,
           changeType: 'positive',
-          icon: TrendingUp
+          icon: TrendingUp,
         },
         {
           label: 'Propiedades Activas',
           value: '7',
           change: 0,
           changeType: 'neutral',
-          icon: Target
+          icon: Target,
         },
         {
           label: 'Ingresos Mes',
           value: '€3,240',
           change: -1.2,
           changeType: 'negative',
-          icon: DollarSign
-        }
+          icon: DollarSign,
+        },
       ]);
 
       setTransactions([
@@ -90,7 +95,7 @@ export default function SmartPaymentsDashboard({
           amount: 5000,
           tokens: 250,
           date: '2024-01-15',
-          status: 'completed'
+          status: 'completed',
         },
         {
           id: 'tx2',
@@ -99,7 +104,7 @@ export default function SmartPaymentsDashboard({
           amount: 340,
           tokens: 0,
           date: '2024-01-10',
-          status: 'completed'
+          status: 'completed',
         },
         {
           id: 'tx3',
@@ -108,15 +113,15 @@ export default function SmartPaymentsDashboard({
           amount: 2500,
           tokens: 125,
           date: '2024-01-08',
-          status: 'pending'
-        }
+          status: 'pending',
+        },
       ]);
 
       setAiInsights([
         'Recomendamos incrementar exposición al sector residencial en un 15%',
         'Valencia muestra tendencia alcista - considera aumentar posición',
         'Próximos dividendos estimados: €2,840 en los próximos 30 días',
-        'Oportunidad: Nueva propiedad en Sevilla con ROI proyectado del 14%'
+        'Oportunidad: Nueva propiedad en Sevilla con ROI proyectado del 14%',
       ]);
 
       setLoading(false);
@@ -126,25 +131,33 @@ export default function SmartPaymentsDashboard({
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'EUR',
     }).format(value);
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'text-green-600 dark:text-green-400';
-      case 'pending': return 'text-yellow-600 dark:text-yellow-400';
-      case 'failed': return 'text-red-600 dark:text-red-400';
-      default: return 'text-gray-600 dark:text-gray-400';
+      case 'completed':
+        return 'text-green-600 dark:text-green-400';
+      case 'pending':
+        return 'text-yellow-600 dark:text-yellow-400';
+      case 'failed':
+        return 'text-red-600 dark:text-red-400';
+      default:
+        return 'text-gray-600 dark:text-gray-400';
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'buy': return '📈';
-      case 'sell': return '📉';
-      case 'dividend': return '💰';
-      default: return '📄';
+      case 'buy':
+        return '📈';
+      case 'sell':
+        return '📉';
+      case 'dividend':
+        return '💰';
+      default:
+        return '📄';
     }
   };
 
@@ -153,7 +166,9 @@ export default function SmartPaymentsDashboard({
       <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 ${className}`}>
         <div className="flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
-          <span className="ml-4 text-gray-600 dark:text-gray-300">Cargando dashboard inteligente...</span>
+          <span className="ml-4 text-gray-600 dark:text-gray-300">
+            Cargando dashboard inteligente...
+          </span>
         </div>
       </div>
     );
@@ -184,11 +199,13 @@ export default function SmartPaymentsDashboard({
             { id: 'overview', label: 'Resumen', icon: BarChart3 },
             { id: 'transactions', label: 'Transacciones', icon: CreditCard },
             { id: 'analytics', label: 'Analytics', icon: PieChart },
-            { id: 'ai', label: 'AI Insights', icon: Brain }
+            { id: 'ai', label: 'AI Insights', icon: Brain },
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as 'overview' | 'transactions' | 'analytics' | 'ai')}
+              onClick={() =>
+                setActiveTab(tab.id as 'overview' | 'transactions' | 'analytics' | 'ai')
+              }
               className={`flex items-center gap-2 pb-2 border-b-2 transition-colors ${
                 activeTab === tab.id
                   ? 'border-purple-500 text-purple-600 dark:text-purple-400'
@@ -209,14 +226,21 @@ export default function SmartPaymentsDashboard({
             {/* Métricas */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {metrics.map((metric, index) => (
-                <div key={index} className="bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                <div
+                  key={index}
+                  className="bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-4"
+                >
                   <div className="flex items-center justify-between">
                     <metric.icon className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-                    <div className={`flex items-center gap-1 text-sm ${
-                      metric.changeType === 'positive' ? 'text-green-600' :
-                      metric.changeType === 'negative' ? 'text-red-600' :
-                      'text-gray-600'
-                    }`}>
+                    <div
+                      className={`flex items-center gap-1 text-sm ${
+                        metric.changeType === 'positive'
+                          ? 'text-green-600'
+                          : metric.changeType === 'negative'
+                            ? 'text-red-600'
+                            : 'text-gray-600'
+                      }`}
+                    >
                       {metric.changeType === 'positive' && <TrendingUp className="w-4 h-4" />}
                       {metric.changeType === 'negative' && <TrendingDown className="w-4 h-4" />}
                       {metric.change !== 0 && `${metric.change > 0 ? '+' : ''}${metric.change}%`}
@@ -226,9 +250,7 @@ export default function SmartPaymentsDashboard({
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">
                       {metric.value}
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {metric.label}
-                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{metric.label}</p>
                   </div>
                 </div>
               ))}
@@ -242,9 +264,7 @@ export default function SmartPaymentsDashboard({
               <div className="h-64 flex items-center justify-center">
                 <div className="text-center">
                   <Activity className="w-16 h-16 text-purple-500 mx-auto mb-4" />
-                  <p className="text-gray-600 dark:text-gray-300">
-                    Gráfico interactivo aquí
-                  </p>
+                  <p className="text-gray-600 dark:text-gray-300">Gráfico interactivo aquí</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     +12.5% crecimiento anual
                   </p>
@@ -296,9 +316,7 @@ export default function SmartPaymentsDashboard({
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{getTypeIcon(tx.type)}</span>
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white">
-                          {tx.property}
-                        </p>
+                        <p className="font-medium text-gray-900 dark:text-white">{tx.property}</p>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
                           {new Date(tx.date).toLocaleDateString('es-ES')}
                         </p>
@@ -309,8 +327,11 @@ export default function SmartPaymentsDashboard({
                         {formatCurrency(tx.amount)}
                       </p>
                       <p className={`text-sm ${getStatusColor(tx.status)}`}>
-                        {tx.status === 'completed' ? 'Completado' :
-                         tx.status === 'pending' ? 'Pendiente' : 'Fallido'}
+                        {tx.status === 'completed'
+                          ? 'Completado'
+                          : tx.status === 'pending'
+                            ? 'Pendiente'
+                            : 'Fallido'}
                       </p>
                     </div>
                   </div>
@@ -400,7 +421,10 @@ export default function SmartPaymentsDashboard({
 
             <div className="space-y-4">
               {aiInsights.map((insight, index) => (
-                <div key={index} className="bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4">
+                <div
+                  key={index}
+                  className="bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4"
+                >
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 bg-linear-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center shrink-0 mt-1">
                       <span className="text-white text-sm font-semibold">{index + 1}</span>
@@ -441,7 +465,7 @@ export default function SmartPaymentsDashboard({
             <span>Datos encriptados y seguros</span>
           </div>
           <div className="text-xs text-gray-500 dark:text-gray-400">
-            Última actualización: {new Date().toLocaleTimeString('es-ES')}
+            Última actualización: {lastUpdated}
           </div>
         </div>
       </div>

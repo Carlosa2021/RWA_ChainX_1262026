@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 
@@ -26,14 +26,16 @@ interface AIInvestmentAssistantProps {
   className?: string;
 }
 
-export default function AIInvestmentAssistant({ 
-  property, 
-  className = "" 
+export default function AIInvestmentAssistant({
+  property,
+  className = '',
 }: AIInvestmentAssistantProps) {
   const [advice, setAdvice] = useState<InvestmentAdvice | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [chatMessages, setChatMessages] = useState<Array<{role: 'user' | 'ai', content: string}>>([]);
+  const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'ai'; content: string }>>(
+    []
+  );
   const [userInput, setUserInput] = useState('');
 
   // Simular análisis AI mientras configuramos la integración completamente
@@ -47,16 +49,16 @@ export default function AIInvestmentAssistant({
           risks: [
             'Fluctuación del mercado inmobiliario',
             'Volatilidad de tokens',
-            'Riesgo regulatorio'
+            'Riesgo regulatorio',
           ],
           opportunities: [
             'Diversificación blockchain',
             'Rendimientos superiores al mercado',
-            'Liquidez mejorada'
+            'Liquidez mejorada',
           ],
           marketAnalysis: `Propiedad en ${propertyData.location} muestra tendencia alcista. ROI proyectado del ${propertyData.roi}% es superior al promedio del sector.`,
           priceTarget: propertyData.price * (1 + Math.random() * 0.3),
-          timeframe: '12-24 meses'
+          timeframe: '12-24 meses',
         });
       }, 1500);
     });
@@ -64,7 +66,7 @@ export default function AIInvestmentAssistant({
 
   const getAIAnalysis = useCallback(async () => {
     if (!property) return;
-    
+
     setLoading(true);
     setError(null);
 
@@ -86,11 +88,11 @@ export default function AIInvestmentAssistant({
 
     const newMessages = [...chatMessages, { role: 'user' as const, content: userInput }];
     setChatMessages(newMessages);
-    
+
     // Simular respuesta AI
     setTimeout(() => {
       const aiResponse = generateAIResponse(userInput, property);
-      setChatMessages(prev => [...prev, { role: 'ai', content: aiResponse }]);
+      setChatMessages((prev) => [...prev, { role: 'ai', content: aiResponse }]);
     }, 1000);
 
     setUserInput('');
@@ -114,11 +116,23 @@ export default function AIInvestmentAssistant({
 
   if (!property) {
     return (
-      <div className={`bg-linear-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-6 ${className}`}>
+      <div
+        className={`bg-linear-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-6 ${className}`}
+      >
         <div className="text-center">
           <div className="w-16 h-16 mx-auto mb-4 bg-linear-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            <svg
+              className="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              />
             </svg>
           </div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -138,7 +152,12 @@ export default function AIInvestmentAssistant({
       <div className="flex items-center mb-6">
         <div className="w-10 h-10 bg-linear-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mr-3">
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+            />
           </svg>
         </div>
         <div>
@@ -169,34 +188,44 @@ export default function AIInvestmentAssistant({
           {/* Score y Recomendación */}
           <div className="bg-linear-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Score de Inversión</span>
-              <span className={`text-lg font-bold ${advice.score > 85 ? 'text-green-600' : advice.score > 75 ? 'text-yellow-600' : 'text-red-600'}`}>
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                Score de Inversión
+              </span>
+              <span
+                className={`text-lg font-bold ${advice.score > 85 ? 'text-green-600' : advice.score > 75 ? 'text-yellow-600' : 'text-red-600'}`}
+              >
                 {advice.score}/100
               </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
-              <div 
+              <div
                 className={`h-2 rounded-full ${advice.score > 85 ? 'bg-green-500' : advice.score > 75 ? 'bg-yellow-500' : 'bg-red-500'}`}
                 style={{ width: `${advice.score}%` }}
               ></div>
             </div>
-            <p className={`text-sm font-semibold ${advice.score > 85 ? 'text-green-700 dark:text-green-300' : advice.score > 75 ? 'text-yellow-700 dark:text-yellow-300' : 'text-red-700 dark:text-red-300'}`}>
+            <p
+              className={`text-sm font-semibold ${advice.score > 85 ? 'text-green-700 dark:text-green-300' : advice.score > 75 ? 'text-yellow-700 dark:text-yellow-300' : 'text-red-700 dark:text-red-300'}`}
+            >
               {advice.recommendation}
             </p>
           </div>
 
           {/* Análisis de Mercado */}
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Análisis de Mercado</h4>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+              Análisis de Mercado
+            </h4>
             <p className="text-gray-600 dark:text-gray-300 text-sm">{advice.marketAnalysis}</p>
           </div>
 
           {/* Predicción de Precio */}
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
-              <p className="text-xs text-blue-600 dark:text-blue-300 font-medium">PRECIO OBJETIVO</p>
+              <p className="text-xs text-blue-600 dark:text-blue-300 font-medium">
+                PRECIO OBJETIVO
+              </p>
               <p className="text-lg font-bold text-blue-800 dark:text-blue-200">
-                €{advice.priceTarget.toLocaleString()}
+                €{advice.priceTarget.toLocaleString('es-ES')}
               </p>
             </div>
             <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
@@ -212,13 +241,21 @@ export default function AIInvestmentAssistant({
             <div>
               <h4 className="font-semibold text-red-700 dark:text-red-300 mb-2 flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 19c-.77.833.192 2.5 1.732 2.5z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 19c-.77.833.192 2.5 1.732 2.5z"
+                  />
                 </svg>
                 Riesgos
               </h4>
               <ul className="space-y-1">
                 {advice.risks.map((risk, index) => (
-                  <li key={index} className="text-sm text-gray-600 dark:text-gray-300 flex items-start">
+                  <li
+                    key={index}
+                    className="text-sm text-gray-600 dark:text-gray-300 flex items-start"
+                  >
                     <span className="text-red-500 mr-2">•</span>
                     {risk}
                   </li>
@@ -228,13 +265,21 @@ export default function AIInvestmentAssistant({
             <div>
               <h4 className="font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
                 </svg>
                 Oportunidades
               </h4>
               <ul className="space-y-1">
                 {advice.opportunities.map((opportunity, index) => (
-                  <li key={index} className="text-sm text-gray-600 dark:text-gray-300 flex items-start">
+                  <li
+                    key={index}
+                    className="text-sm text-gray-600 dark:text-gray-300 flex items-start"
+                  >
                     <span className="text-green-500 mr-2">•</span>
                     {opportunity}
                   </li>
@@ -247,17 +292,23 @@ export default function AIInvestmentAssistant({
 
       {/* Chat Interface */}
       <div className="mt-6 border-t dark:border-gray-700 pt-6">
-        <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Consulta al Asistente AI</h4>
-        
+        <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+          Consulta al Asistente AI
+        </h4>
+
         {/* Messages */}
         <div className="max-h-40 overflow-y-auto mb-3 space-y-2">
           {chatMessages.map((msg, index) => (
-            <div key={index} className={`p-2 rounded-lg text-sm ${
-              msg.role === 'user' 
-                ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 ml-8' 
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 mr-8'
-            }`}>
-              <span className="font-medium">{msg.role === 'user' ? 'Tú:' : 'AI:'}</span> {msg.content}
+            <div
+              key={index}
+              className={`p-2 rounded-lg text-sm ${
+                msg.role === 'user'
+                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 ml-8'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 mr-8'
+              }`}
+            >
+              <span className="font-medium">{msg.role === 'user' ? 'Tú:' : 'AI:'}</span>{' '}
+              {msg.content}
             </div>
           ))}
         </div>

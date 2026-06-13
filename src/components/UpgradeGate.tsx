@@ -73,9 +73,7 @@ function UpgradeModal({
       {/* Modal */}
       <div className="relative bg-gray-900 border border-gray-700/60 rounded-2xl w-full max-w-lg shadow-2xl">
         {/* Header */}
-        <div
-          className={`bg-linear-to-r ${style.bg} rounded-t-2xl p-6 border-b ${style.border}/30`}
-        >
+        <div className={`bg-linear-to-r ${style.bg} rounded-t-2xl p-6 border-b ${style.border}/30`}>
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
@@ -132,7 +130,7 @@ function UpgradeModal({
                     ) : (
                       <>
                         <span className="text-xl font-bold text-white">
-                          €{p.price.toLocaleString()}
+                          €{p.price.toLocaleString('es-ES')}
                         </span>
                         <span className="text-gray-400 text-xs">/mes</span>
                       </>

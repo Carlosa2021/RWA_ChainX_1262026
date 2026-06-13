@@ -497,7 +497,7 @@ function UpgradeModalInline({
                     ) : (
                       <>
                         <span className="text-lg font-bold text-white">
-                          {p.price.toLocaleString()}
+                          {p.price.toLocaleString('es-ES')}
                         </span>
                         <span className="text-xs text-gray-400">/mes</span>
                       </>
