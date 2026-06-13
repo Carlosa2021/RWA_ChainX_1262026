@@ -1,33 +1,32 @@
 /**
- * resolveTenant — Sprint 7.2 Custom Domains Foundation
+ * resolveTenant — Sprint 8A Persistence Abstraction Layer
  *
- * Resolves a TenantConfig from a hostname via the domain layer.
+ * Resolves a TenantConfig from a hostname via the repository layer.
  * Called server-side from layout.tsx using `headers()`.
  *
  * Resolution order (hostname → domain → tenant):
- * 1. resolveDomain(hostname) → TenantDomain (hostname-keyed registry)
- * 2. TENANTS[domain.tenantId] → TenantConfig
- * 3. Fallback: ChainX default tenant ("chainx")
+ * 1. domainRepository.getDomain(hostname) → TenantDomain
+ * 2. tenantRepository.getTenantById(domain.tenantId) → TenantConfig
+ * 3. Fallback: tenantRepository.getTenantById("chainx")
  *
- * No wildcard matching. No database lookups.
- * Sprint 8 will add DB-backed domain + tenant resolution.
+ * To swap data source: replace implementations in repositories/index.ts.
+ * Business logic here never changes when switching Mock → DB.
  */
-import { TENANTS } from './registry';
-import { resolveDomain } from '../domains/resolveDomain';
+import { domainRepository, tenantRepository } from '@/lib/repositories';
 import type { TenantConfig } from './types';
 
 const FALLBACK_TENANT_ID = 'chainx';
 
 export function resolveTenant(hostname: string): TenantConfig {
-  // Step 1: resolve domain record from hostname (includes port normalization)
-  const domain = resolveDomain(hostname);
+  // Step 1: resolve domain record via repository (handles port normalization)
+  const domain = domainRepository.getDomain(hostname);
 
-  // Step 2: if domain found, look up its tenant
+  // Step 2: if domain found, look up its tenant via repository
   if (domain) {
-    const tenant = TENANTS[domain.tenantId];
+    const tenant = tenantRepository.getTenantById(domain.tenantId);
     if (tenant) return tenant;
   }
 
   // Step 3: fallback to ChainX default tenant
-  return TENANTS[FALLBACK_TENANT_ID];
+  return tenantRepository.getTenantById(FALLBACK_TENANT_ID)!;
 }
