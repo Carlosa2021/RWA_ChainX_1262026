@@ -1,9 +1,0 @@
-@echo off
-echo === CONFIGURANDO PLAN STARTER (€49) ===
-echo Limpiando cache...
-rmdir /s /q .next 2>nul
-echo Copiando configuracion STARTER...
-copy .env.starter .env
-echo Iniciando servidor STARTER en puerto 3000...
-set NEXT_PUBLIC_PLAN_TYPE=STARTER
-npm run dev -- --port 3000

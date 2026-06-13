@@ -34,7 +34,7 @@
     "dev": "next dev --turbopack --port 3004",
     "dev:enterprise": "next dev --turbopack --port 3004",
     "dev:full": "next dev --turbopack --port 3004",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "dev:starter": "cp .env.starter .env && next dev --turbopack --port 3000",

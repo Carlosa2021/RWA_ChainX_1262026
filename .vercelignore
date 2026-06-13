@@ -1,15 +1,54 @@
-# Hardhat contracts (no necesarios para el frontend)
+# ============================================================================
+# ChainX® RWA Platform — .vercelignore
+# Files excluded from Vercel deployment bundle
+# ============================================================================
+
+# Smart contracts (not needed for frontend build)
 contracts/
 
-# Archivos de desarrollo
-*.log
-.DS_Store
-*.pem
+# Backend API (deployed separately, not part of Next.js frontend)
+api/
 
-# Testing
+# Dev-only environment tier files
+.env.starter
+.env.pro
+.env.enterprise
+
+# Windows scripts (not relevant on Vercel Linux environment)
+*.bat
+*.ps1
+*.cmd
+scripts/deploy/
+
+# Generated reports and binary exports
+INFORME-TECNICO-COMPLETO.*
+ENCODING-FIX-SUMMARY.txt
+deployment-log.txt
+vercel-env-variables.txt
+
+# Dev utility scripts
+check-token-holders.js
+fix-checksums.js
+fix-checksum.js
+
+# IDE / workspace files
+RWA-ChainX.code-workspace
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local env overrides (secrets managed via Vercel dashboard)
+.env*.local
+
+# Testing artifacts
 coverage/
 *.test.ts
 *.test.tsx
 
-# Local env files
-.env*.local

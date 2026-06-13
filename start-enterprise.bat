@@ -1,9 +1,0 @@
-@echo off
-echo === CONFIGURANDO PLAN ENTERPRISE (€4,999) ===
-echo Limpiando cache...
-rmdir /s /q .next 2>nul
-echo Copiando configuracion ENTERPRISE...
-copy .env.enterprise .env
-echo Iniciando servidor ENTERPRISE en puerto 3002...
-set NEXT_PUBLIC_PLAN_TYPE=ENTERPRISE
-npm run dev -- --port 3002

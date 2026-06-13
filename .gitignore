@@ -101,4 +101,26 @@ tmp/
 temp/
 *.tmp
 
+# ============================================================================
+# Windows scripts (not needed on Vercel/Linux)
+# ============================================================================
+*.bat
+*.ps1
+*.cmd
+
+# ============================================================================
+# Generated reports / binary exports (not source)
+# ============================================================================
+INFORME-TECNICO-COMPLETO.*
+ENCODING-FIX-SUMMARY.txt
+deployment-log.txt
+vercel-env-variables.txt
+
+# ============================================================================
+# Dev utility scripts with hardcoded values
+# ============================================================================
+check-token-holders.js
+fix-checksums.js
+fix-checksum.js
+
 .vercel
