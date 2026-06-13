@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 
 export interface BrandingConfig {
   brandName: string;
@@ -42,8 +42,18 @@ const BrandingContext = createContext<BrandingContextValue>({
   mounted: false,
 });
 
-export function BrandingProvider({ children }: { children: React.ReactNode }) {
-  const [branding, setBrandingState] = useState<BrandingConfig>(DEFAULTS);
+export function BrandingProvider({
+  children,
+  tenantDefaults,
+}: {
+  children: React.ReactNode;
+  tenantDefaults?: Partial<BrandingConfig>;
+}) {
+  // Precedence (lowest → highest): DEFAULTS → tenantDefaults → localStorage
+  // useRef ensures effectiveDefaults is computed once at mount (tenantDefaults is stable from server).
+  const effectiveDefaults = useRef<BrandingConfig>({ ...DEFAULTS, ...tenantDefaults }).current;
+
+  const [branding, setBrandingState] = useState<BrandingConfig>(effectiveDefaults);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -52,17 +62,18 @@ export function BrandingProvider({ children }: { children: React.ReactNode }) {
       if (stored) {
         const parsed = JSON.parse(stored) as StoredBranding;
         if (parsed.version === STORAGE_VERSION && parsed.branding) {
-          setBrandingState((prev) => ({ ...prev, ...parsed.branding }));
+          // localStorage wins over effectiveDefaults
+          setBrandingState({ ...effectiveDefaults, ...parsed.branding });
         } else {
-          // Version mismatch — clear stale data and use defaults
+          // Version mismatch — clear stale data, fall back to effectiveDefaults
           localStorage.removeItem(STORAGE_KEY);
         }
       }
     } catch {
-      // localStorage unavailable — use defaults silently
+      // localStorage unavailable — use effectiveDefaults silently
     }
     setMounted(true);
-  }, []);
+  }, [effectiveDefaults]);
 
   const setBranding = useCallback((config: Partial<BrandingConfig>) => {
     setBrandingState((prev) => {
@@ -78,13 +89,14 @@ export function BrandingProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const resetBranding = useCallback(() => {
-    setBrandingState(DEFAULTS);
+    // Reset to effectiveDefaults (tenant-aware), not raw DEFAULTS
+    setBrandingState(effectiveDefaults);
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {
       // ignore
     }
-  }, []);
+  }, [effectiveDefaults]);
 
   return (
     <BrandingContext.Provider value={{ branding, setBranding, resetBranding, mounted }}>
