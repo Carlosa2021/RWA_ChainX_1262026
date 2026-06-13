@@ -8,6 +8,18 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   const { branding } = useBranding();
 
+  const brandUrl = process.env.NEXT_PUBLIC_BRAND_URL ?? 'https://app.chainx.ch';
+  const brandTagline =
+    process.env.NEXT_PUBLIC_BRAND_TAGLINE ??
+    'Digital Securities Infrastructure · ERC-3643 · Polygon';
+  const brandHostname = (() => {
+    try {
+      return new URL(brandUrl).hostname;
+    } catch {
+      return brandUrl;
+    }
+  })();
+
   return (
     <footer className="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 mt-auto">
       <div className="max-w-6xl mx-auto px-6 py-8">
@@ -17,22 +29,20 @@ export default function Footer() {
             <p className="text-sm font-semibold text-gray-900 dark:text-white tracking-tight">
               {branding.brandName}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              Digital Securities Infrastructure · ERC-3643 · Polygon
-            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{brandTagline}</p>
           </div>
 
           <div className="flex flex-wrap gap-6 text-xs text-gray-500 dark:text-gray-400">
             <a
-              href="https://chainx.ch"
+              href={brandUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
             >
-              chainx.ch
+              {brandHostname}
             </a>
             <a
-              href="https://chainx.ch/#pricing"
+              href={`${brandUrl}/#pricing`}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
@@ -40,7 +50,7 @@ export default function Footer() {
               Pricing
             </a>
             <a
-              href="https://chainx.ch/docs"
+              href={`${brandUrl}/docs`}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
