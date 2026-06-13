@@ -1,25 +1,33 @@
 /**
- * resolveTenant — Sprint 7.1 Tenant Foundation
+ * resolveTenant — Sprint 7.2 Custom Domains Foundation
  *
- * Resolves a TenantConfig from a hostname.
+ * Resolves a TenantConfig from a hostname via the domain layer.
  * Called server-side from layout.tsx using `headers()`.
  *
- * Resolution order:
- * 1. Exact hostname match in TENANTS registry
- * 2. Fallback: ChainX default tenant ("app.chainx.ch")
+ * Resolution order (hostname → domain → tenant):
+ * 1. resolveDomain(hostname) → TenantDomain (hostname-keyed registry)
+ * 2. TENANTS[domain.tenantId] → TenantConfig
+ * 3. Fallback: ChainX default tenant ("chainx")
  *
  * No wildcard matching. No database lookups.
- * Sprint 7.2 will add wildcard subdomain support.
+ * Sprint 8 will add DB-backed domain + tenant resolution.
  */
 import { TENANTS } from './registry';
+import { resolveDomain } from '../domains/resolveDomain';
 import type { TenantConfig } from './types';
 
-const FALLBACK_HOSTNAME = 'app.chainx.ch';
+const FALLBACK_TENANT_ID = 'chainx';
 
 export function resolveTenant(hostname: string): TenantConfig {
-  // Strip port if present (e.g. "localhost:3004" → "localhost:3004" stays,
-  // but "app.chainx.ch:443" → "app.chainx.ch")
-  const normalizedHostname = hostname.split(':')[0];
+  // Step 1: resolve domain record from hostname (includes port normalization)
+  const domain = resolveDomain(hostname);
 
-  return TENANTS[normalizedHostname] ?? TENANTS[hostname] ?? TENANTS[FALLBACK_HOSTNAME];
+  // Step 2: if domain found, look up its tenant
+  if (domain) {
+    const tenant = TENANTS[domain.tenantId];
+    if (tenant) return tenant;
+  }
+
+  // Step 3: fallback to ChainX default tenant
+  return TENANTS[FALLBACK_TENANT_ID];
 }

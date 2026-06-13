@@ -1,8 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// DNS hostname regex: allows labels of 1-63 chars separated by dots, total ≤ 253 chars
+// RFC-1123 DNS hostname: labels of 1-63 chars separated by dots, total ≤ 253 chars
 const DNS_HOSTNAME_RE =
   /^(?=.{1,253}$)(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+
+/**
+ * Hostnames reserved for internal infrastructure.
+ * Clients cannot claim these as custom domains.
+ */
+const RESERVED_HOSTNAMES = new Set([
+  'app.chainx.ch',
+  'chainx.ch',
+  'chainx.app',
+  'localhost',
+  '127.0.0.1',
+  '0.0.0.0',
+]);
 
 export async function POST(req: NextRequest) {
   let body: unknown;
@@ -12,36 +25,41 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const domain =
-    typeof (body as Record<string, unknown>).domain === 'string'
-      ? ((body as Record<string, unknown>).domain as string).trim().toLowerCase()
+  const raw =
+    typeof (body as Record<string, unknown>).hostname === 'string'
+      ? ((body as Record<string, unknown>).hostname as string).trim().toLowerCase()
       : '';
 
-  if (!domain) {
-    return NextResponse.json({ success: false, error: 'domain is required.' }, { status: 400 });
+  if (!raw) {
+    return NextResponse.json({ success: false, error: 'hostname is required.' }, { status: 400 });
   }
 
-  if (domain.length > 253) {
+  if (raw.length > 253) {
     return NextResponse.json(
-      { success: false, error: 'Domain exceeds maximum length (253 chars).' },
+      { success: false, error: 'Hostname exceeds maximum length (253 chars).' },
       { status: 400 }
     );
   }
 
-  if (!DNS_HOSTNAME_RE.test(domain)) {
-    return NextResponse.json({ success: false, error: 'Invalid domain format.' }, { status: 400 });
+  if (!DNS_HOSTNAME_RE.test(raw)) {
+    return NextResponse.json(
+      { success: false, error: 'Invalid hostname format. Must be a valid DNS name.' },
+      { status: 400 }
+    );
   }
 
-  // Phase 2: mock-safe response — real Vercel Domains API integration is Sprint 7
+  if (RESERVED_HOSTNAMES.has(raw)) {
+    return NextResponse.json(
+      { success: false, error: 'This hostname is reserved and cannot be used.' },
+      { status: 400 }
+    );
+  }
+
+  // Sprint 7.2: mock-safe response.
+  // Sprint 9 will integrate Vercel Domains API for real DNS verification.
   return NextResponse.json({
     success: true,
-    domain,
     status: 'pending',
-    message: 'Domain verification request received. Configure your DNS CNAME record as instructed.',
-    cname: {
-      type: 'CNAME',
-      host: domain.split('.')[0],
-      value: 'cname.chainx.app',
-    },
+    hostname: raw,
   });
 }

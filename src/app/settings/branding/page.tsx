@@ -358,12 +358,12 @@ function BrandingPanel() {
                 const res = await fetch('/api/verify-domain', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ domain }),
+                  body: JSON.stringify({ hostname: domain }),
                 });
                 const data = await res.json();
                 if (data.success) {
                   toast.success(
-                    `Domain "${data.domain}" queued for verification. Configure your DNS CNAME.`
+                    `Domain "${data.hostname}" queued for verification. Configure your DNS CNAME.`
                   );
                 } else {
                   toast.error(data.error ?? 'Domain verification failed.');
