@@ -15,16 +15,16 @@ import type { TenantConfig } from '@/lib/tenants/types';
 import type { ITenantRepository } from './types';
 
 export class MockTenantRepository implements ITenantRepository {
-  getTenantById(id: string): TenantConfig | undefined {
+  async getTenantById(id: string): Promise<TenantConfig | undefined> {
     return TENANTS[id];
   }
 
-  getTenantByHostname(hostname: string): TenantConfig | undefined {
+  async getTenantByHostname(hostname: string): Promise<TenantConfig | undefined> {
     const normalized = hostname.split(':')[0].toLowerCase();
     return Object.values(TENANTS).find((t) => t.hostname === normalized || t.hostname === hostname);
   }
 
-  listTenants(): TenantConfig[] {
+  async listTenants(): Promise<TenantConfig[]> {
     return Object.values(TENANTS);
   }
 

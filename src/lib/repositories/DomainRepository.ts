@@ -15,12 +15,12 @@ import type { TenantDomain } from '@/lib/domains/types';
 import type { IDomainRepository } from './types';
 
 export class MockDomainRepository implements IDomainRepository {
-  getDomain(hostname: string): TenantDomain | undefined {
+  async getDomain(hostname: string): Promise<TenantDomain | undefined> {
     const normalized = hostname.split(':')[0].toLowerCase();
     return DOMAINS[normalized];
   }
 
-  listDomains(): TenantDomain[] {
+  async listDomains(): Promise<TenantDomain[]> {
     return Object.values(DOMAINS);
   }
 

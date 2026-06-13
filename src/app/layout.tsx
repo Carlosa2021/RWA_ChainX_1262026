@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Resolve tenant server-side from Host header (no window.location, no middleware)
   const host = (await headers()).get('host') ?? 'app.chainx.ch';
-  const tenant = resolveTenant(host);
+  const tenant = await resolveTenant(host);
   return (
     <html lang="es" suppressHydrationWarning>
       <head>

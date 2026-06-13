@@ -20,6 +20,6 @@ import type { TenantDomain } from './types';
  * Returns `undefined` if no matching domain is registered.
  * Callers must handle the undefined case (e.g. fallback to default tenant).
  */
-export function resolveDomain(hostname: string): TenantDomain | undefined {
+export async function resolveDomain(hostname: string): Promise<TenantDomain | undefined> {
   return domainRepository.getDomain(hostname);
 }

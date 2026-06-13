@@ -1,20 +1,30 @@
 /**
- * Repository Index — Sprint 8A Persistence Abstraction Layer
+ * Repository Index — Sprint 8B Vercel Postgres Persistence Layer
  *
- * Single import point for all repository singletons.
- * Business logic imports from here — never from concrete classes directly.
+ * Env-based switching: if POSTGRES_URL is set → Postgres implementations,
+ * otherwise → Mock (in-memory) implementations.
  *
- * To swap implementations (e.g. Mock → Postgres):
- * 1. Create a new class implementing ITenantRepository / IDomainRepository
- * 2. Replace the instantiation below
- * 3. Zero changes to business logic
+ * Business logic (resolveTenant, resolveDomain, route handlers) imports from
+ * here and never depends on concrete classes directly.
+ *
+ * To add a new backend: implement ITenantRepository / IDomainRepository and
+ * add a condition below. Zero changes required elsewhere.
  */
 import { MockTenantRepository } from './TenantRepository';
 import { MockDomainRepository } from './DomainRepository';
+import { PostgresTenantRepository } from './PostgresTenantRepository';
+import { PostgresDomainRepository } from './PostgresDomainRepository';
 import type { ITenantRepository, IDomainRepository } from './types';
 
-export const tenantRepository: ITenantRepository = new MockTenantRepository();
-export const domainRepository: IDomainRepository = new MockDomainRepository();
+const usePostgres = Boolean(process.env.POSTGRES_URL);
+
+export const tenantRepository: ITenantRepository = usePostgres
+  ? new PostgresTenantRepository()
+  : new MockTenantRepository();
+
+export const domainRepository: IDomainRepository = usePostgres
+  ? new PostgresDomainRepository()
+  : new MockDomainRepository();
 
 // Re-export interfaces for consumer convenience
 export type { ITenantRepository, IDomainRepository };

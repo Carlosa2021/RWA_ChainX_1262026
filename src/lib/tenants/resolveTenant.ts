@@ -17,16 +17,16 @@ import type { TenantConfig } from './types';
 
 const FALLBACK_TENANT_ID = 'chainx';
 
-export function resolveTenant(hostname: string): TenantConfig {
+export async function resolveTenant(hostname: string): Promise<TenantConfig> {
   // Step 1: resolve domain record via repository (handles port normalization)
-  const domain = domainRepository.getDomain(hostname);
+  const domain = await domainRepository.getDomain(hostname);
 
   // Step 2: if domain found, look up its tenant via repository
   if (domain) {
-    const tenant = tenantRepository.getTenantById(domain.tenantId);
+    const tenant = await tenantRepository.getTenantById(domain.tenantId);
     if (tenant) return tenant;
   }
 
   // Step 3: fallback to ChainX default tenant
-  return tenantRepository.getTenantById(FALLBACK_TENANT_ID)!;
+  return (await tenantRepository.getTenantById(FALLBACK_TENANT_ID))!;
 }

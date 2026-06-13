@@ -17,13 +17,13 @@ import type { TenantDomain } from '@/lib/domains/types';
 
 export interface ITenantRepository {
   /** Look up a tenant by its unique ID (e.g. "chainx", "alzira") */
-  getTenantById(id: string): TenantConfig | undefined;
+  getTenantById(id: string): Promise<TenantConfig | undefined>;
 
   /** Look up a tenant by its primary hostname (e.g. "app.chainx.ch") */
-  getTenantByHostname(hostname: string): TenantConfig | undefined;
+  getTenantByHostname(hostname: string): Promise<TenantConfig | undefined>;
 
   /** Return all registered tenants */
-  listTenants(): TenantConfig[];
+  listTenants(): Promise<TenantConfig[]>;
 
   /**
    * Persist a tenant configuration.
@@ -43,10 +43,10 @@ export interface IDomainRepository {
    * Normalizes port suffix before lookup.
    * Returns undefined if not found.
    */
-  getDomain(hostname: string): TenantDomain | undefined;
+  getDomain(hostname: string): Promise<TenantDomain | undefined>;
 
   /** Return all registered domain records */
-  listDomains(): TenantDomain[];
+  listDomains(): Promise<TenantDomain[]>;
 
   /**
    * Persist a domain record.
