@@ -135,6 +135,7 @@ function FileUpload({
 function BrandingPanel() {
   const { setBranding } = useBranding();
   const [companyName, setCompanyName] = useState('');
+  const [domainVerifying, setDomainVerifying] = useState(false);
   const [displayName, setDisplayName] = useState('');
   const [supportEmail, setSupportEmail] = useState('');
   const [senderName, setSenderName] = useState('');
@@ -345,10 +346,38 @@ function BrandingPanel() {
             <Eye className="w-4 h-4" /> Preview Portal
           </button>
           <button
-            onClick={() => toast.success('Domain verification request created.')}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white text-sm font-medium transition-colors"
+            disabled={domainVerifying}
+            onClick={async () => {
+              const domain = customDomain.trim();
+              if (!domain) {
+                toast.error('Enter a custom domain before requesting verification.');
+                return;
+              }
+              setDomainVerifying(true);
+              try {
+                const res = await fetch('/api/verify-domain', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ domain }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                  toast.success(
+                    `Domain "${data.domain}" queued for verification. Configure your DNS CNAME.`
+                  );
+                } else {
+                  toast.error(data.error ?? 'Domain verification failed.');
+                }
+              } catch {
+                toast.error('Network error — please try again.');
+              } finally {
+                setDomainVerifying(false);
+              }
+            }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Globe className="w-4 h-4" /> Request Domain Verification
+            <Globe className="w-4 h-4" />{' '}
+            {domainVerifying ? 'Verifying...' : 'Request Domain Verification'}
           </button>
         </div>
       </div>

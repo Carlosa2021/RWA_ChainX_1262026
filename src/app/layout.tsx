@@ -7,6 +7,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { LicenseProvider } from '@/contexts/LicenseContext';
 import { EnterpriseProvider } from '@/components/EnterpriseProvider';
 import { BrandingProvider } from '@/contexts/BrandingContext';
+import { FaviconInjector } from '@/components/FaviconInjector';
 import { Toaster } from 'sonner';
 
 const geistSans = Geist({
@@ -14,10 +15,28 @@ const geistSans = Geist({
   subsets: ['latin'],
 });
 
+const brandName = process.env.NEXT_PUBLIC_BRAND_NAME ?? 'ChainX RWA';
+const brandUrl = process.env.NEXT_PUBLIC_BRAND_URL ?? 'https://app.chainx.ch';
+const brandTagline =
+  process.env.NEXT_PUBLIC_BRAND_TAGLINE ?? 'Digital Securities Infrastructure · ERC-3643 · Polygon';
+
 export const metadata: Metadata = {
-  title: 'ChainX® RWA Platform | Real World Assets Tokenization Platform',
-  description:
-    'Professional multi-tier SaaS platform for Real World Assets tokenization with ERC-3643 + MiCA compliance',
+  title: `${brandName} | Real World Assets Tokenization Platform`,
+  description: `${brandTagline} — Professional multi-tier SaaS platform for Real World Assets tokenization with ERC-3643 + MiCA compliance`,
+  applicationName: brandName,
+  metadataBase: new URL(brandUrl),
+  openGraph: {
+    title: `${brandName} | Real World Assets Tokenization`,
+    description: brandTagline,
+    url: brandUrl,
+    siteName: brandName,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${brandName} | Real World Assets Tokenization`,
+    description: brandTagline,
+  },
   icons: {
     icon: '/favicon.ico',
   },
@@ -49,6 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <EnterpriseProvider>
                 <LicenseProvider>
                   <BrandingProvider>
+                    <FaviconInjector />
                     <Toaster position="top-right" richColors closeButton />
                     {children}
                   </BrandingProvider>
