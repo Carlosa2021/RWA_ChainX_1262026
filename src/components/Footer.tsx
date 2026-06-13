@@ -2,9 +2,11 @@
 
 import React from 'react';
 import { Shield } from 'lucide-react';
+import { useBranding } from '@/contexts/BrandingContext';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { branding } = useBranding();
 
   return (
     <footer className="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 mt-auto">
@@ -13,7 +15,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-6 pb-6 border-b border-gray-200 dark:border-gray-800">
           <div>
             <p className="text-sm font-semibold text-gray-900 dark:text-white tracking-tight">
-              ChainX®
+              {branding.brandName}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
               Digital Securities Infrastructure · ERC-3643 · Polygon
@@ -46,7 +48,7 @@ export default function Footer() {
               Documentation
             </a>
             <a
-              href="mailto:hola@chainx.ch"
+              href={`mailto:${branding.supportEmail}`}
               className="hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
             >
               Support
@@ -77,8 +79,12 @@ export default function Footer() {
             830657 (Switzerland)
           </p>
           <div className="flex items-center gap-3">
-            <span>Powered by Thirdweb Infrastructure</span>
-            <span>·</span>
+            {branding.showInfraNotice && (
+              <>
+                <span>Powered by ChainX Infrastructure</span>
+                <span>·</span>
+              </>
+            )}
             <span>ERC-3643 compliant</span>
             <span>·</span>
             <span>MiCA-ready</span>

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { useLicense } from '@/contexts/LicenseContext';
+import { useBranding } from '@/contexts/BrandingContext';
 import { PLANS } from '@/config/plans';
 import { toast } from 'sonner';
 import {
@@ -132,6 +133,7 @@ function FileUpload({
 
 // ─── Branding Panel (BUSINESS / ENTERPRISE) ───────────────────
 function BrandingPanel() {
+  const { setBranding } = useBranding();
   const [companyName, setCompanyName] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [supportEmail, setSupportEmail] = useState('');
@@ -322,7 +324,16 @@ function BrandingPanel() {
         {/* Action buttons (UI-only) */}
         <div className="flex flex-wrap items-center gap-3">
           <button
-            onClick={() => toast.success('Branding settings saved as draft.')}
+            onClick={() => {
+              setBranding({
+                brandName: displayName || companyName || 'ChainX RWA',
+                supportEmail: supportEmail || 'hola@chainx.ch',
+                primaryColor,
+                secondaryColor,
+                showInfraNotice,
+              });
+              toast.success('Branding settings saved.');
+            }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors"
           >
             <Save className="w-4 h-4" /> Save Draft

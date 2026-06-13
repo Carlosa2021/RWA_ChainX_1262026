@@ -1,47 +1,42 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { ConnectButton, darkTheme, lightTheme } from "thirdweb/react";
-import { client } from "@/lib/thirdweb";
-import { polygon } from "thirdweb/chains";
-import { Moon, Sun, Bell, Brain, Sparkles } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
+import Link from 'next/link';
+import { ConnectButton, darkTheme, lightTheme } from 'thirdweb/react';
+import { client } from '@/lib/thirdweb';
+import { polygon } from 'thirdweb/chains';
+import { Moon, Sun, Bell, Brain, Sparkles } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useBranding } from '@/contexts/BrandingContext';
 // import { usePlanConfig } from "@/hooks/usePlanConfig";
-import {
-  createWallet,
-  walletConnect,
-  inAppWallet,
-} from "thirdweb/wallets";
+import { createWallet, walletConnect, inAppWallet } from 'thirdweb/wallets';
 
 const wallets = [
   inAppWallet({
     auth: {
-      options: [
-        "email",
-        "google",
-        "apple",
-        "facebook",
-        "phone",
-        "passkey",
-      ],
+      options: ['email', 'google', 'apple', 'facebook', 'phone', 'passkey'],
     },
   }),
-  createWallet("io.metamask"),
-  createWallet("com.coinbase.wallet"),
-  createWallet("me.rainbow"),
+  createWallet('io.metamask'),
+  createWallet('com.coinbase.wallet'),
+  createWallet('me.rainbow'),
   walletConnect(),
 ];
 
 export function Header() {
   const { theme, toggleTheme, mounted } = useTheme();
+  const { branding } = useBranding();
   // const planConfig = usePlanConfig();
 
   const getBadgeColor = (type: string) => {
     switch (type) {
-      case 'STARTER': return 'bg-blue-500 text-white';
-      case 'PRO': return 'bg-green-500 text-white';
-      case 'ENTERPRISE': return 'bg-purple-500 text-white';
-      default: return 'bg-gray-500 text-white';
+      case 'STARTER':
+        return 'bg-blue-500 text-white';
+      case 'PRO':
+        return 'bg-green-500 text-white';
+      case 'ENTERPRISE':
+        return 'bg-purple-500 text-white';
+      default:
+        return 'bg-gray-500 text-white';
     }
   };
 
@@ -51,11 +46,9 @@ export function Header() {
         {/* Search / Title */}
         <div className="flex-1 flex items-center gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Dashboard
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              ChainX RWA Platform - Manage your tokenized real world assets
+              {branding.brandName} - Manage your tokenized real world assets
             </p>
           </div>
         </div>
@@ -84,7 +77,7 @@ export function Header() {
               onClick={toggleTheme}
               className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
-              {theme === "dark" ? (
+              {theme === 'dark' ? (
                 <Sun className="w-6 h-6 text-yellow-500" />
               ) : (
                 <Moon className="w-6 h-6 text-gray-700" />
@@ -97,14 +90,15 @@ export function Header() {
             client={client}
             chain={polygon}
             wallets={wallets}
-            theme={theme === "dark" ? darkTheme() : lightTheme()}
+            theme={theme === 'dark' ? darkTheme() : lightTheme()}
             connectButton={{
-              label: "Conectar Wallet",
-              className: "!bg-linear-to-r !from-orange-500 !to-pink-500 !text-white !font-semibold !px-6 !py-3 !rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all",
+              label: 'Conectar Wallet',
+              className:
+                '!bg-linear-to-r !from-orange-500 !to-pink-500 !text-white !font-semibold !px-6 !py-3 !rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all',
             }}
             connectModal={{
-              size: "wide",
-              title: "Conecta tu Wallet",
+              size: 'wide',
+              title: 'Conecta tu Wallet',
               showThirdwebBranding: false,
             }}
           />

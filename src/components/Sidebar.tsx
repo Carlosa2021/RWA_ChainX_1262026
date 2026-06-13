@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLicense } from '@/contexts/LicenseContext';
+import { useBranding } from '@/contexts/BrandingContext';
 import { usePermissions } from '@/lib/rbac/usePermissions';
 import { Permission } from '@/lib/rbac/permissions';
 import { useState } from 'react';
@@ -217,6 +218,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const { isOwner } = useAuth();
   const { theme, toggleTheme, mounted } = useTheme();
+  const { branding } = useBranding();
   const { hasFeature, currentPlan, requiredPlanFor } = useLicense();
   const { can } = usePermissions();
   const [upgradeModal, setUpgradeModal] = useState<{
@@ -246,7 +248,7 @@ export function Sidebar() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight">
-                ChainX RWA
+                {branding.brandName}
               </p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${planBadge.cls}`}>

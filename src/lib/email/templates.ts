@@ -4,8 +4,9 @@
  */
 
 const BRAND_COLOR = '#2563EB'; // Institutional blue
-const BRAND_NAME = 'ChainX RWA';
-const BRAND_DOMAIN = 'app.chainx.ch';
+const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? 'ChainX RWA';
+const BRAND_DOMAIN = process.env.NEXT_PUBLIC_BRAND_DOMAIN ?? 'app.chainx.ch';
+const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? 'hola@chainx.ch';
 
 function baseLayout(title: string, body: string): string {
   return `<!DOCTYPE html>
@@ -110,7 +111,7 @@ export function contactConfirmationEmail(data: ContactEmailData): string {
     </div>
     <p style="margin:24px 0 0;font-size:14px;color:#6b7280;">
       Si tienes alguna pregunta urgente, puedes contactarnos directamente en 
-      <a href="mailto:hola@chainx.ch" style="color:${BRAND_COLOR};">hola@chainx.ch</a>.
+      <a href="mailto:${SUPPORT_EMAIL}" style="color:${BRAND_COLOR};">${SUPPORT_EMAIL}</a>.
     </p>`
   );
 }
@@ -197,7 +198,7 @@ export function onboardingConfirmationEmail(data: OnboardingEmailData): string {
     </ol>
     <p style="margin:0;font-size:13px;color:#6b7280;">
       ¿Preguntas? Escríbenos a 
-      <a href="mailto:hola@chainx.ch" style="color:${BRAND_COLOR};">hola@chainx.ch</a>
+      <a href="mailto:${SUPPORT_EMAIL}" style="color:${BRAND_COLOR};">${SUPPORT_EMAIL}</a>
     </p>`
   );
 }
@@ -270,7 +271,7 @@ export function kycConfirmationEmail(data: KycEmailData): string {
     </ul>
     <p style="margin:0;font-size:13px;color:#6b7280;">
       ¿Preguntas sobre el proceso KYC? 
-      <a href="mailto:hola@chainx.ch" style="color:${BRAND_COLOR};">hola@chainx.ch</a>
+      <a href="mailto:${SUPPORT_EMAIL}" style="color:${BRAND_COLOR};">${SUPPORT_EMAIL}</a>
     </p>`
   );
 }
