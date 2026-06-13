@@ -6,7 +6,7 @@
 const BRAND_COLOR = '#2563EB'; // Institutional blue
 const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? 'ChainX RWA';
 const BRAND_DOMAIN = process.env.NEXT_PUBLIC_BRAND_DOMAIN ?? 'app.chainx.ch';
-const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? 'hola@chainx.ch';
+const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_BRAND_SUPPORT_EMAIL ?? 'hola@chainx.ch';
 
 function baseLayout(title: string, body: string): string {
   return `<!DOCTYPE html>

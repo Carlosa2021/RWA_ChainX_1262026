@@ -15,6 +15,6 @@ export const CONTRACTS = {
 export const APP_CONFIG = {
   name: process.env.NEXT_PUBLIC_BRAND_NAME ?? 'ChainX RWA Platform',
   description: 'Tokenización de activos del mundo real con ERC-3643',
-  url: process.env.NEXT_PUBLIC_BRAND_URL ?? 'https://chainx.ch',
+  url: process.env.NEXT_PUBLIC_BRAND_URL ?? 'https://app.chainx.ch',
   logo: '/logo.png',
 } as const;

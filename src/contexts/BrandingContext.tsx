@@ -20,6 +20,12 @@ const DEFAULTS: BrandingConfig = {
 };
 
 const STORAGE_KEY = 'chainx-branding';
+const STORAGE_VERSION = 1;
+
+interface StoredBranding {
+  version: number;
+  branding: BrandingConfig;
+}
 
 interface BrandingContextValue {
   branding: BrandingConfig;
@@ -43,8 +49,13 @@ export function BrandingProvider({ children }: { children: React.ReactNode }) {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as Partial<BrandingConfig>;
-        setBrandingState((prev) => ({ ...prev, ...parsed }));
+        const parsed = JSON.parse(stored) as StoredBranding;
+        if (parsed.version === STORAGE_VERSION && parsed.branding) {
+          setBrandingState((prev) => ({ ...prev, ...parsed.branding }));
+        } else {
+          // Version mismatch — clear stale data and use defaults
+          localStorage.removeItem(STORAGE_KEY);
+        }
       }
     } catch {
       // localStorage unavailable — use defaults silently
@@ -56,7 +67,8 @@ export function BrandingProvider({ children }: { children: React.ReactNode }) {
     setBrandingState((prev) => {
       const next = { ...prev, ...config };
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        const payload: StoredBranding = { version: STORAGE_VERSION, branding: next };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       } catch {
         // localStorage unavailable — skip persistence
       }
