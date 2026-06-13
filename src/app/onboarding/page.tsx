@@ -1729,6 +1729,20 @@ export default function OnboardingPage() {
     }
 
     if (currentStep === 8) {
+      // Notify admin + send confirmation email (fire-and-forget, non-blocking)
+      fetch('/api/onboarding-notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          legalName: company.legalName,
+          contactName: company.contactName,
+          contactEmail: company.contactEmail,
+          country: company.country,
+          plan: plan.tier ?? 'No especificado',
+          submittedAt: new Date().toISOString(),
+        }),
+      }).catch((err) => console.warn('[onboarding] Notify failed (non-blocking):', err));
+
       // Publish
       toast.success('🚀 ¡Campaña publicada! Redirigiendo al dashboard...');
       setPublication((prev) => ({

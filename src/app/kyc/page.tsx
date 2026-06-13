@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { Sidebar } from "@/components/Sidebar";
-import { Header } from "@/components/Header";
-import { useAuth } from "@/contexts/AuthContext";
-import { useState, useEffect, useCallback } from "react";
-import { 
-  Shield, 
-  Upload, 
-  CheckCircle, 
+import { Sidebar } from '@/components/Sidebar';
+import { Header } from '@/components/Header';
+import { useAuth } from '@/contexts/AuthContext';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Shield,
+  Upload,
+  CheckCircle,
   AlertCircle,
   FileText,
   MapPin,
   Loader2,
-  Clock
-} from "lucide-react";
-import { toast } from "sonner";
+  Clock,
+} from 'lucide-react';
+import { toast } from 'sonner';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3004";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3004';
 
 interface KYCStatus {
   id?: number;
@@ -33,9 +33,9 @@ export default function KYCPage() {
   const { address } = useAuth();
   const [kycStatus, setKycStatus] = useState<KYCStatus | null>(null);
   const [isLoadingStatus, setIsLoadingStatus] = useState(true);
-  
+
   const [formData, setFormData] = useState({
-    documentType: "dni",
+    documentType: 'dni',
   });
   const [documentFront, setDocumentFront] = useState<File | null>(null);
   const [documentBack, setDocumentBack] = useState<File | null>(null);
@@ -44,24 +44,23 @@ export default function KYCPage() {
 
   const fetchKYCStatus = useCallback(async () => {
     if (!address) return;
-    
+
     try {
       setIsLoadingStatus(true);
-      
+
       // Sistema KYC simplificado
       const initialStatus: KYCStatus = {
         wallet_address: address,
-        document_type: "",
+        document_type: '',
         status: 'not_submitted',
         submitted_at: undefined,
         reviewed_at: undefined,
-        rejection_reason: undefined
+        rejection_reason: undefined,
       };
-      
+
       setKycStatus(initialStatus);
-      
     } catch (error) {
-      console.error("Error al obtener estado KYC:", error);
+      console.error('Error al obtener estado KYC:', error);
       setKycStatus(null);
     } finally {
       setIsLoadingStatus(false);
@@ -75,76 +74,90 @@ export default function KYCPage() {
     }
   }, [address, fetchKYCStatus]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setter: (file: File | null) => void) => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setter: (file: File | null) => void
+  ) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const maxSize = 10 * 1024 * 1024; // 10MB
-      
+
       if (file.size > maxSize) {
-        toast.error("El archivo debe ser menor a 10MB");
+        toast.error('El archivo debe ser menor a 10MB');
         return;
       }
-      
-      if (file.type === "application/pdf" || file.type.startsWith("image/")) {
+
+      if (file.type === 'application/pdf' || file.type.startsWith('image/')) {
         setter(file);
         toast.success(`Archivo "${file.name}" seleccionado`);
       } else {
-        toast.error("Solo se permiten archivos PDF o imágenes (JPG, PNG)");
+        toast.error('Solo se permiten archivos PDF o imágenes (JPG, PNG)');
       }
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!address) {
-      toast.error("Por favor conecta tu wallet primero");
+      toast.error('Por favor conecta tu wallet primero');
       return;
     }
-    
+
     if (!documentFront) {
-      toast.error("Debes subir el frente de tu documento");
+      toast.error('Debes subir el frente de tu documento');
       return;
     }
-    
-    if (formData.documentType === "dni" && !documentBack) {
-      toast.error("Debes subir el reverso de tu DNI");
+
+    if (formData.documentType === 'dni' && !documentBack) {
+      toast.error('Debes subir el reverso de tu DNI');
       return;
     }
-    
+
     if (!proofOfAddress) {
-      toast.error("Debes subir un comprobante de domicilio");
+      toast.error('Debes subir un comprobante de domicilio');
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
       // Verificar si el backend está disponible
       if (!API_URL || API_URL.includes('localhost')) {
         // Envío simulado
-        
+
         // Simular envío exitoso
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        toast.success("¡Documentos enviados correctamente! En revisión...");
-        
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        toast.success('¡Documentos enviados correctamente! En revisión...');
+
+        // Notify admin via Resend (fire-and-forget, non-blocking)
+        fetch('/api/kyc-notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            walletAddress: address,
+            documentType: formData.documentType,
+            submittedAt: new Date().toISOString(),
+          }),
+        }).catch((err) => console.warn('[kyc] Notify failed (non-blocking):', err));
+
         // Actualizar estado a "pending"
         setKycStatus({
           wallet_address: address,
           document_type: formData.documentType,
           status: 'pending',
-          submitted_at: new Date().toISOString()
+          submitted_at: new Date().toISOString(),
         });
-        
+
         // Limpiar formulario
         setDocumentFront(null);
         setDocumentBack(null);
         setProofOfAddress(null);
-        
+
         return;
       }
-      
+
       const formDataToSend = new FormData();
       formDataToSend.append('walletAddress', address);
       formDataToSend.append('documentType', formData.documentType);
@@ -162,7 +175,19 @@ export default function KYCPage() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        toast.success("¡Documentos enviados correctamente! En revisión...");
+        toast.success('¡Documentos enviados correctamente! En revisión...');
+
+        // Notify admin via Resend (fire-and-forget, non-blocking)
+        fetch('/api/kyc-notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            walletAddress: address,
+            documentType: formData.documentType,
+            submittedAt: new Date().toISOString(),
+          }),
+        }).catch((err) => console.warn('[kyc] Notify failed (non-blocking):', err));
+
         // Actualizar estado
         await fetchKYCStatus();
         // Limpiar formulario
@@ -170,29 +195,39 @@ export default function KYCPage() {
         setDocumentBack(null);
         setProofOfAddress(null);
       } else {
-        toast.error(data.error || "Error al enviar documentos");
+        toast.error(data.error || 'Error al enviar documentos');
       }
     } catch (error) {
-      console.error("Error al enviar KYC:", error);
-      
+      console.error('Error al enviar KYC:', error);
+
       // Fallback a simulación en caso de error
       // Envío simulado en caso de error de conexión
-      
-      toast.success("¡Documentos enviados correctamente! En revisión... (MODO DEMO)");
-      
+
+      toast.success('¡Documentos enviados correctamente! En revisión... (MODO DEMO)');
+
+      // Notify admin via Resend (fire-and-forget, non-blocking)
+      fetch('/api/kyc-notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          walletAddress: address,
+          documentType: formData.documentType,
+          submittedAt: new Date().toISOString(),
+        }),
+      }).catch((err) => console.warn('[kyc] Notify failed (non-blocking):', err));
+
       // Actualizar estado a "pending"
       setKycStatus({
         wallet_address: address,
         document_type: formData.documentType,
         status: 'pending',
-        submitted_at: new Date().toISOString()
+        submitted_at: new Date().toISOString(),
       });
-      
+
       // Limpiar formulario
       setDocumentFront(null);
       setDocumentBack(null);
       setProofOfAddress(null);
-      
     } finally {
       setIsSubmitting(false);
     }
@@ -238,10 +273,10 @@ export default function KYCPage() {
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
       <Sidebar />
-      
+
       <div className="flex-1">
         <Header />
-        
+
         <main className="p-8 max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
@@ -254,16 +289,15 @@ export default function KYCPage() {
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                     Verificación KYC
                   </h1>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Know Your Customer
-                  </p>
+                  <p className="text-gray-500 dark:text-gray-400">Know Your Customer</p>
                 </div>
               </div>
               {!isLoadingStatus && getStatusBadge()}
             </div>
-            
+
             <p className="text-gray-600 dark:text-gray-300">
-              Para invertir en proyectos inmobiliarios tokenizados, necesitamos verificar tu identidad según las regulaciones MiCA y AML.
+              Para invertir en proyectos inmobiliarios tokenizados, necesitamos verificar tu
+              identidad según las regulaciones MiCA y AML.
             </p>
           </div>
 
@@ -287,13 +321,15 @@ export default function KYCPage() {
                 Ya puedes invertir en proyectos inmobiliarios tokenizados
               </p>
               <div className="text-sm text-green-600 dark:text-green-400">
-                Verificado el: {kycStatus.reviewed_at && new Date(kycStatus.reviewed_at).toLocaleDateString('es-ES', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
+                Verificado el:{' '}
+                {kycStatus.reviewed_at &&
+                  new Date(kycStatus.reviewed_at).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
               </div>
             </div>
           )}
@@ -311,13 +347,15 @@ export default function KYCPage() {
                 Tu solicitud está siendo revisada. Normalmente toma 24-48 horas.
               </p>
               <div className="text-sm text-yellow-600 dark:text-yellow-400">
-                Enviado el: {kycStatus.submitted_at && new Date(kycStatus.submitted_at).toLocaleDateString('es-ES', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
+                Enviado el:{' '}
+                {kycStatus.submitted_at &&
+                  new Date(kycStatus.submitted_at).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
               </div>
             </div>
           )}
@@ -334,7 +372,7 @@ export default function KYCPage() {
                     Solicitud rechazada
                   </h3>
                   <p className="text-red-700 dark:text-red-300 mb-3">
-                    {kycStatus.rejection_reason || "No se especificó una razón"}
+                    {kycStatus.rejection_reason || 'No se especificó una razón'}
                   </p>
                   <p className="text-sm text-red-600 dark:text-red-400">
                     Por favor, corrige los problemas y vuelve a enviar tus documentos.
@@ -345,97 +383,54 @@ export default function KYCPage() {
           )}
 
           {/* Formulario - Solo si no está aprobado o en revisión */}
-          {!isLoadingStatus && kycStatus?.status !== 'approved' && kycStatus?.status !== 'pending' && (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Tipo de documento */}
-              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                  Tipo de documento de identidad
-                </label>
-                <select
-                  value={formData.documentType}
-                  onChange={(e) => setFormData({ ...formData, documentType: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="dni">DNI / NIE (España)</option>
-                  <option value="passport">Pasaporte</option>
-                  <option value="driver_license">Licencia de conducir</option>
-                </select>
-              </div>
-
-              {/* Upload: Documento frontal */}
-              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
-                <div className="flex items-center gap-3 mb-4">
-                  <FileText className="w-5 h-5 text-blue-600" />
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Documento de identidad (Frente) *
+          {!isLoadingStatus &&
+            kycStatus?.status !== 'approved' &&
+            kycStatus?.status !== 'pending' && (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Tipo de documento */}
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Tipo de documento de identidad
                   </label>
+                  <select
+                    value={formData.documentType}
+                    onChange={(e) => setFormData({ ...formData, documentType: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="dni">DNI / NIE (España)</option>
+                    <option value="passport">Pasaporte</option>
+                    <option value="driver_license">Licencia de conducir</option>
+                  </select>
                 </div>
-                
-                <input
-                  type="file"
-                  accept="image/*,application/pdf"
-                  onChange={(e) => handleFileChange(e, setDocumentFront)}
-                  className="hidden"
-                  id="documentFront"
-                />
-                <label
-                  htmlFor="documentFront"
-                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-colors"
-                >
-                  {documentFront ? (
-                    <div className="text-center">
-                      <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                      <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
-                        {documentFront.name}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {(documentFront.size / 1024 / 1024).toFixed(2)} MB
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Click para subir archivo
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        JPG, PNG o PDF (máx. 10MB)
-                      </p>
-                    </div>
-                  )}
-                </label>
-              </div>
 
-              {/* Upload: Documento reverso (solo para DNI) */}
-              {formData.documentType === 'dni' && (
+                {/* Upload: Documento frontal */}
                 <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
                   <div className="flex items-center gap-3 mb-4">
                     <FileText className="w-5 h-5 text-blue-600" />
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Documento de identidad (Reverso) *
+                      Documento de identidad (Frente) *
                     </label>
                   </div>
-                  
+
                   <input
                     type="file"
                     accept="image/*,application/pdf"
-                    onChange={(e) => handleFileChange(e, setDocumentBack)}
+                    onChange={(e) => handleFileChange(e, setDocumentFront)}
                     className="hidden"
-                    id="documentBack"
+                    id="documentFront"
                   />
                   <label
-                    htmlFor="documentBack"
+                    htmlFor="documentFront"
                     className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-colors"
                   >
-                    {documentBack ? (
+                    {documentFront ? (
                       <div className="text-center">
                         <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
                         <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
-                          {documentBack.name}
+                          {documentFront.name}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {(documentBack.size / 1024 / 1024).toFixed(2)} MB
+                          {(documentFront.size / 1024 / 1024).toFixed(2)} MB
                         </p>
                       </div>
                     ) : (
@@ -444,89 +439,128 @@ export default function KYCPage() {
                         <p className="text-sm text-gray-600 dark:text-gray-400">
                           Click para subir archivo
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          JPG, PNG o PDF (máx. 10MB)
-                        </p>
+                        <p className="text-xs text-gray-500 mt-1">JPG, PNG o PDF (máx. 10MB)</p>
                       </div>
                     )}
                   </label>
                 </div>
-              )}
 
-              {/* Upload: Comprobante de domicilio */}
-              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
-                <div className="flex items-center gap-3 mb-4">
-                  <MapPin className="w-5 h-5 text-blue-600" />
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Comprobante de domicilio *
+                {/* Upload: Documento reverso (solo para DNI) */}
+                {formData.documentType === 'dni' && (
+                  <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+                    <div className="flex items-center gap-3 mb-4">
+                      <FileText className="w-5 h-5 text-blue-600" />
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Documento de identidad (Reverso) *
+                      </label>
+                    </div>
+
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      onChange={(e) => handleFileChange(e, setDocumentBack)}
+                      className="hidden"
+                      id="documentBack"
+                    />
+                    <label
+                      htmlFor="documentBack"
+                      className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-colors"
+                    >
+                      {documentBack ? (
+                        <div className="text-center">
+                          <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                          <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                            {documentBack.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {(documentBack.size / 1024 / 1024).toFixed(2)} MB
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Click para subir archivo
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">JPG, PNG o PDF (máx. 10MB)</p>
+                        </div>
+                      )}
+                    </label>
+                  </div>
+                )}
+
+                {/* Upload: Comprobante de domicilio */}
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+                  <div className="flex items-center gap-3 mb-4">
+                    <MapPin className="w-5 h-5 text-blue-600" />
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Comprobante de domicilio *
+                    </label>
+                  </div>
+
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    Factura de servicios, extracto bancario o contrato de alquiler (últimos 3 meses)
+                  </p>
+
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={(e) => handleFileChange(e, setProofOfAddress)}
+                    className="hidden"
+                    id="proofOfAddress"
+                  />
+                  <label
+                    htmlFor="proofOfAddress"
+                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-colors"
+                  >
+                    {proofOfAddress ? (
+                      <div className="text-center">
+                        <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                          {proofOfAddress.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {(proofOfAddress.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Click para subir archivo
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">JPG, PNG o PDF (máx. 10MB)</p>
+                      </div>
+                    )}
                   </label>
                 </div>
-                
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  Factura de servicios, extracto bancario o contrato de alquiler (últimos 3 meses)
-                </p>
-                
-                <input
-                  type="file"
-                  accept="image/*,application/pdf"
-                  onChange={(e) => handleFileChange(e, setProofOfAddress)}
-                  className="hidden"
-                  id="proofOfAddress"
-                />
-                <label
-                  htmlFor="proofOfAddress"
-                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-colors"
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !address}
+                  className="w-full bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
                 >
-                  {proofOfAddress ? (
-                    <div className="text-center">
-                      <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                      <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
-                        {proofOfAddress.name}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {(proofOfAddress.size / 1024 / 1024).toFixed(2)} MB
-                      </p>
-                    </div>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Enviando documentos...
+                    </>
                   ) : (
-                    <div className="text-center">
-                      <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Click para subir archivo
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        JPG, PNG o PDF (máx. 10MB)
-                      </p>
-                    </div>
+                    <>
+                      <Shield className="w-5 h-5" />
+                      Enviar documentos para verificación
+                    </>
                   )}
-                </label>
-              </div>
+                </button>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting || !address}
-                className="w-full bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Enviando documentos...
-                  </>
-                ) : (
-                  <>
-                    <Shield className="w-5 h-5" />
-                    Enviar documentos para verificación
-                  </>
+                {!address && (
+                  <p className="text-center text-sm text-red-600 dark:text-red-400">
+                    Conecta tu wallet para enviar documentos
+                  </p>
                 )}
-              </button>
-
-              {!address && (
-                <p className="text-center text-sm text-red-600 dark:text-red-400">
-                  Conecta tu wallet para enviar documentos
-                </p>
-              )}
-            </form>
-          )}
+              </form>
+            )}
 
           {/* Info */}
           <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
