@@ -23,6 +23,7 @@ const TENANTS: Record<string, TenantConfig> = {
     primaryColor: '#2563EB',
     secondaryColor: '#0B1220',
     showInfraNotice: true,
+    plan: 'enterprise' as const,
   },
 
   /**
@@ -37,6 +38,7 @@ const TENANTS: Record<string, TenantConfig> = {
     primaryColor: '#0F766E',
     secondaryColor: '#0C1A1A',
     showInfraNotice: true,
+    plan: 'starter' as const,
   },
 
   /**
@@ -51,6 +53,7 @@ const TENANTS: Record<string, TenantConfig> = {
     primaryColor: '#7C3AED',
     secondaryColor: '#0F0A1E',
     showInfraNotice: false,
+    plan: 'pro' as const,
   },
 };
 

@@ -162,6 +162,7 @@ export async function POST(req: NextRequest) {
     secondaryColor,
     faviconUrl,
     showInfraNotice,
+    plan: plan as 'starter' | 'pro' | 'enterprise',
   });
 
   // future audit event: { actor: callerAddress, action: 'tenant.create', target: id, ts: Date.now() }

@@ -82,6 +82,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                         secondaryColor: tenant.secondaryColor,
                         faviconUrl: tenant.faviconUrl,
                         showInfraNotice: tenant.showInfraNotice,
+                        logoUrl: tenant.logoUrl,
+                        tagline: tenant.tagline,
                       }}
                     >
                       <FaviconInjector />

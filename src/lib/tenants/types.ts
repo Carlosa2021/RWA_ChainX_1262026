@@ -32,4 +32,13 @@ export interface TenantConfig {
 
   /** Show "Powered by ChainX Infrastructure" notice */
   showInfraNotice: boolean;
+
+  /** Custom logo URL (optional — visual branding, persisted in tenant_branding JSONB) */
+  logoUrl?: string;
+
+  /** Short tagline displayed in hero/header areas (optional — visual branding) */
+  tagline?: string;
+
+  /** SaaS subscription tier — controls feature access */
+  plan: 'starter' | 'pro' | 'enterprise';
 }

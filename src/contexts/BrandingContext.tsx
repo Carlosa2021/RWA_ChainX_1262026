@@ -8,6 +8,7 @@ export interface BrandingConfig {
   primaryColor: string;
   secondaryColor: string;
   logoUrl?: string;
+  tagline?: string;
   faviconUrl?: string;
   showInfraNotice: boolean;
 }

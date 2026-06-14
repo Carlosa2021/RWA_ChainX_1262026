@@ -39,6 +39,8 @@ const ALLOWED_BRANDING_FIELDS = new Set([
   'secondaryColor',
   'faviconUrl',
   'showInfraNotice',
+  'logoUrl',
+  'tagline',
 ]);
 
 // ─── POST /api/admin/tenants/provision ───────────────────────────────────────

@@ -32,6 +32,7 @@ interface TenantRow {
   secondary_color: string;
   favicon_url: string | null;
   show_infra_notice: boolean;
+  plan: string;
   /** Visual-only overrides — structural fields are blocked in rowToTenantConfig */
   branding_config: Record<string, unknown> | null;
 }
@@ -53,6 +54,7 @@ function rowToTenantConfig(row: TenantRow): TenantConfig {
     // STRUCTURAL — authoritative source only, no JSONB override possible
     id: row.id,
     hostname: row.primary_hostname,
+    plan: row.plan as 'starter' | 'pro' | 'enterprise',
 
     // VISUAL — branding JSONB may override these
     brandName: (overrides.brandName as string | undefined) ?? row.brand_name,
@@ -65,6 +67,10 @@ function rowToTenantConfig(row: TenantRow): TenantConfig {
       typeof overrides.showInfraNotice === 'boolean'
         ? overrides.showInfraNotice
         : row.show_infra_notice,
+
+    // VISUAL BRANDING JSONB-only — no column in tenants table
+    logoUrl: (overrides.logoUrl as string | undefined) ?? undefined,
+    tagline: (overrides.tagline as string | undefined) ?? undefined,
   };
 }
 
@@ -85,6 +91,7 @@ export class PostgresTenantRepository implements ITenantRepository {
         t.secondary_color,
         t.favicon_url,
         t.show_infra_notice,
+        t.plan,
         tb.config AS branding_config
       FROM tenants t
       LEFT JOIN tenant_branding tb ON tb.tenant_id = t.id
@@ -108,6 +115,7 @@ export class PostgresTenantRepository implements ITenantRepository {
         t.secondary_color,
         t.favicon_url,
         t.show_infra_notice,
+        t.plan,
         tb.config AS branding_config
       FROM tenants t
       JOIN tenant_domains td ON td.tenant_id = t.id
@@ -135,6 +143,7 @@ export class PostgresTenantRepository implements ITenantRepository {
         t.secondary_color,
         t.favicon_url,
         t.show_infra_notice,
+        t.plan,
         tb.config AS branding_config
       FROM tenants t
       LEFT JOIN tenant_branding tb ON tb.tenant_id = t.id
@@ -160,7 +169,7 @@ export class PostgresTenantRepository implements ITenantRepository {
         ${config.secondaryColor},
         ${config.faviconUrl ?? null},
         ${config.showInfraNotice},
-        ${'enterprise'}
+        ${config.plan}
       )
     `;
     // future audit event: { actor, action: 'tenant.create', target: config.id, ts: Date.now() }
@@ -182,6 +191,7 @@ export class PostgresTenantRepository implements ITenantRepository {
         secondary_color   = ${merged.secondaryColor},
         favicon_url       = ${merged.faviconUrl ?? null},
         show_infra_notice = ${merged.showInfraNotice},
+        plan              = ${merged.plan},
         updated_at        = now()
       WHERE id = ${id}
     `;
@@ -204,7 +214,7 @@ export class PostgresTenantRepository implements ITenantRepository {
         ${config.secondaryColor},
         ${config.faviconUrl ?? null},
         ${config.showInfraNotice},
-        ${'enterprise'}
+        ${config.plan}
       )
       ON CONFLICT (id) DO UPDATE SET
         brand_name        = EXCLUDED.brand_name,
@@ -214,6 +224,7 @@ export class PostgresTenantRepository implements ITenantRepository {
         secondary_color   = EXCLUDED.secondary_color,
         favicon_url       = EXCLUDED.favicon_url,
         show_infra_notice = EXCLUDED.show_infra_notice,
+        plan              = EXCLUDED.plan,
         updated_at        = now()
     `;
     // future audit event: { actor, action: 'tenant.save', target: config.id, ts: Date.now() }
