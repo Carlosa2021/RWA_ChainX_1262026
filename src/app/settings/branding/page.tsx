@@ -12,6 +12,8 @@ import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { useLicense } from '@/contexts/LicenseContext';
 import { useBranding } from '@/contexts/BrandingContext';
+import { useTenant } from '@/contexts/TenantContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { PLANS } from '@/config/plans';
 import { toast } from 'sonner';
 import {
@@ -134,6 +136,8 @@ function FileUpload({
 // ─── Branding Panel (BUSINESS / ENTERPRISE) ───────────────────
 function BrandingPanel() {
   const { setBranding } = useBranding();
+  const { tenant } = useTenant();
+  const { address } = useAuth();
   const [companyName, setCompanyName] = useState('');
   const [domainVerifying, setDomainVerifying] = useState(false);
   const [displayName, setDisplayName] = useState('');
@@ -322,17 +326,41 @@ function BrandingPanel() {
           </div>
         </SectionCard>
 
-        {/* Action buttons (UI-only) */}
+        {/* Action buttons */}
         <div className="flex flex-wrap items-center gap-3">
           <button
-            onClick={() => {
-              setBranding({
+            onClick={async () => {
+              const brandConfig = {
                 brandName: displayName || companyName || 'ChainX RWA',
                 supportEmail: supportEmail || 'hola@chainx.ch',
                 primaryColor,
                 secondaryColor,
                 showInfraNotice,
-              });
+                faviconUrl: faviconName || undefined,
+              };
+
+              // Step 1: always persist to localStorage (backward compatible)
+              setBranding(brandConfig);
+
+              // Step 2: optionally persist to Postgres (best-effort)
+              // Runs only when a wallet is connected (owner address available).
+              // Failure does not block the localStorage save.
+              if (address) {
+                try {
+                  await fetch('/api/admin/branding', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      ownerAddress: address,
+                      tenantId: tenant.id,
+                      config: brandConfig,
+                    }),
+                  });
+                } catch {
+                  // Postgres persistence is best-effort; localStorage save succeeded
+                }
+              }
+
               toast.success('Branding settings saved.');
             }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors"

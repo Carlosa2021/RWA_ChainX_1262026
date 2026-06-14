@@ -15,6 +15,8 @@ import type { TenantConfig } from '@/lib/tenants/types';
 import type { ITenantRepository } from './types';
 
 export class MockTenantRepository implements ITenantRepository {
+  // ── Read ────────────────────────────────────────────────────────────────
+
   async getTenantById(id: string): Promise<TenantConfig | undefined> {
     return TENANTS[id];
   }
@@ -28,9 +30,24 @@ export class MockTenantRepository implements ITenantRepository {
     return Object.values(TENANTS);
   }
 
-  // Mock: no persistence — static registry is read-only at this tier.
-  // Sprint 8B will implement real upsert logic here.
-  saveTenant(_config: TenantConfig): void {
+  // ── Write — no-op: static registry is read-only in Mock mode ─────────────
+
+  async createTenant(_config: TenantConfig): Promise<void> {
+    // no-op
+  }
+
+  async updateTenant(
+    _id: string,
+    _updates: Partial<Omit<TenantConfig, 'id'>>
+  ): Promise<TenantConfig | undefined> {
+    return undefined;
+  }
+
+  async saveTenant(_config: TenantConfig): Promise<void> {
+    // no-op
+  }
+
+  async saveBranding(_tenantId: string, _config: Record<string, unknown>): Promise<void> {
     // no-op
   }
 }

@@ -143,8 +143,101 @@ export class PostgresTenantRepository implements ITenantRepository {
     return result.rows.map(rowToTenantConfig);
   }
 
-  // Sprint 8C: implement admin write flows
-  saveTenant(_config: TenantConfig): void {
-    throw new Error('PostgresTenantRepository.saveTenant: not implemented — Sprint 8C');
+  // ── Write ───────────────────────────────────────────────────────────────────
+
+  async createTenant(config: TenantConfig): Promise<void> {
+    await sql`
+      INSERT INTO tenants (
+        id, brand_name, brand_url, support_email,
+        primary_color, secondary_color, favicon_url, show_infra_notice, plan
+      )
+      VALUES (
+        ${config.id},
+        ${config.brandName},
+        ${config.brandUrl},
+        ${config.supportEmail},
+        ${config.primaryColor},
+        ${config.secondaryColor},
+        ${config.faviconUrl ?? null},
+        ${config.showInfraNotice},
+        ${'enterprise'}
+      )
+    `;
+    // future audit event: { actor, action: 'tenant.create', target: config.id, ts: Date.now() }
+  }
+
+  async updateTenant(
+    id: string,
+    updates: Partial<Omit<TenantConfig, 'id'>>
+  ): Promise<TenantConfig | undefined> {
+    const current = await this.getTenantById(id);
+    if (!current) return undefined;
+    const merged = { ...current, ...updates };
+    await sql`
+      UPDATE tenants SET
+        brand_name        = ${merged.brandName},
+        brand_url         = ${merged.brandUrl},
+        support_email     = ${merged.supportEmail},
+        primary_color     = ${merged.primaryColor},
+        secondary_color   = ${merged.secondaryColor},
+        favicon_url       = ${merged.faviconUrl ?? null},
+        show_infra_notice = ${merged.showInfraNotice},
+        updated_at        = now()
+      WHERE id = ${id}
+    `;
+    // future audit event: { actor, action: 'tenant.update', target: id, ts: Date.now() }
+    return this.getTenantById(id);
+  }
+
+  async saveTenant(config: TenantConfig): Promise<void> {
+    await sql`
+      INSERT INTO tenants (
+        id, brand_name, brand_url, support_email,
+        primary_color, secondary_color, favicon_url, show_infra_notice, plan
+      )
+      VALUES (
+        ${config.id},
+        ${config.brandName},
+        ${config.brandUrl},
+        ${config.supportEmail},
+        ${config.primaryColor},
+        ${config.secondaryColor},
+        ${config.faviconUrl ?? null},
+        ${config.showInfraNotice},
+        ${'enterprise'}
+      )
+      ON CONFLICT (id) DO UPDATE SET
+        brand_name        = EXCLUDED.brand_name,
+        brand_url         = EXCLUDED.brand_url,
+        support_email     = EXCLUDED.support_email,
+        primary_color     = EXCLUDED.primary_color,
+        secondary_color   = EXCLUDED.secondary_color,
+        favicon_url       = EXCLUDED.favicon_url,
+        show_infra_notice = EXCLUDED.show_infra_notice,
+        updated_at        = now()
+    `;
+    // future audit event: { actor, action: 'tenant.save', target: config.id, ts: Date.now() }
+  }
+
+  async saveBranding(tenantId: string, config: Record<string, unknown>): Promise<void> {
+    // Strip structural fields — branding JSONB is visual-only
+    const {
+      id: _id,
+      hostname: _hostname,
+      tenantId: _tenantId,
+      ...visualConfig
+    } = config as Record<string, unknown>;
+    void _id;
+    void _hostname;
+    void _tenantId;
+    const configJson = JSON.stringify(visualConfig);
+    await sql`
+      INSERT INTO tenant_branding (tenant_id, config, updated_at)
+      VALUES (${tenantId}, ${configJson}::jsonb, now())
+      ON CONFLICT (tenant_id) DO UPDATE SET
+        config     = EXCLUDED.config,
+        updated_at = now()
+    `;
+    // future audit event: { actor, action: 'branding.save', target: tenantId, ts: Date.now() }
   }
 }

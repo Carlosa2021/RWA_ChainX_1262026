@@ -61,8 +61,59 @@ export class PostgresDomainRepository implements IDomainRepository {
     return result.rows.map(rowToDomain);
   }
 
-  // Sprint 8C: implement domain registration flow
-  saveDomain(_domain: TenantDomain): void {
-    throw new Error('PostgresDomainRepository.saveDomain: not implemented — Sprint 8C');
+  // ── Write ───────────────────────────────────────────────────────────────────
+
+  async createDomain(domain: TenantDomain): Promise<void> {
+    await sql`
+      INSERT INTO tenant_domains (
+        hostname, tenant_id, verified, verification_status, created_at
+      )
+      VALUES (
+        ${domain.hostname},
+        ${domain.tenantId},
+        ${domain.verified},
+        ${domain.verificationStatus},
+        ${domain.createdAt}
+      )
+    `;
+    // future audit event: { actor, action: 'domain.create', target: domain.hostname, ts: Date.now() }
+  }
+
+  async updateDomain(
+    hostname: string,
+    updates: Partial<Omit<TenantDomain, 'hostname'>>
+  ): Promise<TenantDomain | undefined> {
+    const current = await this.getDomain(hostname);
+    if (!current) return undefined;
+    const merged = { ...current, ...updates };
+    await sql`
+      UPDATE tenant_domains SET
+        tenant_id           = ${merged.tenantId},
+        verified            = ${merged.verified},
+        verification_status = ${merged.verificationStatus}
+      WHERE hostname = ${hostname}
+    `;
+    // future audit event: { actor, action: 'domain.update', target: hostname, ts: Date.now() }
+    return this.getDomain(hostname);
+  }
+
+  async saveDomain(domain: TenantDomain): Promise<void> {
+    await sql`
+      INSERT INTO tenant_domains (
+        hostname, tenant_id, verified, verification_status, created_at
+      )
+      VALUES (
+        ${domain.hostname},
+        ${domain.tenantId},
+        ${domain.verified},
+        ${domain.verificationStatus},
+        ${domain.createdAt}
+      )
+      ON CONFLICT (hostname) DO UPDATE SET
+        tenant_id           = EXCLUDED.tenant_id,
+        verified            = EXCLUDED.verified,
+        verification_status = EXCLUDED.verification_status
+    `;
+    // future audit event: { actor, action: 'domain.save', target: domain.hostname, ts: Date.now() }
   }
 }

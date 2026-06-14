@@ -15,6 +15,8 @@ import type { TenantDomain } from '@/lib/domains/types';
 import type { IDomainRepository } from './types';
 
 export class MockDomainRepository implements IDomainRepository {
+  // ── Read ────────────────────────────────────────────────────────────────
+
   async getDomain(hostname: string): Promise<TenantDomain | undefined> {
     const normalized = hostname.split(':')[0].toLowerCase();
     return DOMAINS[normalized];
@@ -24,9 +26,20 @@ export class MockDomainRepository implements IDomainRepository {
     return Object.values(DOMAINS);
   }
 
-  // Mock: no persistence — static registry is read-only at this tier.
-  // Sprint 8B will implement real upsert logic here.
-  saveDomain(_domain: TenantDomain): void {
+  // ── Write — no-op: static registry is read-only in Mock mode ─────────────
+
+  async createDomain(_domain: TenantDomain): Promise<void> {
+    // no-op
+  }
+
+  async updateDomain(
+    _hostname: string,
+    _updates: Partial<Omit<TenantDomain, 'hostname'>>
+  ): Promise<TenantDomain | undefined> {
+    return undefined;
+  }
+
+  async saveDomain(_domain: TenantDomain): Promise<void> {
     // no-op
   }
 }
