@@ -85,8 +85,8 @@ export default function Footer() {
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 dark:text-gray-600 gap-2">
           <p>
-            © {currentYear} ChainX Technology S.A. · All rights reserved · ChainX® Trademark N°
-            830657 (Switzerland)
+            © {currentYear} ChainX Technology · All rights reserved · ChainX® Trademark N° 830657
+            (Switzerland)
           </p>
           <div className="flex items-center gap-3">
             {branding.showInfraNotice && (
