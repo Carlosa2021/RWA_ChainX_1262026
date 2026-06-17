@@ -9,7 +9,7 @@
  */
 import { sql } from '@/lib/db/client';
 import type { TenantDomain, DomainVerificationStatus } from '@/lib/domains/types';
-import type { IDomainRepository } from './types';
+import type { IDomainRepository, VercelRegistrationData } from './types';
 
 interface DomainRow {
   hostname: string;
@@ -115,5 +115,48 @@ export class PostgresDomainRepository implements IDomainRepository {
         verification_status = EXCLUDED.verification_status
     `;
     // future audit event: { actor, action: 'domain.save', target: domain.hostname, ts: Date.now() }
+  }
+
+  async setVercelRegistration(hostname: string, data: VercelRegistrationData): Promise<void> {
+    // Stores the result of a Vercel Domains API registration call.
+    // Called by POST /api/admin/domains/register (Sprint 9.2B).
+    await sql`
+      UPDATE tenant_domains SET
+        vercel_domain_id    = ${data.vercelDomainId},
+        txt_name            = ${data.txtName},
+        txt_value           = ${data.txtValue},
+        cname_name          = ${data.cnameName ?? null},
+        cname_value         = ${data.cnameValue ?? null},
+        created_by          = ${data.createdBy ?? null},
+        verification_status = ${'registered'},
+        updated_at          = now()
+      WHERE hostname = ${hostname}
+    `;
+    // future audit event: { actor: data.createdBy, action: 'domain.vercel_register', target: hostname, ts: Date.now() }
+  }
+
+  async setVerificationStatus(
+    hostname: string,
+    status: DomainVerificationStatus,
+    meta?: {
+      verifiedAt?: string;
+      verificationError?: string;
+      lastCheckedAt?: string;
+    }
+  ): Promise<void> {
+    // Updates verification outcome after polling Vercel API.
+    // Called by POST /api/admin/domains/check (Sprint 9.3).
+    const isVerified = status === 'verified';
+    await sql`
+      UPDATE tenant_domains SET
+        verification_status = ${status},
+        verified            = ${isVerified},
+        verified_at         = ${meta?.verifiedAt ?? null},
+        verification_error  = ${meta?.verificationError ?? null},
+        last_checked_at     = ${meta?.lastCheckedAt ?? new Date().toISOString()},
+        updated_at          = now()
+      WHERE hostname = ${hostname}
+    `;
+    // future audit event: { actor, action: 'domain.verification_status', target: hostname, status, ts: Date.now() }
   }
 }

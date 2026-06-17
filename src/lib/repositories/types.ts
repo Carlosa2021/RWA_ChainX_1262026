@@ -9,7 +9,9 @@
  *                           Postgres (@vercel/postgres)
  */
 import type { TenantConfig } from '@/lib/tenants/types';
-import type { TenantDomain } from '@/lib/domains/types';
+import type { TenantDomain, DomainVerificationStatus } from '@/lib/domains/types';
+
+export type { DomainVerificationStatus };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tenant Repository
@@ -62,6 +64,26 @@ export interface ITenantRepository {
 // Domain Repository
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Data returned by Vercel Domains API when a domain is registered.
+ * Stored in tenant_domains for use during the verification step.
+ * Sprint 9.2B will populate these fields via POST /api/admin/domains/register.
+ */
+export interface VercelRegistrationData {
+  /** Vercel's internal domain registration identifier */
+  vercelDomainId: string;
+  /** DNS TXT record name to create (e.g. "_vercel") */
+  txtName: string;
+  /** DNS TXT record value (verification token) */
+  txtValue: string;
+  /** DNS CNAME record name (null for apex domains) */
+  cnameName: string | null;
+  /** DNS CNAME record value (null for apex domains) */
+  cnameValue: string | null;
+  /** Operator wallet address for audit */
+  createdBy?: string;
+}
+
 export interface IDomainRepository {
   // ── Read ──────────────────────────────────────────────────────────────────
 
@@ -98,4 +120,28 @@ export interface IDomainRepository {
    * Mock: no-op. Postgres: INSERT ... ON CONFLICT DO UPDATE.
    */
   saveDomain(domain: TenantDomain): Promise<void>;
+
+  /**
+   * Store the result of a Vercel Domains API registration call.
+   * Persists vercel_domain_id, DNS TXT/CNAME records, and audit fields.
+   * Called by POST /api/admin/domains/register (Sprint 9.2B).
+   * Mock: no-op. Postgres: UPDATE.
+   */
+  setVercelRegistration(hostname: string, data: VercelRegistrationData): Promise<void>;
+
+  /**
+   * Update domain verification status after polling Vercel API.
+   * Also updates verified flag, verified_at, verification_error, and last_checked_at.
+   * Called by POST /api/admin/domains/check (Sprint 9.3).
+   * Mock: no-op. Postgres: UPDATE.
+   */
+  setVerificationStatus(
+    hostname: string,
+    status: DomainVerificationStatus,
+    meta?: {
+      verifiedAt?: string;
+      verificationError?: string;
+      lastCheckedAt?: string;
+    }
+  ): Promise<void>;
 }

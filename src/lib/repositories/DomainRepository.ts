@@ -12,7 +12,8 @@
  */
 import { DOMAINS } from '@/lib/domains/registry';
 import type { TenantDomain } from '@/lib/domains/types';
-import type { IDomainRepository } from './types';
+import type { IDomainRepository, VercelRegistrationData } from './types';
+import type { DomainVerificationStatus } from '@/lib/domains/types';
 
 export class MockDomainRepository implements IDomainRepository {
   // ── Read ────────────────────────────────────────────────────────────────
@@ -41,5 +42,21 @@ export class MockDomainRepository implements IDomainRepository {
 
   async saveDomain(_domain: TenantDomain): Promise<void> {
     // no-op
+  }
+
+  async setVercelRegistration(_hostname: string, _data: VercelRegistrationData): Promise<void> {
+    // no-op: Vercel integration not active in mock mode
+  }
+
+  async setVerificationStatus(
+    _hostname: string,
+    _status: DomainVerificationStatus,
+    _meta?: {
+      verifiedAt?: string;
+      verificationError?: string;
+      lastCheckedAt?: string;
+    }
+  ): Promise<void> {
+    // no-op: Vercel verification not active in mock mode
   }
 }
