@@ -12,20 +12,51 @@ import type { TenantDomain, DomainVerificationStatus } from '@/lib/domains/types
 import type { IDomainRepository, VercelRegistrationData } from './types';
 
 interface DomainRow {
+  // ── Core fields (migration 001) ─────────────────────────────────────────────
   hostname: string;
   tenant_id: string;
   verified: boolean;
   verification_status: string;
   created_at: string;
+  // ── Vercel integration fields (migration 002, Sprint 9.2A) ─────────────────
+  // All are nullable in the DB; @vercel/postgres surfaces them as null when
+  // a column has not been populated yet.
+  vercel_domain_id: string | null;
+  txt_name: string | null;
+  txt_value: string | null;
+  cname_name: string | null;
+  cname_value: string | null;
+  // ── Verification lifecycle fields (migration 002) ───────────────────────────
+  verified_at: string | null;
+  verification_error: string | null;
+  last_checked_at: string | null;
+  // ── Audit fields (migration 002) ────────────────────────────────────────────
+  created_by: string | null;
+  updated_at: string | null;
 }
 
 function rowToDomain(row: DomainRow): TenantDomain {
   return {
+    // ── Core fields ────────────────────────────────────────────────────────────
     hostname: row.hostname,
     tenantId: row.tenant_id,
     verified: row.verified,
     verificationStatus: row.verification_status as DomainVerificationStatus,
     createdAt: row.created_at,
+    // ── Vercel fields — null in DB becomes undefined in the domain model ───────
+    // Optional fields on TenantDomain are undefined (not null) by convention.
+    vercelDomainId: row.vercel_domain_id ?? undefined,
+    txtName: row.txt_name ?? undefined,
+    txtValue: row.txt_value ?? undefined,
+    cnameName: row.cname_name ?? undefined,
+    cnameValue: row.cname_value ?? undefined,
+    // ── Lifecycle fields ────────────────────────────────────────────────────────
+    verifiedAt: row.verified_at ?? undefined,
+    verificationError: row.verification_error ?? undefined,
+    lastCheckedAt: row.last_checked_at ?? undefined,
+    // ── Audit fields ────────────────────────────────────────────────────────────
+    createdBy: row.created_by ?? undefined,
+    updatedAt: row.updated_at ?? undefined,
   };
 }
 
@@ -38,7 +69,17 @@ export class PostgresDomainRepository implements IDomainRepository {
         tenant_id,
         verified,
         verification_status,
-        created_at::text
+        created_at::text,
+        vercel_domain_id,
+        txt_name,
+        txt_value,
+        cname_name,
+        cname_value,
+        verified_at::text,
+        verification_error,
+        last_checked_at::text,
+        created_by,
+        updated_at::text
       FROM tenant_domains
       WHERE hostname = ${normalized}
       LIMIT 1
@@ -54,7 +95,17 @@ export class PostgresDomainRepository implements IDomainRepository {
         tenant_id,
         verified,
         verification_status,
-        created_at::text
+        created_at::text,
+        vercel_domain_id,
+        txt_name,
+        txt_value,
+        cname_name,
+        cname_value,
+        verified_at::text,
+        verification_error,
+        last_checked_at::text,
+        created_by,
+        updated_at::text
       FROM tenant_domains
       ORDER BY created_at ASC
     `;
