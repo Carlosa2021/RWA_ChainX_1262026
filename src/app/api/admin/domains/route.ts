@@ -2,6 +2,41 @@ import { NextRequest, NextResponse } from 'next/server';
 import { domainRepository, tenantRepository } from '@/lib/repositories';
 import type { DomainVerificationStatus } from '@/lib/domains/types';
 
+// ─── GET /api/admin/domains ───────────────────────────────────────────────────
+//
+// Purpose: List all domains registered in the platform.
+// Auth:    ownerAddress query param must match NEXT_PUBLIC_OWNER_ADDRESS.
+// Reads:   domainRepository.listDomains()
+//
+// Query params:
+//   ownerAddress  string — caller's wallet address (auth check)
+//
+// Returns:
+//   { success: true, domains: TenantDomain[] }
+//
+// All TenantDomain fields are returned, including Vercel integration fields
+// (vercelDomainId, txtName, txtValue, cnameName, cnameValue) and lifecycle
+// fields (verifiedAt, verificationError, lastCheckedAt, createdBy, updatedAt).
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function GET(req: NextRequest) {
+  const configuredOwner = process.env.NEXT_PUBLIC_OWNER_ADDRESS?.toLowerCase().trim();
+  const callerAddress = (req.nextUrl.searchParams.get('ownerAddress') ?? '').toLowerCase().trim();
+
+  if (!callerAddress) {
+    return NextResponse.json(
+      { success: false, error: 'ownerAddress query parameter is required.' },
+      { status: 400 }
+    );
+  }
+  if (!configuredOwner || callerAddress !== configuredOwner) {
+    return NextResponse.json({ success: false, error: 'Unauthorized.' }, { status: 403 });
+  }
+
+  const domains = await domainRepository.listDomains();
+  return NextResponse.json({ success: true, domains });
+}
+
 // ─── Validation constants ─────────────────────────────────────────────────────
 
 /** RFC-1123 DNS hostname: labels of 1-63 chars separated by dots, total ≤ 253 chars */

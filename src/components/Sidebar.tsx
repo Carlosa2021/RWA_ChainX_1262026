@@ -38,6 +38,7 @@ import {
   Check,
   X,
   ArrowRight,
+  Globe,
 } from 'lucide-react';
 import { PlanFeatures, PLANS, PlanType } from '@/config/plans';
 
@@ -157,6 +158,20 @@ const NAV_SECTIONS: NavSection[] = [
         href: '/admin',
         icon: Settings,
         badge: 'Admin',
+        ownerOnly: true,
+        requiredPermission: Permission.SETTINGS_MANAGE,
+      },
+      {
+        name: 'Tenants',
+        href: '/admin/tenants',
+        icon: Building2,
+        ownerOnly: true,
+        requiredPermission: Permission.SETTINGS_MANAGE,
+      },
+      {
+        name: 'Domains',
+        href: '/admin/domains',
+        icon: Globe,
         ownerOnly: true,
         requiredPermission: Permission.SETTINGS_MANAGE,
       },

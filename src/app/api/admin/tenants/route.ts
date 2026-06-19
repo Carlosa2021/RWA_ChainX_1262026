@@ -1,6 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { tenantRepository } from '@/lib/repositories';
 
+// ─── GET /api/admin/tenants ───────────────────────────────────────────────────
+//
+// Purpose: List all tenants registered in the platform.
+// Auth:    ownerAddress query param must match NEXT_PUBLIC_OWNER_ADDRESS.
+// Reads:   tenantRepository.listTenants()
+//
+// Query params:
+//   ownerAddress  string — caller's wallet address (auth check)
+//
+// Returns:
+//   { success: true, tenants: TenantConfig[] }
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function GET(req: NextRequest) {
+  const configuredOwner = process.env.NEXT_PUBLIC_OWNER_ADDRESS?.toLowerCase().trim();
+  const callerAddress = (req.nextUrl.searchParams.get('ownerAddress') ?? '').toLowerCase().trim();
+
+  if (!callerAddress) {
+    return NextResponse.json(
+      { success: false, error: 'ownerAddress query parameter is required.' },
+      { status: 400 }
+    );
+  }
+  if (!configuredOwner || callerAddress !== configuredOwner) {
+    return NextResponse.json({ success: false, error: 'Unauthorized.' }, { status: 403 });
+  }
+
+  const tenants = await tenantRepository.listTenants();
+  return NextResponse.json({ success: true, tenants });
+}
+
 // ─── Validation constants ─────────────────────────────────────────────────────
 
 /** Tenant ID: lowercase alphanumeric + hyphens, 1-50 chars */
