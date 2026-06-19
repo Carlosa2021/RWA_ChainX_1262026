@@ -1,5 +1,5 @@
 /**
- * Vercel Domains API Client — Sprint 9.2B Domain Registration
+ * Vercel Domains API Client — Sprint 9.2B Domain Registration / Sprint 9.3 Verification
  *
  * Server-side only. Reads credentials exclusively from environment variables.
  * SECURITY:
@@ -8,10 +8,12 @@
  *   - All throw paths use generic messages or Vercel's own error codes only.
  *
  * Endpoints used:
- *   POST /v10/projects/{projectId}/domains  — add a domain to the project
+ *   POST /v10/projects/{projectId}/domains           — add a domain to the project
+ *   GET  /v10/projects/{projectId}/domains/{hostname} — check domain verification status
  *
- * Called by: POST /api/admin/domains/register (Sprint 9.2B)
- * Polling:   GET  /v10/projects/{projectId}/domains/{hostname} — Sprint 9.3
+ * Called by:
+ *   POST /api/admin/domains/register (Sprint 9.2B)
+ *   POST /api/admin/domains/check    (Sprint 9.3)
  */
 import type { VercelRegistrationData } from '@/lib/repositories/types';
 
@@ -78,6 +80,19 @@ export class VercelApiError extends Error {
     this.name = 'VercelApiError';
     this.statusCode = statusCode;
     this.code = code;
+  }
+}
+
+/**
+ * Domain not found in the Vercel project.
+ * Vercel returns: 404 + code "not_found" on the GET endpoint.
+ * This means the domain was removed from the Vercel project externally.
+ * Route behavior: mark domain as 'failed', return 409 to admin.
+ */
+export class VercelDomainNotFoundError extends Error {
+  constructor(hostname: string) {
+    super(`Domain "${hostname}" was not found in the Vercel project. It may have been removed.`);
+    this.name = 'VercelDomainNotFoundError';
   }
 }
 
@@ -229,4 +244,109 @@ export async function registerDomainWithVercel(hostname: string): Promise<Vercel
     cnameValue: isApex ? null : 'cname.vercel-dns.com',
     // createdBy is set by the route — not available from the Vercel response.
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// checkDomainWithVercel — Sprint 9.3
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Check the current DNS verification status of a domain already registered
+ * with the Vercel Domains API.
+ *
+ * Environment variables required (server-side only):
+ *   VERCEL_TOKEN      — Bearer token from Vercel Dashboard → Settings → Tokens
+ *   VERCEL_PROJECT_ID — Project ID from Vercel Dashboard → Project Settings
+ *   VERCEL_TEAM_ID    — Team ID (optional; required for team/org accounts)
+ *
+ * Returns:
+ *   { verified: true }                           — DNS resolved; domain active
+ *   { verified: false, verificationPending: true } — DNS not yet propagated
+ *
+ * Throws:
+ *   VercelAuthError            — missing/invalid VERCEL_TOKEN or VERCEL_PROJECT_ID
+ *   VercelDomainNotFoundError  — domain removed from the Vercel project (404)
+ *   VercelRateLimitError       — rate limit exceeded (429)
+ *   VercelApiError             — any other Vercel API failure or network error
+ */
+export async function checkDomainWithVercel(
+  hostname: string
+): Promise<{ verified: boolean; verificationPending: boolean }> {
+  // ── Credentials check ──────────────────────────────────────────────────────
+  const token = process.env.VERCEL_TOKEN;
+  const projectId = process.env.VERCEL_PROJECT_ID;
+  const teamId = process.env.VERCEL_TEAM_ID;
+
+  if (!token || !projectId) {
+    // Throw immediately — do NOT log the actual env var values.
+    throw new VercelAuthError('VERCEL_TOKEN or VERCEL_PROJECT_ID is not configured.');
+  }
+
+  // ── Build request URL ──────────────────────────────────────────────────────
+  const url = new URL(
+    `https://api.vercel.com/v10/projects/${encodeURIComponent(projectId)}/domains/${encodeURIComponent(hostname)}`
+  );
+  if (teamId) {
+    url.searchParams.set('teamId', teamId);
+  }
+
+  // ── Call Vercel API ────────────────────────────────────────────────────────
+  let res: Response;
+  try {
+    res = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        // Token is sent in the header only — never logged or echoed.
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch {
+    // Network-level failure — fetch itself threw (no response from Vercel).
+    throw new VercelApiError(0, 'network_error');
+  }
+
+  // ── Parse JSON response ────────────────────────────────────────────────────
+  let json: unknown;
+  try {
+    json = await res.json();
+  } catch {
+    throw new VercelApiError(res.status, 'parse_error');
+  }
+
+  // ── Error handling ─────────────────────────────────────────────────────────
+  if (!res.ok) {
+    const errBody = json as VercelErrorResponse;
+    const code = errBody?.error?.code ?? 'unknown';
+
+    if (res.status === 401 || res.status === 403) {
+      // Do NOT include any auth detail or token hint in this error.
+      throw new VercelAuthError();
+    }
+
+    if (res.status === 404) {
+      // Domain no longer exists in this Vercel project.
+      throw new VercelDomainNotFoundError(hostname);
+    }
+
+    if (res.status === 429) {
+      const retryAfterHeader = res.headers.get('Retry-After');
+      const retryAfter = retryAfterHeader ? parseInt(retryAfterHeader, 10) : undefined;
+      throw new VercelRateLimitError(Number.isFinite(retryAfter) ? retryAfter : undefined);
+    }
+
+    // All other 4xx and 5xx errors
+    throw new VercelApiError(res.status, code);
+  }
+
+  // ── Map success response ───────────────────────────────────────────────────
+  // verified: true  → DNS has propagated; Vercel considers the domain active.
+  // verified: false → DNS records not yet resolved or not yet added.
+  //                   This is NOT a failure — it is the normal waiting state.
+  const data = json as VercelDomainResponse;
+
+  if (data.verified) {
+    return { verified: true, verificationPending: false };
+  }
+
+  return { verified: false, verificationPending: true };
 }
