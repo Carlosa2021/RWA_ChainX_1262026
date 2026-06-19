@@ -1,13 +1,10 @@
 'use client';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ChainX® RWA Platform — Domain Management (Sprint 9.5)
+// ChainX® RWA Platform — Domain Management (Sprint 9.6A)
 // ─────────────────────────────────────────────────────────────────────────────
-// Read-only global view of all domains across all tenants.
-// Data fetched from GET /api/admin/domains.
-//
-// Sprint 9.5 scope: READ ONLY — no register, check DNS, or copy DNS actions.
-// Sprint 9.6 will add: Register / Check DNS / Copy DNS actions.
+// Global view of all domains with lifecycle actions.
+// Sprint 9.6A adds: Register, Check DNS, View DNS, Re-register, Open actions.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const dynamic = 'force-dynamic';
@@ -18,61 +15,10 @@ import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { useAuth } from '@/contexts/AuthContext';
 import type { TenantDomain, DomainVerificationStatus } from '@/lib/domains/types';
-import {
-  Globe,
-  Search,
-  Loader2,
-  AlertCircle,
-  CheckCircle,
-  XCircle,
-  Clock,
-  RefreshCw,
-} from 'lucide-react';
-
-// ─── Domain status badge ──────────────────────────────────────────────────────
-const STATUS_STYLES: Record<
-  DomainVerificationStatus,
-  { label: string; cls: string; icon: React.ElementType }
-> = {
-  pending: {
-    label: 'Pending',
-    cls: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700',
-    icon: Clock,
-  },
-  registering: {
-    label: 'Registering',
-    cls: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800/50',
-    icon: RefreshCw,
-  },
-  registered: {
-    label: 'DNS Pending',
-    cls: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800/50',
-    icon: Globe,
-  },
-  verified: {
-    label: 'Verified',
-    cls: 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800/50',
-    icon: CheckCircle,
-  },
-  failed: {
-    label: 'Failed',
-    cls: 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800/50',
-    icon: XCircle,
-  },
-};
-
-function DomainStatusBadge({ status }: { status: DomainVerificationStatus }) {
-  const s = STATUS_STYLES[status];
-  const Icon = s.icon;
-  return (
-    <span
-      className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-md border ${s.cls}`}
-    >
-      <Icon className="w-3 h-3" />
-      {s.label}
-    </span>
-  );
-}
+import { DomainStatusBadge } from '@/components/admin/DomainStatusBadge';
+import { DomainActions } from '@/components/admin/DomainActions';
+import { DnsInstructionsPanel } from '@/components/admin/DnsInstructionsPanel';
+import { Globe, Search, Loader2, AlertCircle } from 'lucide-react';
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function DomainsPage() {
@@ -84,6 +30,7 @@ export default function DomainsPage() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<DomainVerificationStatus | 'all'>('all');
+  const [selectedDomain, setSelectedDomain] = useState<TenantDomain | null>(null);
 
   // ── Fetch domains ───────────────────────────────────────────────────────────
   useEffect(() => {
@@ -113,6 +60,13 @@ export default function DomainsPage() {
 
     void fetchDomains();
   }, [address, isOwner]);
+
+  // ── Update a single row in-place (no re-fetch required) ────────────────────
+  const updateDomainRow = (updated: TenantDomain) => {
+    setDomains((prev) => prev.map((d) => (d.hostname === updated.hostname ? updated : d)));
+    // Keep panel in sync if it's open for this domain
+    setSelectedDomain((prev) => (prev?.hostname === updated.hostname ? updated : prev));
+  };
 
   // ── Client-side filtering ───────────────────────────────────────────────────
   const filtered = domains.filter((d) => {
@@ -232,10 +186,10 @@ export default function DomainsPage() {
                       Status
                     </th>
                     <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                      Verified
-                    </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                       Last Checked
+                    </th>
+                    <th className="text-right px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -243,18 +197,25 @@ export default function DomainsPage() {
                   {filtered.map((domain) => (
                     <tr
                       key={domain.hostname}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-800/40 cursor-pointer transition-colors"
-                      onClick={() =>
-                        router.push(`/admin/tenants/${encodeURIComponent(domain.tenantId)}`)
-                      }
+                      className="hover:bg-gray-50 dark:hover:bg-gray-800/20 transition-colors"
                     >
-                      {/* Hostname */}
-                      <td className="px-4 py-3 font-mono text-xs text-gray-700 dark:text-gray-300">
+                      {/* Hostname — click navigates to tenant */}
+                      <td
+                        className="px-4 py-3 font-mono text-xs text-gray-700 dark:text-gray-300 cursor-pointer"
+                        onClick={() =>
+                          router.push(`/admin/tenants/${encodeURIComponent(domain.tenantId)}`)
+                        }
+                      >
                         {domain.hostname}
                       </td>
 
                       {/* Tenant */}
-                      <td className="px-4 py-3">
+                      <td
+                        className="px-4 py-3 cursor-pointer"
+                        onClick={() =>
+                          router.push(`/admin/tenants/${encodeURIComponent(domain.tenantId)}`)
+                        }
+                      >
                         <span className="font-mono text-xs text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
                           {domain.tenantId}
                         </span>
@@ -265,20 +226,23 @@ export default function DomainsPage() {
                         <DomainStatusBadge status={domain.verificationStatus} />
                       </td>
 
-                      {/* Verified */}
-                      <td className="px-4 py-3">
-                        {domain.verified ? (
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                        ) : (
-                          <XCircle className="w-4 h-4 text-gray-400" />
-                        )}
-                      </td>
-
                       {/* Last Checked */}
                       <td className="px-4 py-3 text-xs text-gray-500 dark:text-gray-400">
                         {domain.lastCheckedAt
                           ? new Date(domain.lastCheckedAt).toLocaleString()
                           : '—'}
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-4 py-3">
+                        {address && (
+                          <DomainActions
+                            domain={domain}
+                            ownerAddress={address}
+                            onActionComplete={(updated) => updated && updateDomainRow(updated)}
+                            onViewDns={setSelectedDomain}
+                          />
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -296,6 +260,21 @@ export default function DomainsPage() {
           )}
         </main>
       </div>
+
+      {/* DNS Instructions slide-over panel */}
+      {address && (
+        <DnsInstructionsPanel
+          domain={selectedDomain}
+          ownerAddress={address}
+          onClose={() => setSelectedDomain(null)}
+          onVerified={(hostname) => {
+            const updated = domains.find((d) => d.hostname === hostname);
+            if (updated)
+              updateDomainRow({ ...updated, verificationStatus: 'verified', verified: true });
+          }}
+          onDomainUpdate={updateDomainRow}
+        />
+      )}
     </div>
   );
 }

@@ -1,18 +1,10 @@
 'use client';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ChainX® RWA Platform — Tenant Detail (Sprint 9.5)
+// ChainX® RWA Platform — Tenant Detail (Sprint 9.6A)
 // ─────────────────────────────────────────────────────────────────────────────
-// Read-only detail view for a single tenant.
-// Tabs: Overview | Domains | Branding | Settings
-//
-// Data fetched from:
-//   GET /api/admin/tenants/[id]  — tenant metadata
-//   GET /api/admin/domains       — all domains (filtered client-side by tenantId)
-//
-// Sprint 9.5 scope: READ ONLY — no edit, no domain actions.
-// Sprint 9.6 will add: domain management actions (register/check/add).
-// Sprint 9.7 will add: branding editor.
+// Detail view for a single tenant with domain lifecycle actions.
+// Sprint 9.6A adds: Register, Check DNS, View DNS, Re-register, Open actions.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +15,10 @@ import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { useAuth } from '@/contexts/AuthContext';
 import type { TenantConfig } from '@/lib/tenants/types';
-import type { TenantDomain, DomainVerificationStatus } from '@/lib/domains/types';
+import type { TenantDomain } from '@/lib/domains/types';
+import { DomainStatusBadge } from '@/components/admin/DomainStatusBadge';
+import { DomainActions } from '@/components/admin/DomainActions';
+import { DnsInstructionsPanel } from '@/components/admin/DnsInstructionsPanel';
 import {
   Building2,
   Globe,
@@ -33,10 +28,6 @@ import {
   Loader2,
   AlertCircle,
   ArrowLeft,
-  CheckCircle,
-  XCircle,
-  Clock,
-  RefreshCw,
 } from 'lucide-react';
 
 // ─── Plan badge ───────────────────────────────────────────────────────────────
@@ -66,51 +57,6 @@ function PlanBadge({ plan }: { plan: string }) {
   );
 }
 
-// ─── Domain status badge ──────────────────────────────────────────────────────
-const STATUS_STYLES: Record<
-  DomainVerificationStatus,
-  { label: string; cls: string; icon: React.ElementType }
-> = {
-  pending: {
-    label: 'Pending',
-    cls: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700',
-    icon: Clock,
-  },
-  registering: {
-    label: 'Registering',
-    cls: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800/50',
-    icon: RefreshCw,
-  },
-  registered: {
-    label: 'DNS Pending',
-    cls: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800/50',
-    icon: Globe,
-  },
-  verified: {
-    label: 'Verified',
-    cls: 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800/50',
-    icon: CheckCircle,
-  },
-  failed: {
-    label: 'Failed',
-    cls: 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800/50',
-    icon: XCircle,
-  },
-};
-
-function DomainStatusBadge({ status }: { status: DomainVerificationStatus }) {
-  const s = STATUS_STYLES[status];
-  const Icon = s.icon;
-  return (
-    <span
-      className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-md border ${s.cls}`}
-    >
-      <Icon className="w-3 h-3" />
-      {s.label}
-    </span>
-  );
-}
-
 // ─── Tab type ─────────────────────────────────────────────────────────────────
 type Tab = 'overview' | 'domains' | 'branding' | 'settings';
 
@@ -126,6 +72,7 @@ export default function TenantDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>('overview');
+  const [selectedDomain, setSelectedDomain] = useState<TenantDomain | null>(null);
 
   // ── Fetch tenant + domains ──────────────────────────────────────────────────
   useEffect(() => {
@@ -171,6 +118,12 @@ export default function TenantDetailPage() {
 
     void fetchData();
   }, [address, isOwner, tenantId]);
+
+  // ── Update a single domain row in-place ─────────────────────────────────────
+  const updateDomainRow = (updated: TenantDomain) => {
+    setDomains((prev) => prev.map((d) => (d.hostname === updated.hostname ? updated : d)));
+    setSelectedDomain((prev) => (prev?.hostname === updated.hostname ? updated : prev));
+  };
 
   // ── Auth guard ──────────────────────────────────────────────────────────────
   if (!isOwner) {
@@ -349,7 +302,7 @@ export default function TenantDetailPage() {
                       </p>
                     </div>
                   ) : (
-                    <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden max-w-3xl">
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden max-w-4xl">
                       <table className="w-full text-sm">
                         <thead>
                           <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
@@ -360,10 +313,10 @@ export default function TenantDetailPage() {
                               Status
                             </th>
                             <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                              Verified
-                            </th>
-                            <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                               Last Checked
+                            </th>
+                            <th className="text-right px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                              Actions
                             </th>
                           </tr>
                         </thead>
@@ -371,7 +324,7 @@ export default function TenantDetailPage() {
                           {domains.map((domain) => (
                             <tr
                               key={domain.hostname}
-                              className="hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors"
+                              className="hover:bg-gray-50 dark:hover:bg-gray-800/20 transition-colors"
                             >
                               <td className="px-4 py-3 font-mono text-xs text-gray-700 dark:text-gray-300">
                                 {domain.hostname}
@@ -379,17 +332,22 @@ export default function TenantDetailPage() {
                               <td className="px-4 py-3">
                                 <DomainStatusBadge status={domain.verificationStatus} />
                               </td>
-                              <td className="px-4 py-3">
-                                {domain.verified ? (
-                                  <CheckCircle className="w-4 h-4 text-green-500" />
-                                ) : (
-                                  <XCircle className="w-4 h-4 text-gray-400" />
-                                )}
-                              </td>
                               <td className="px-4 py-3 text-xs text-gray-500 dark:text-gray-400">
                                 {domain.lastCheckedAt
                                   ? new Date(domain.lastCheckedAt).toLocaleString()
                                   : '—'}
+                              </td>
+                              <td className="px-4 py-3">
+                                {address && (
+                                  <DomainActions
+                                    domain={domain}
+                                    ownerAddress={address}
+                                    onActionComplete={(updated) =>
+                                      updated && updateDomainRow(updated)
+                                    }
+                                    onViewDns={setSelectedDomain}
+                                  />
+                                )}
                               </td>
                             </tr>
                           ))}
@@ -521,6 +479,21 @@ export default function TenantDetailPage() {
           ) : null}
         </main>
       </div>
+
+      {/* DNS Instructions slide-over panel */}
+      {address && (
+        <DnsInstructionsPanel
+          domain={selectedDomain}
+          ownerAddress={address}
+          onClose={() => setSelectedDomain(null)}
+          onVerified={(hostname) => {
+            const updated = domains.find((d) => d.hostname === hostname);
+            if (updated)
+              updateDomainRow({ ...updated, verificationStatus: 'verified', verified: true });
+          }}
+          onDomainUpdate={updateDomainRow}
+        />
+      )}
     </div>
   );
 }
