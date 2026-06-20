@@ -10,8 +10,8 @@ const TENANT_ID_RE = /^[a-z0-9-]{1,50}$/;
 /** Basic email format check (no external libs) */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-/** Valid plan values */
-const VALID_PLANS = new Set(['starter', 'pro', 'enterprise']);
+/** Valid plan values. `business` is the UI-facing alias for the internal `pro` tier. */
+const VALID_PLANS = new Set(['starter', 'business', 'pro', 'enterprise']);
 
 /** Hex color (#rrggbb) */
 const HEX_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
@@ -67,8 +67,8 @@ const ALLOWED_BRANDING_FIELDS = new Set([
 //   brandName      string — display name (required)
 //   brandUrl       string — canonical URL (required)
 //   supportEmail   string — valid email (required)
-//   plan           string — starter | pro | enterprise (required)
-//   hostname       string — valid RFC-1123 DNS hostname (required)
+//   plan           string — starter | business | enterprise (required)
+//   hostname       string — valid RFC-1123 DNS hostname (optional)
 //
 // Optional:
 //   primaryColor   string — hex color (default #2563EB)
@@ -160,10 +160,11 @@ export async function POST(req: NextRequest) {
   }
   if (!VALID_PLANS.has(plan)) {
     return NextResponse.json(
-      { success: false, error: 'plan must be one of: starter, pro, enterprise.' },
+      { success: false, error: 'plan must be one of: starter, business, enterprise.' },
       { status: 400 }
     );
   }
+  const persistedPlan = plan === 'business' ? 'pro' : plan;
 
   // Tenant: colors (optional with defaults)
   const primaryColor = String(body.primaryColor ?? '#2563EB').trim();
@@ -191,22 +192,19 @@ export async function POST(req: NextRequest) {
   const hostname = String(body.hostname ?? '')
     .trim()
     .toLowerCase();
-  if (!hostname) {
-    return NextResponse.json({ success: false, error: 'hostname is required.' }, { status: 400 });
-  }
   if (hostname.length > 253) {
     return NextResponse.json(
       { success: false, error: 'Hostname exceeds maximum length (253 chars).' },
       { status: 400 }
     );
   }
-  if (!DNS_HOSTNAME_RE.test(hostname)) {
+  if (hostname && !DNS_HOSTNAME_RE.test(hostname)) {
     return NextResponse.json(
       { success: false, error: 'Invalid hostname format. Must be a valid DNS name.' },
       { status: 400 }
     );
   }
-  if (RESERVED_HOSTNAMES.has(hostname)) {
+  if (hostname && RESERVED_HOSTNAMES.has(hostname)) {
     return NextResponse.json(
       { success: false, error: 'This hostname is reserved and cannot be registered.' },
       { status: 400 }
@@ -218,7 +216,13 @@ export async function POST(req: NextRequest) {
   // development and testing work without a real Postgres instance.
   if (!process.env.POSTGRES_URL) {
     return NextResponse.json(
-      { success: true, tenantId: id, hostname, brandingPersisted: false, mode: 'mock' },
+      {
+        success: true,
+        tenantId: id,
+        hostname: hostname || null,
+        brandingPersisted: false,
+        mode: 'mock',
+      },
       { status: 201 }
     );
   }
@@ -226,14 +230,13 @@ export async function POST(req: NextRequest) {
   // ── Duplicate checks (read-before-write, before BEGIN) ──────────────────────
   // Performed outside the transaction to return precise 409 errors.
   // Postgres mode only — Mock mode has no persistent state.
-  const [existingTenant, existingDomain] = await Promise.all([
-    tenantRepository.getTenantById(id),
-    // getDomain normalizes port — safe to call with plain hostname
-    (async () => {
-      const { domainRepository } = await import('@/lib/repositories');
-      return domainRepository.getDomain(hostname);
-    })(),
-  ]);
+  const existingTenant = await tenantRepository.getTenantById(id);
+  const existingDomain = hostname
+    ? await (async () => {
+        const { domainRepository } = await import('@/lib/repositories');
+        return domainRepository.getDomain(hostname);
+      })()
+    : null;
 
   if (existingTenant) {
     return NextResponse.json(
@@ -266,18 +269,20 @@ export async function POST(req: NextRequest) {
       VALUES (
         ${id}, ${brandName}, ${brandUrl}, ${supportEmail},
         ${primaryColor}, ${secondaryColor}, ${faviconUrl},
-        ${showInfraNotice}, ${plan}
+        ${showInfraNotice}, ${persistedPlan}
       )
     `;
 
-    await client.sql`
-      INSERT INTO tenant_domains (
-        hostname, tenant_id, verified, verification_status, created_at
-      )
-      VALUES (
-        ${hostname}, ${id}, ${false}, ${'pending'}, ${createdAt}
-      )
-    `;
+    if (hostname) {
+      await client.sql`
+        INSERT INTO tenant_domains (
+          hostname, tenant_id, verified, verification_status, created_at
+        )
+        VALUES (
+          ${hostname}, ${id}, ${false}, ${'pending'}, ${createdAt}
+        )
+      `;
+    }
 
     await client.sql`COMMIT`;
   } catch (err) {
@@ -320,7 +325,7 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json(
-    { success: true, tenantId: id, hostname, brandingPersisted },
+    { success: true, tenantId: id, hostname: hostname || null, brandingPersisted },
     { status: 201 }
   );
 }

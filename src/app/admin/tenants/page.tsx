@@ -19,7 +19,16 @@ import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { useAuth } from '@/contexts/AuthContext';
 import type { TenantConfig } from '@/lib/tenants/types';
-import { Building2, Search, Loader2, AlertCircle, Globe, Mail, ExternalLink } from 'lucide-react';
+import {
+  Building2,
+  Search,
+  Loader2,
+  AlertCircle,
+  Globe,
+  Mail,
+  ExternalLink,
+  Plus,
+} from 'lucide-react';
 
 // ─── Plan badge ───────────────────────────────────────────────────────────────
 
@@ -129,18 +138,27 @@ export default function TenantsPage() {
         <Header />
         <main className="flex-1 overflow-auto p-6">
           {/* Page header */}
-          <div className="mb-6">
-            <div className="flex items-center gap-3 mb-1">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
-                <Building2 className="w-4 h-4 text-white" />
+          <div className="mb-6 flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-3 mb-1">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+                  <Building2 className="w-4 h-4 text-white" />
+                </div>
+                <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Tenant Management
+                </h1>
               </div>
-              <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Tenant Management
-              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 ml-11">
+                All white-label client portals registered on this platform.
+              </p>
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 ml-11">
-              All white-label client portals registered on this platform.
-            </p>
+            <button
+              onClick={() => router.push('/admin/tenants/new')}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors shrink-0"
+            >
+              <Plus className="w-4 h-4" />
+              New Tenant
+            </button>
           </div>
 
           {/* Search bar */}

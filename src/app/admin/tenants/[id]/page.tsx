@@ -10,7 +10,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { useAuth } from '@/contexts/AuthContext';
@@ -64,6 +64,7 @@ type Tab = 'overview' | 'domains' | 'branding' | 'settings';
 export default function TenantDetailPage() {
   const { address, isOwner } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const params = useParams();
   const tenantId = typeof params.id === 'string' ? params.id : '';
 
@@ -71,7 +72,9 @@ export default function TenantDetailPage() {
   const [domains, setDomains] = useState<TenantDomain[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<Tab>('overview');
+  const requestedTab = searchParams.get('tab');
+  const initialTab: Tab = requestedTab === 'domains' ? 'domains' : 'overview';
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
   const [selectedDomain, setSelectedDomain] = useState<TenantDomain | null>(null);
 
   // ── Fetch tenant + domains ──────────────────────────────────────────────────
