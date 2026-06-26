@@ -31,14 +31,15 @@
     "email": "support@chainx.ch"
   },
   "scripts": {
+    "predev": "fuser -k 3004/tcp 2>/dev/null; true",
     "dev": "node node_modules/next/dist/bin/next dev --turbopack --port 3004",
     "dev:enterprise": "node node_modules/next/dist/bin/next dev --turbopack --port 3004",
     "dev:full": "node node_modules/next/dist/bin/next dev --turbopack --port 3004",
     "build": "node node_modules/next/dist/bin/next build",
     "start": "node node_modules/next/dist/bin/next start",
     "lint": "node node_modules/next/dist/bin/next lint",
-    "dev:starter": "cp .env.starter .env && node node_modules/next/dist/bin/next dev --turbopack --port 3000",
-    "dev:pro": "cp .env.pro .env && node node_modules/next/dist/bin/next dev --turbopack --port 3001",
+    "dev:starter": "fuser -k 3000/tcp 2>/dev/null; cp .env.starter .env && node node_modules/next/dist/bin/next dev --turbopack --port 3000",
+    "dev:pro": "fuser -k 3001/tcp 2>/dev/null; cp .env.pro .env && node node_modules/next/dist/bin/next dev --turbopack --port 3001",
     "db:seed": "node scripts/db-seed.mjs"
   },
   "dependencies": {
