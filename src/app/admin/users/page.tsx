@@ -224,7 +224,7 @@ function RoleModal({
           </button>
           <button
             onClick={() => onChangeRole(selectedRole)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 text-sm font-medium transition-colors"
           >
             <Check className="w-4 h-4" /> Change Role
           </button>
@@ -253,7 +253,7 @@ function UsersLocked() {
         href="https://chainx.ch/#pricing"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors"
+        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 text-sm font-medium transition-colors"
       >
         Upgrade to {enterprise.name}
         <ArrowRight className="w-4 h-4" />

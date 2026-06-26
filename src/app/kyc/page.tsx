@@ -236,9 +236,9 @@ export default function KYCPage() {
   const getStatusBadge = () => {
     if (!kycStatus || kycStatus.status === 'not_submitted') {
       return (
-        <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
-          <AlertCircle className="w-5 h-5 text-gray-500" />
-          <span className="font-medium text-gray-700 dark:text-gray-300">Sin verificar</span>
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <AlertCircle className="w-3.5 h-3.5 text-gray-500" />
+          <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Not Verified</span>
         </div>
       );
     }
@@ -246,23 +246,25 @@ export default function KYCPage() {
     switch (kycStatus.status) {
       case 'pending':
         return (
-          <div className="flex items-center gap-2 px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
-            <Clock className="w-5 h-5 text-yellow-600 dark:text-yellow-400 animate-pulse" />
-            <span className="font-medium text-yellow-700 dark:text-yellow-300">En revisión</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50">
+            <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+            <span className="text-xs font-medium text-amber-700 dark:text-amber-300">
+              In Review
+            </span>
           </div>
         );
       case 'approved':
         return (
-          <div className="flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-            <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-            <span className="font-medium text-green-700 dark:text-green-300">Verificado ✓</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/50">
+            <CheckCircle className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+            <span className="text-xs font-medium text-green-700 dark:text-green-300">Verified</span>
           </div>
         );
       case 'rejected':
         return (
-          <div className="flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
-            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
-            <span className="font-medium text-red-700 dark:text-red-300">Rechazado</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50">
+            <AlertCircle className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+            <span className="text-xs font-medium text-red-700 dark:text-red-300">Rejected</span>
           </div>
         );
       default:
@@ -281,16 +283,14 @@ export default function KYCPage() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                    Verificación KYC
-                  </h1>
-                  <p className="text-gray-500 dark:text-gray-400">Know Your Customer</p>
-                </div>
+              <div>
+                <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  Identity Verification
+                </h1>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  KYC — MiCA &amp; AML compliance required to participate in digital securities
+                  offerings.
+                </p>
               </div>
               {!isLoadingStatus && getStatusBadge()}
             </div>
@@ -308,22 +308,23 @@ export default function KYCPage() {
             </div>
           )}
 
-          {/* Estado: Aprobado */}
+          {/* Status: Approved */}
           {!isLoadingStatus && kycStatus?.status === 'approved' && (
-            <div className="bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 rounded-2xl p-8 text-center">
-              <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-12 h-12 text-green-600 dark:text-green-400" />
+            <div className="bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800/50 rounded-2xl p-8 text-center">
+              <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <h2 className="text-2xl font-bold text-green-900 dark:text-green-100 mb-2">
-                ¡Tu identidad está verificada!
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Identity Verified
               </h2>
-              <p className="text-green-700 dark:text-green-300 mb-6">
-                Ya puedes invertir en proyectos inmobiliarios tokenizados
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                Your identity has been cleared. You may now participate in digital securities
+                offerings.
               </p>
-              <div className="text-sm text-green-600 dark:text-green-400">
-                Verificado el:{' '}
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                Verified on:{' '}
                 {kycStatus.reviewed_at &&
-                  new Date(kycStatus.reviewed_at).toLocaleDateString('es-ES', {
+                  new Date(kycStatus.reviewed_at).toLocaleDateString('en-GB', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -334,22 +335,22 @@ export default function KYCPage() {
             </div>
           )}
 
-          {/* Estado: En revisión */}
+          {/* Status: In Review */}
           {!isLoadingStatus && kycStatus?.status === 'pending' && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-200 dark:border-yellow-800 rounded-2xl p-8 text-center">
-              <div className="w-20 h-20 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-12 h-12 text-yellow-600 dark:text-yellow-400 animate-pulse" />
+            <div className="bg-white dark:bg-gray-900 border border-amber-200 dark:border-amber-800/50 rounded-2xl p-8 text-center">
+              <div className="w-16 h-16 bg-amber-50 dark:bg-amber-900/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Clock className="w-8 h-8 text-amber-600 dark:text-amber-400" />
               </div>
-              <h2 className="text-2xl font-bold text-yellow-900 dark:text-yellow-100 mb-2">
-                Documentos en revisión
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Documents Under Review
               </h2>
-              <p className="text-yellow-700 dark:text-yellow-300 mb-6">
-                Tu solicitud está siendo revisada. Normalmente toma 24-48 horas.
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                Your submission is being reviewed. This typically takes 24–48 hours.
               </p>
-              <div className="text-sm text-yellow-600 dark:text-yellow-400">
-                Enviado el:{' '}
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                Submitted on:{' '}
                 {kycStatus.submitted_at &&
-                  new Date(kycStatus.submitted_at).toLocaleDateString('es-ES', {
+                  new Date(kycStatus.submitted_at).toLocaleDateString('en-GB', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -360,22 +361,22 @@ export default function KYCPage() {
             </div>
           )}
 
-          {/* Estado: Rechazado */}
+          {/* Status: Rejected */}
           {!isLoadingStatus && kycStatus?.status === 'rejected' && (
-            <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-2xl p-8 mb-8">
+            <div className="bg-white dark:bg-gray-900 border border-red-200 dark:border-red-800/50 rounded-2xl p-6 mb-8">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center shrink-0">
-                  <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
+                <div className="w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center shrink-0">
+                  <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-red-900 dark:text-red-100 mb-2">
-                    Solicitud rechazada
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1.5">
+                    Submission Rejected
                   </h3>
-                  <p className="text-red-700 dark:text-red-300 mb-3">
-                    {kycStatus.rejection_reason || 'No se especificó una razón'}
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    {kycStatus.rejection_reason || 'No reason specified.'}
                   </p>
-                  <p className="text-sm text-red-600 dark:text-red-400">
-                    Por favor, corrige los problemas y vuelve a enviar tus documentos.
+                  <p className="text-xs text-red-600 dark:text-red-400">
+                    Please correct the issues identified above and resubmit your documents.
                   </p>
                 </div>
               </div>
@@ -389,13 +390,13 @@ export default function KYCPage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Tipo de documento */}
                 <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Tipo de documento de identidad
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-3">
+                    Document type
                   </label>
                   <select
                     value={formData.documentType}
                     onChange={(e) => setFormData({ ...formData, documentType: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none"
                   >
                     <option value="dni">DNI / NIE (España)</option>
                     <option value="passport">Pasaporte</option>
@@ -405,12 +406,9 @@ export default function KYCPage() {
 
                 {/* Upload: Documento frontal */}
                 <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
-                  <div className="flex items-center gap-3 mb-4">
-                    <FileText className="w-5 h-5 text-blue-600" />
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Documento de identidad (Frente) *
-                    </label>
-                  </div>
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-4">
+                    Identity Document — Front *
+                  </label>
 
                   <input
                     type="file"
@@ -421,7 +419,7 @@ export default function KYCPage() {
                   />
                   <label
                     htmlFor="documentFront"
-                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-colors"
+                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl hover:border-gray-900 dark:hover:border-white cursor-pointer transition-colors"
                   >
                     {documentFront ? (
                       <div className="text-center">
@@ -448,12 +446,9 @@ export default function KYCPage() {
                 {/* Upload: Documento reverso (solo para DNI) */}
                 {formData.documentType === 'dni' && (
                   <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
-                    <div className="flex items-center gap-3 mb-4">
-                      <FileText className="w-5 h-5 text-blue-600" />
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Documento de identidad (Reverso) *
-                      </label>
-                    </div>
+                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-4">
+                      Identity Document — Back *
+                    </label>
 
                     <input
                       type="file"
@@ -464,7 +459,7 @@ export default function KYCPage() {
                     />
                     <label
                       htmlFor="documentBack"
-                      className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-colors"
+                      className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl hover:border-gray-900 dark:hover:border-white cursor-pointer transition-colors"
                     >
                       {documentBack ? (
                         <div className="text-center">
@@ -491,15 +486,12 @@ export default function KYCPage() {
 
                 {/* Upload: Comprobante de domicilio */}
                 <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
-                  <div className="flex items-center gap-3 mb-4">
-                    <MapPin className="w-5 h-5 text-blue-600" />
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Comprobante de domicilio *
-                    </label>
-                  </div>
-
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    Factura de servicios, extracto bancario o contrato de alquiler (últimos 3 meses)
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
+                    Proof of Address *
+                  </label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                    Utility bill, bank statement, or lease agreement (issued within the last 3
+                    months)
                   </p>
 
                   <input
@@ -511,7 +503,7 @@ export default function KYCPage() {
                   />
                   <label
                     htmlFor="proofOfAddress"
-                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-colors"
+                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl hover:border-gray-900 dark:hover:border-white cursor-pointer transition-colors"
                   >
                     {proofOfAddress ? (
                       <div className="text-center">
@@ -539,50 +531,58 @@ export default function KYCPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting || !address}
-                  className="w-full bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
+                  className="w-full bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-white dark:text-gray-900 font-medium py-3.5 px-6 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Enviando documentos...
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Submitting documents...
                     </>
                   ) : (
                     <>
-                      <Shield className="w-5 h-5" />
-                      Enviar documentos para verificación
+                      <Shield className="w-4 h-4" />
+                      Submit Documents for Verification
                     </>
                   )}
                 </button>
 
                 {!address && (
-                  <p className="text-center text-sm text-red-600 dark:text-red-400">
-                    Conecta tu wallet para enviar documentos
+                  <p className="text-center text-xs text-red-600 dark:text-red-400">
+                    Connect your wallet to submit documents.
                   </p>
                 )}
               </form>
             )}
 
           {/* Info */}
-          <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">
-              ¿Por qué necesitamos verificar tu identidad?
+          <div className="mt-8 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">
+              Why is identity verification required?
             </h3>
-            <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                <span>Cumplimiento con regulaciones MiCA y AML/KYC europeas</span>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-3">
+                <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  MiCA and EU AML/KYC regulatory compliance
+                </span>
               </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                <span>Protección contra fraude y lavado de dinero</span>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Protection against fraud and money laundering
+                </span>
               </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                <span>Garantía de seguridad para todos los inversores</span>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Security guarantee for all participants in the offering
+                </span>
               </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                <span>Tus datos están encriptados y protegidos</span>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Your documents are encrypted and processed securely
+                </span>
               </li>
             </ul>
           </div>

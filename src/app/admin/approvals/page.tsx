@@ -296,10 +296,12 @@ function KpiCard({
     red: 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400',
   };
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
-        <div className={`p-2 rounded-lg ${tones[tone]}`}>
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
+      <div className="flex items-start justify-between mb-3">
+        <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          {label}
+        </span>
+        <div className={`p-2 rounded-xl ${tones[tone]}`}>
           <Icon className="w-4 h-4" />
         </div>
       </div>
@@ -310,7 +312,7 @@ function KpiCard({
 
 // ─── Filter select ────────────────────────────────────────────
 const selectCls =
-  'bg-white dark:bg-gray-800/60 border border-gray-300 dark:border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none transition-colors';
+  'bg-white dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/50 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white focus:border-gray-900 dark:focus:border-white focus:outline-none transition-colors';
 
 function FilterSelect({
   label,

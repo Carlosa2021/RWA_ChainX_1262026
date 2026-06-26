@@ -36,25 +36,27 @@ function StatCard({
   color?: 'purple' | 'green' | 'blue' | 'amber';
 }) {
   const colors = {
-    purple: 'text-purple-400 bg-purple-900/30 border-purple-700/30',
-    green: 'text-green-400 bg-green-900/30 border-green-700/30',
-    blue: 'text-blue-400 bg-blue-900/30 border-blue-700/30',
-    amber: 'text-amber-400 bg-amber-900/30 border-amber-700/30',
+    purple: 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20',
+    green: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20',
+    blue: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20',
+    amber: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20',
   };
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
-        <div className={`p-2 rounded-lg border ${colors[color]}`}>
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5 hover:shadow-sm transition-shadow duration-200">
+      <div className="flex items-start justify-between mb-3">
+        <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          {label}
+        </span>
+        <div className={`p-2 rounded-xl ${colors[color]}`}>
           <Icon className="w-4 h-4" />
         </div>
       </div>
       <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
-      {sub && <p className="text-xs text-gray-500 mt-1">{sub}</p>}
+      {sub && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{sub}</p>}
       {trend && (
         <div className="flex items-center gap-1 mt-2">
-          <ArrowUpRight className="w-3.5 h-3.5 text-green-400" />
-          <span className="text-xs text-green-400">{trend}</span>
+          <ArrowUpRight className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+          <span className="text-xs text-green-600 dark:text-green-400">{trend}</span>
         </div>
       )}
     </div>
@@ -267,9 +269,9 @@ export default function OnboardingDashboardPage() {
                             </span>
                             <span className="text-xs text-gray-500">{c.raisedPct}%</span>
                           </div>
-                          <div className="w-32 h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+                          <div className="w-32 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-blue-500 rounded-full"
+                              className="h-full bg-gray-900 dark:bg-white rounded-full"
                               style={{ width: `${c.raisedPct}%` }}
                             />
                           </div>
@@ -315,17 +317,19 @@ export default function OnboardingDashboardPage() {
 
           {/* Activity feed */}
           <div className="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/60 rounded-2xl p-6">
-            <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Actividad reciente</h2>
+            <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">
+              Recent Activity
+            </h2>
             <div className="space-y-3">
               {mockActivity.map((act, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div
                     className={`mt-0.5 p-1.5 rounded-lg shrink-0 ${
                       act.type === 'investment'
-                        ? 'bg-green-900/30 text-green-400'
+                        ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
                         : act.type === 'kyc'
-                          ? 'bg-purple-900/30 text-purple-400'
-                          : 'bg-blue-900/30 text-blue-400'
+                          ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
+                          : 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                     }`}
                   >
                     <act.icon className="w-3.5 h-3.5" />
