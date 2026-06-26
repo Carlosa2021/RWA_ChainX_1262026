@@ -16,6 +16,10 @@ import {
   AlertCircle,
   Zap,
   Plus,
+  AlertTriangle,
+  Target,
+  ChevronRight,
+  Shield,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -203,14 +207,35 @@ export default function OnboardingDashboardPage() {
           {/* Stats — 🟡 DEMO DATA (replace with real blockchain reads in production) */}
           {/* PHASE 2 INSERTION POINT: replace mock values with useProjects() + useVerifiedWallets() */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {/* DEMO badge — visible indicator that data is illustrative */}
-            <div className="col-span-full flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 w-fit">
-              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Demo Data
-              </span>
-              <span className="text-xs text-gray-600">
-                · Sample values for illustration. No live data displayed.
-              </span>
+            {/* Executive Portfolio Summary */}
+            <div className="col-span-full bg-gray-900 dark:bg-gray-950 border border-gray-800 rounded-2xl p-5">
+              <div className="flex items-center justify-between gap-8">
+                <div className="min-w-0">
+                  <div className="flex items-center flex-wrap gap-2 mb-1.5">
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-widest">
+                      Meridian Capital AG
+                    </span>
+                    <span className="text-gray-700">·</span>
+                    <span className="text-xs text-gray-500 uppercase tracking-wider">Q2 2026</span>
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-900/40 border border-emerald-800/60 text-emerald-400 text-xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />2 Active
+                    </span>
+                  </div>
+                  <p className="text-white font-semibold text-lg leading-snug">
+                    Portfolio performing above benchmark · €35.84M raised across 5 offerings
+                  </p>
+                  <p className="text-gray-400 text-sm mt-0.5">
+                    580 verified investors · 8.1% avg. target return · Polygon Mainnet · ERC-3643
+                  </p>
+                </div>
+                <div className="hidden md:block text-right shrink-0">
+                  <p className="text-3xl font-bold text-white">68%</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Overall funded</p>
+                  <div className="w-28 h-1.5 bg-gray-800 rounded-full mt-2 ml-auto">
+                    <div className="h-full bg-emerald-500 rounded-full" style={{ width: '68%' }} />
+                  </div>
+                </div>
+              </div>
             </div>
             <StatCard
               label="Active Projects"
@@ -242,6 +267,51 @@ export default function OnboardingDashboardPage() {
               icon={TrendingUp}
               color="amber"
             />
+          </div>
+
+          {/* Requires Attention */}
+          <div className="bg-amber-950/10 dark:bg-amber-950/20 border border-amber-900/30 rounded-2xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <AlertTriangle className="w-4 h-4 text-amber-400" />
+              <h2 className="text-sm font-semibold text-amber-400">Requires Attention</h2>
+              <span className="ml-auto text-xs text-amber-600 font-medium">
+                3 items · action required
+              </span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {[
+                {
+                  text: 'KYC Expired — Hans-Peter Vogt (CH) · Token transfers suspended since 30 Apr 2026',
+                  action: 'Renew KYC',
+                  level: 'high',
+                },
+                {
+                  text: 'Insurance Certificate expired — Madrid Prime Offices · Renewal overdue since 01 Jun 2026',
+                  action: 'Upload',
+                  level: 'high',
+                },
+                {
+                  text: 'AML/KYC Annual Declaration 2026 — Missing · Required before Q3 distribution',
+                  action: 'Upload',
+                  level: 'medium',
+                },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-3 p-3 rounded-xl bg-amber-950/10 border border-amber-900/20"
+                >
+                  <AlertCircle
+                    className={`w-4 h-4 shrink-0 mt-0.5 ${
+                      item.level === 'high' ? 'text-red-400' : 'text-amber-400'
+                    }`}
+                  />
+                  <p className="text-xs text-gray-300 flex-1 leading-relaxed">{item.text}</p>
+                  <button className="shrink-0 text-xs font-medium text-amber-400 hover:text-amber-300 border border-amber-900/50 hover:border-amber-700 px-2.5 py-1 rounded-lg transition-colors">
+                    {item.action}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Campaigns table */}
@@ -312,7 +382,7 @@ export default function OnboardingDashboardPage() {
                               style={{ width: `${c.raisedPct}%` }}
                             />
                           </div>
-                          <p className="text-xs text-gray-600 mt-1">de €{c.totalValue}</p>
+                          <p className="text-xs text-gray-600 mt-1">of €{c.totalValue}</p>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
@@ -379,6 +449,51 @@ export default function OnboardingDashboardPage() {
                       <Clock className="w-3 h-3" /> {act.time}
                     </p>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Recommended Next Actions */}
+          <div className="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/60 rounded-2xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Target className="w-4 h-4 text-blue-500" />
+              <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
+                Recommended Next Actions
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {[
+                {
+                  title: 'Process Q2 2026 Distribution',
+                  desc: '€198,500 ready for 580 token holders · Basel Riverside + Valencia Hub · Pending sign-off',
+                  cta: 'Process Now',
+                },
+                {
+                  title: 'Activate Madrid Prime Subscription',
+                  desc: 'Legal opinion received · 2 compliance docs pending sign-off · €20.58M remaining target',
+                  cta: 'Review',
+                },
+                {
+                  title: 'Complete Ibiza Luxury Villas Onboarding',
+                  desc: 'In structuring · RICS valuation required · Launch target Q4 2026 · 11.2% target return',
+                  cta: 'Continue',
+                },
+              ].map((action, i) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-colors cursor-pointer group"
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                      {action.title}
+                    </h3>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors shrink-0 mt-0.5" />
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">{action.desc}</p>
+                  <button className="mt-3 text-xs font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-1.5 rounded-lg transition-colors">
+                    {action.cta} →
+                  </button>
                 </div>
               ))}
             </div>

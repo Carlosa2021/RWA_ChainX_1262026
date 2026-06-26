@@ -9,7 +9,20 @@ import { SalesShowcaseBanner } from '@/components/SalesShowcaseBanner';
 import Footer from '@/components/Footer';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
-import { Brain, CreditCard, TrendingUp, Sparkles, Lock } from 'lucide-react';
+import {
+  Brain,
+  CreditCard,
+  TrendingUp,
+  Sparkles,
+  Lock,
+  AlertTriangle,
+  Target,
+  Users,
+  DollarSign,
+  Activity,
+  ArrowUpRight,
+  Shield,
+} from 'lucide-react';
 import { useFeatureGuard } from '@/hooks/useFeatureGuard';
 import { UpgradePrompt } from '@/components/UpgradePrompt';
 import { logger } from '@/lib/logger';
@@ -108,36 +121,32 @@ export default function AIPaymentsShowcase() {
     useFeatureGuard('aiEnabled', 'AI Showcase');
 
   const [selectedProperty, setSelectedProperty] = useState(sampleProperties[0]);
-  const [view, setView] = useState<'properties' | 'dashboard' | 'ai'>('properties');
+  const [view, setView] = useState<'executive' | 'portfolio' | 'copilot'>('executive');
 
   // If user doesn't have access, return the locked page
   if (!hasAccess) {
     return (
-      <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="flex h-screen bg-white dark:bg-gray-950">
         <Sidebar />
         <div className="flex-1 flex flex-col overflow-hidden">
           <Header />
-          <main className="flex-1 overflow-auto">
-            <div className="p-6">
-              <div className="max-w-4xl mx-auto">
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
-                  <div className="w-20 h-20 bg-linear-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <Lock className="w-10 h-10 text-white" />
-                  </div>
-                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                    AI Showcase Locked
-                  </h1>
-                  <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-                    The AI Showcase feature is available in Pro and Enterprise plans
-                  </p>
-                  <button
-                    onClick={showUpgradePrompt}
-                    className="px-8 py-4 bg-linear-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all transform hover:scale-105"
-                  >
-                    Upgrade Plan
-                  </button>
-                </div>
+          <main className="flex-1 overflow-auto flex items-center justify-center">
+            <div className="text-center max-w-sm p-8">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Lock className="w-8 h-8 text-gray-500" />
               </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                AI Copilot — Enterprise Only
+              </h1>
+              <p className="text-gray-500 text-sm mb-8">
+                The Enterprise AI Copilot is available on Pro and Enterprise plans.
+              </p>
+              <button
+                onClick={showUpgradePrompt}
+                className="px-6 py-3 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 rounded-xl font-semibold transition-colors"
+              >
+                Upgrade to Enterprise
+              </button>
             </div>
           </main>
         </div>
@@ -165,235 +174,356 @@ export default function AIPaymentsShowcase() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-purple-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
-      {/* Header Espectacular para Ventas */}
-      <SalesShowcaseBanner />
-
-      {/* Navegación de Vistas */}
-      <div className="container mx-auto px-6 py-8">
-        <div className="flex justify-center mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-2 shadow-lg border border-gray-200 dark:border-gray-700">
-            <div className="flex gap-2">
+    <div className="flex h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white overflow-hidden">
+      <Sidebar />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header
+          title="AI Copilot"
+          subtitle="Meridian Capital AG · Enterprise Portfolio Intelligence · Powered by ChainX AI"
+        />
+        <main className="flex-1 overflow-y-auto">
+          {/* Tab Navigation */}
+          <div className="px-6 pt-5 border-b border-gray-200 dark:border-gray-800">
+            <div className="flex items-center gap-1">
               {[
-                {
-                  id: 'properties',
-                  label: 'Propiedades AI',
-                  icon: Brain,
-                  desc: 'Con análisis inteligente',
-                },
-                {
-                  id: 'dashboard',
-                  label: 'Dashboard',
-                  icon: TrendingUp,
-                  desc: 'Analytics en tiempo real',
-                },
-                { id: 'ai', label: 'Asistente AI', icon: Sparkles, desc: 'Consultor personal' },
+                { id: 'executive' as const, label: 'Executive Summary', icon: Brain },
+                { id: 'portfolio' as const, label: 'Portfolio Analysis', icon: TrendingUp },
+                { id: 'copilot' as const, label: 'AI Copilot', icon: Sparkles },
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setView(tab.id as 'properties' | 'dashboard' | 'ai')}
-                  className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all ${
+                  onClick={() => setView(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors -mb-px ${
                     view === tab.id
-                      ? 'bg-linear-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      ? 'border-gray-900 dark:border-white text-gray-900 dark:text-white'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
-                  <tab.icon className="w-5 h-5" />
-                  <div className="text-left">
-                    <div className="font-semibold">{tab.label}</div>
-                    <div className="text-xs opacity-80">{tab.desc}</div>
-                  </div>
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
                 </button>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Vista de Propiedades con AI */}
-        {view === 'properties' && (
-          <div className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                🏠 Propiedades Inteligentes
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Cada propiedad incluye análisis AI en tiempo real, predicciones de ROI y sistema de
-                pagos instantáneo
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-              {sampleProperties.map((property) => (
-                <EnhancedPropertyCard
-                  key={property.id}
-                  name={property.name}
-                  location={property.location}
-                  totalValue={property.totalValue}
-                  pricePerToken={property.pricePerToken}
-                  tokensAvailable={property.tokensAvailable}
-                  tokensTotal={property.tokensTotal}
-                  apy={property.apy}
-                  status={property.status}
-                  progress={property.progress}
-                  image={property.image}
-                  images={property.images}
-                  investors={property.investors}
-                  minInvestment={property.minInvestment}
-                  maxInvestment={property.maxInvestment}
-                  onInvest={() => handleInvest(property.id)}
-                />
-              ))}
-            </div>
-
-            {/* Características destacadas */}
-            <div className="mt-16 bg-linear-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">
-                🚀 Características Revolucionarias
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-linear-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Brain className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Análisis AI</h4>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    Score automático, predicciones ROI y análisis de riesgos en tiempo real
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-linear-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CreditCard className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    Pagos Instantáneos
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    Fiat-to-crypto directo: EUR, USD, USDC, USDT, ETH con fees mínimos
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-linear-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <TrendingUp className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">ROI Superior</h4>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    Rendimientos del 12-15% anuales con liquidez blockchain mejorada
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Vista Dashboard */}
-        {view === 'dashboard' && (
-          <div className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                📊 Dashboard Inteligente
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Analytics en tiempo real, gestión automática y insights AI para optimizar tu cartera
-              </p>
-            </div>
-
-            <SmartPaymentsDashboard className="max-w-6xl mx-auto" />
-          </div>
-        )}
-
-        {/* Vista Asistente AI */}
-        {view === 'ai' && (
-          <div className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                🤖 Asistente de Inversión AI
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Consultor personal con inteligencia artificial para analizar cualquier propiedad
-              </p>
-            </div>
-
-            <div className="max-w-4xl mx-auto space-y-6">
-              {/* Selector de Propiedad */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                  Selecciona una propiedad para análisis
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {sampleProperties.map((property) => (
-                    <button
-                      key={property.id}
-                      onClick={() => setSelectedProperty(property)}
-                      className={`p-4 rounded-xl border-2 transition-all text-left ${
-                        selectedProperty.id === property.id
-                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={property.image}
-                          alt={property.name}
-                          className="w-12 h-12 rounded-lg object-cover"
-                        />
-                        <div>
-                          <p className="font-semibold text-gray-900 dark:text-white">
-                            {property.name}
-                          </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {property.location} • ROI {property.apy}
-                          </p>
-                        </div>
+          <div className="p-6 space-y-6">
+            {/* ────────── EXECUTIVE SUMMARY ────────── */}
+            {view === 'executive' && (
+              <div className="space-y-6">
+                {/* AI Briefing Banner */}
+                <div className="bg-gray-900 dark:bg-gray-950 border border-gray-800 rounded-2xl p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-gray-800 rounded-xl shrink-0">
+                      <Brain className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center flex-wrap gap-3 mb-2">
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                          ChainX AI · Portfolio Briefing
+                        </span>
+                        <span className="text-gray-700">·</span>
+                        <span className="text-xs text-gray-500">26 June 2026 · 09:42 CET</span>
+                        <span className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-900/40 border border-emerald-800/60 text-emerald-400 text-xs font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                          Portfolio Healthy
+                        </span>
                       </div>
-                    </button>
+                      <p className="text-white font-semibold text-lg mb-2">
+                        Meridian Capital AG — Q2 2026 Executive Report
+                      </p>
+                      <p className="text-gray-400 text-sm leading-relaxed">
+                        Portfolio performing above benchmark. Capital raised is €35.84M across 5
+                        tokenized offerings (50.1% of total target). Valencia Logistics Hub is fully
+                        funded and distributing 9.1% p.a. Two offerings are actively open for
+                        subscription. Three compliance items require immediate attention before Q3
+                        distributions can proceed.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Executive KPI Row */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {[
+                    {
+                      label: 'Total AUM (Tokenized)',
+                      value: '€71.5M',
+                      sub: '5 registered offerings',
+                      trend: '+€6.5M from Ibiza launch',
+                      icon: DollarSign,
+                    },
+                    {
+                      label: 'Capital Raised',
+                      value: '€35.84M',
+                      sub: '50.1% of total target',
+                      trend: '+€1.2M this month',
+                      icon: TrendingUp,
+                    },
+                    {
+                      label: 'Verified Investors',
+                      value: '580',
+                      sub: '8 jurisdictions · ERC-3643',
+                      trend: '+23 this week',
+                      icon: Users,
+                    },
+                    {
+                      label: 'Avg. Target Return',
+                      value: '8.4% p.a.',
+                      sub: 'Issuer projection · not guaranteed',
+                      trend: undefined as string | undefined,
+                      icon: Activity,
+                    },
+                  ].map((kpi) => (
+                    <div
+                      key={kpi.label}
+                      className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          {kpi.label}
+                        </span>
+                        <kpi.icon className="w-4 h-4 text-gray-400" />
+                      </div>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {kpi.value}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">{kpi.sub}</p>
+                      {kpi.trend && (
+                        <p className="text-xs text-emerald-500 mt-2 flex items-center gap-1">
+                          <ArrowUpRight className="w-3 h-3" />
+                          {kpi.trend}
+                        </p>
+                      )}
+                    </div>
                   ))}
                 </div>
-              </div>
 
-              {/* Asistente AI */}
-              <AIInvestmentAssistant property={propertyDataForAI} />
-            </div>
+                {/* Portfolio table + AI insights side panel */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Portfolio list */}
+                  <div className="lg:col-span-2 bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/60 rounded-2xl overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+                      <h2 className="font-semibold text-gray-900 dark:text-white">
+                        Offering Portfolio
+                      </h2>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Meridian Capital AG · 5 tokenized assets · Polygon Mainnet · ERC-3643
+                      </p>
+                    </div>
+                    <div className="divide-y divide-gray-100 dark:divide-gray-800/50">
+                      {sampleProperties.map((p) => (
+                        <div key={p.id} className="flex items-center gap-4 px-6 py-4">
+                          <img
+                            src={p.image}
+                            alt={p.name}
+                            className="w-10 h-10 rounded-lg object-cover shrink-0"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                              {p.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {p.location} · Target {p.apy}
+                            </p>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                              {p.totalValue}
+                            </p>
+                            <p className="text-xs text-gray-500">{p.progress}% raised</p>
+                          </div>
+                          <div className="w-24 shrink-0">
+                            <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full ${
+                                  p.progress === 100
+                                    ? 'bg-emerald-500'
+                                    : p.progress > 50
+                                      ? 'bg-blue-500'
+                                      : 'bg-amber-500'
+                                }`}
+                                style={{ width: `${p.progress}%` }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* AI Insights column */}
+                  <div className="space-y-4">
+                    {/* Attention Required */}
+                    <div className="bg-amber-950/20 dark:bg-amber-950/30 border border-amber-900/40 rounded-2xl p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <AlertTriangle className="w-4 h-4 text-amber-400" />
+                        <h3 className="text-sm font-semibold text-amber-400">Requires Attention</h3>
+                        <span className="ml-auto text-xs text-amber-600">3</span>
+                      </div>
+                      <div className="space-y-2 text-xs text-amber-200/70">
+                        <p className="flex gap-2">
+                          <span className="text-amber-500 shrink-0">→</span>
+                          KYC Expired — H.-P. Vogt (CH)
+                        </p>
+                        <p className="flex gap-2">
+                          <span className="text-amber-500 shrink-0">→</span>
+                          Insurance Cert. expired — Madrid Prime
+                        </p>
+                        <p className="flex gap-2">
+                          <span className="text-amber-500 shrink-0">→</span>
+                          AML/KYC 2026 Declaration — missing
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Next Actions */}
+                    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Target className="w-4 h-4 text-blue-500" />
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                          Next Actions
+                        </h3>
+                      </div>
+                      <ol className="space-y-2 text-xs text-gray-500">
+                        <li className="flex gap-2">
+                          <span className="text-blue-500 font-semibold shrink-0">1.</span>
+                          Process Q2 2026 distribution (€198,500)
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-blue-500 font-semibold shrink-0">2.</span>
+                          Approve Madrid Prime subscription
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-blue-500 font-semibold shrink-0">3.</span>
+                          Renew KYC — H.-P. Vogt, Y. Tanaka
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-blue-500 font-semibold shrink-0">4.</span>
+                          Upload AML/KYC 2026 Declaration
+                        </li>
+                      </ol>
+                    </div>
+
+                    {/* Q2 Distribution Ready */}
+                    <div className="bg-emerald-950/20 dark:bg-emerald-950/30 border border-emerald-900/40 rounded-2xl p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Shield className="w-4 h-4 text-emerald-400" />
+                        <h3 className="text-sm font-semibold text-emerald-400">
+                          Q2 Distribution Ready
+                        </h3>
+                      </div>
+                      <p className="text-2xl font-bold text-white mb-1">€198,500</p>
+                      <p className="text-xs text-emerald-300/70">
+                        580 token holders · 2 offerings · Pending sign-off
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ────────── PORTFOLIO ANALYSIS ────────── */}
+            {view === 'portfolio' && (
+              <div className="space-y-6">
+                <div className="bg-gray-900 dark:bg-gray-950 border border-gray-800 rounded-2xl p-5">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gray-800 rounded-xl">
+                      <TrendingUp className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold">
+                        Portfolio Analysis — Meridian Capital AG
+                      </p>
+                      <p className="text-gray-400 text-xs">
+                        Fundraising performance, payment flows and subscription velocity · June 2026
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <SmartPaymentsDashboard className="max-w-6xl mx-auto" />
+              </div>
+            )}
+
+            {/* ────────── AI COPILOT ────────── */}
+            {view === 'copilot' && (
+              <div className="space-y-6">
+                {/* Copilot header */}
+                <div className="bg-gray-900 dark:bg-gray-950 border border-gray-800 rounded-2xl p-5">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-gray-800 rounded-xl">
+                      <Sparkles className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold">Enterprise Portfolio Copilot</p>
+                      <p className="text-gray-400 text-xs">
+                        Ask about investors, offerings, compliance, distributions or portfolio
+                        performance
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      'Generate Q1 investor report for Basel Riverside',
+                      'Summarize portfolio health for board presentation',
+                      'Which offering has the highest projected return?',
+                      'Show investors with pending KYC renewal',
+                      'Summarize Q2 2026 subscription performance',
+                    ].map((prompt) => (
+                      <span
+                        key={prompt}
+                        className="text-xs px-3 py-1.5 rounded-full border border-gray-700 text-gray-400 hover:border-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
+                      >
+                        {prompt}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="max-w-4xl mx-auto space-y-6">
+                  {/* Property selector */}
+                  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+                      Select offering context
+                    </p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {sampleProperties.map((property) => (
+                        <button
+                          key={property.id}
+                          onClick={() => setSelectedProperty(property)}
+                          className={`p-3 rounded-xl border transition-all text-left ${
+                            selectedProperty.id === property.id
+                              ? 'border-gray-900 dark:border-white bg-gray-50 dark:bg-gray-800'
+                              : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={property.image}
+                              alt={property.name}
+                              className="w-10 h-10 rounded-lg object-cover"
+                            />
+                            <div>
+                              <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                {property.name}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {property.location} · {property.apy}
+                              </p>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* AI Assistant */}
+                  <AIInvestmentAssistant property={propertyDataForAI} />
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </main>
       </div>
-
-      {/* Footer con Info */}
-      <div className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-6">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">
-              🔥 La plataforma más disruptiva del mercado inmobiliario
-            </h3>
-            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-4xl">
-              Combinamos inteligencia artificial, pagos instantáneos y tokenización blockchain para
-              crear una experiencia de inversión inmobiliaria sin precedentes. Desarrollado por
-              ChainX para máxima seguridad y escalabilidad.
-            </p>
-
-            <div className="flex justify-center gap-8 mt-8 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span>AI Avanzado Integrado</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span>Pagos Multi-moneda</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                <span>Analytics Tiempo Real</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <span>ROI 12-15%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

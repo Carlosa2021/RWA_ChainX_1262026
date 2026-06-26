@@ -244,17 +244,42 @@ export default function InversoresPage() {
           subtitle="Meridian Capital AG · Identity verification, wallet registry and investment positions · ERC-3643"
         />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* DEMO badge — PHASE 2: replace mockInvestors with useVerifiedWallets() + IdentityRegistry reads */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 w-fit">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Demo Data
-            </span>
-            <span className="text-xs text-gray-600">
-              · Sample investors for illustration. No live data displayed.
-            </span>
+          {/* Executive Investor Summary */}
+          <div className="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/60 rounded-2xl p-5">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1">
+                  Investor Registry · Meridian Capital AG
+                </p>
+                <p className="text-gray-900 dark:text-white font-semibold">
+                  12 registered investors from 8 jurisdictions · €9.345M total committed
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  ERC-3643 IdentityRegistry · Polygon Mainnet · Sumsub / Veriff / Onfido providers
+                </p>
+              </div>
+              <div className="flex items-center gap-5 shrink-0">
+                <div className="text-center">
+                  <p className="text-xl font-bold text-emerald-400">8</p>
+                  <p className="text-xs text-gray-500">Verified</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xl font-bold text-amber-400">2</p>
+                  <p className="text-xs text-gray-500">Pending</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xl font-bold text-red-400">1</p>
+                  <p className="text-xs text-gray-500">Rejected</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xl font-bold text-gray-500">1</p>
+                  <p className="text-xs text-gray-500">Expired</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Summary stats */}
+          {/* KYC Status Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { label: 'Identity Verified', count: counts.verified, cls: 'text-emerald-400' },

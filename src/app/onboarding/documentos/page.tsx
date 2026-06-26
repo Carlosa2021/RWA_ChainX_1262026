@@ -231,14 +231,44 @@ export default function DocumentosPage() {
           subtitle="Meridian Capital AG · Legal, financial and compliance documentation · Versioned and audit-ready"
         />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* DEMO badge — PHASE 2: replace mockDocs with document storage API reads */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 w-fit">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Demo Data
-            </span>
-            <span className="text-xs text-gray-600">
-              · Sample documents for illustration. No live data displayed.
-            </span>
+          {/* Compliance Health Summary */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              {
+                label: 'Approved',
+                value: 9,
+                sub: '75% of documents',
+                bg: 'bg-emerald-950/20 border-emerald-900/40',
+                txt: 'text-emerald-400',
+              },
+              {
+                label: 'Pending Review',
+                value: 1,
+                sub: 'Madrid Prime legal opinion',
+                bg: 'bg-amber-950/20 border-amber-900/40',
+                txt: 'text-amber-400',
+              },
+              {
+                label: 'Renewal Required',
+                value: 1,
+                sub: 'Insurance cert. expired',
+                bg: 'bg-red-950/20 border-red-900/40',
+                txt: 'text-red-400',
+              },
+              {
+                label: 'Missing',
+                value: 1,
+                sub: 'AML/KYC declaration 2026',
+                bg: 'bg-gray-900/60 border-gray-700',
+                txt: 'text-gray-400',
+              },
+            ].map((item) => (
+              <div key={item.label} className={`rounded-2xl p-4 border ${item.bg}`}>
+                <p className="text-2xl font-bold text-white mb-1">{item.value}</p>
+                <p className={`text-xs font-semibold ${item.txt}`}>{item.label}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{item.sub}</p>
+              </div>
+            ))}
           </div>
 
           {/* Alerts */}
