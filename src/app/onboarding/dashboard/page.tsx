@@ -85,70 +85,107 @@ function StatusBadge({ status }: { status: 'active' | 'pending' | 'closed' | 'dr
 const mockCampaigns = [
   {
     id: 1,
-    name: 'Torre Oficinas Madrid Centro',
-    location: 'Madrid, España',
-    totalValue: '2.500.000',
-    raised: '1.875.000',
-    raisedPct: 75,
-    investors: 42,
-    apy: '7.5',
+    name: 'Basel Riverside Offices',
+    location: 'Basel, Switzerland',
+    totalValue: '18.500.000',
+    raised: '14.800.000',
+    raisedPct: 80,
+    investors: 84,
+    apy: '8.2',
     status: 'active' as const,
-    tokenSymbol: 'MADROFFICE',
+    tokenSymbol: 'BROFFICE',
     deadline: '2026-09-30',
   },
   {
     id: 2,
-    name: 'Residencial Costa Brava',
-    location: 'Girona, España',
-    totalValue: '1.200.000',
-    raised: '360.000',
-    raisedPct: 30,
-    investors: 18,
-    apy: '6.2',
+    name: 'Zurich Residential Portfolio',
+    location: 'Zurich, Switzerland',
+    totalValue: '12.200.000',
+    raised: '7.320.000',
+    raisedPct: 60,
+    investors: 156,
+    apy: '6.8',
     status: 'active' as const,
-    tokenSymbol: 'CBRAVA',
-    deadline: '2026-10-15',
+    tokenSymbol: 'ZHRESID',
+    deadline: '2026-11-15',
   },
   {
     id: 3,
-    name: 'Centro Comercial Valencia',
-    location: 'Valencia, España',
-    totalValue: '5.000.000',
+    name: 'Madrid Prime Offices',
+    location: 'Madrid, Spain',
+    totalValue: '24.500.000',
+    raised: '3.920.000',
+    raisedPct: 16,
+    investors: 28,
+    apy: '7.5',
+    status: 'pending' as const,
+    tokenSymbol: 'MADRPRIME',
+    deadline: '2027-03-01',
+  },
+  {
+    id: 4,
+    name: 'Valencia Logistics Hub',
+    location: 'Valencia, Spain',
+    totalValue: '9.800.000',
+    raised: '9.800.000',
+    raisedPct: 100,
+    investors: 312,
+    apy: '9.1',
+    status: 'closed' as const,
+    tokenSymbol: 'VALHUB',
+    deadline: '2025-12-15',
+  },
+  {
+    id: 5,
+    name: 'Ibiza Luxury Villas',
+    location: 'Ibiza, Spain',
+    totalValue: '6.500.000',
     raised: '0',
     raisedPct: 0,
     investors: 0,
-    apy: '8.1',
+    apy: '11.2',
     status: 'draft' as const,
-    tokenSymbol: 'VALCOM',
-    deadline: '2026-12-01',
+    tokenSymbol: 'IBZVILLAS',
+    deadline: '2026-12-31',
   },
 ];
 
 const mockActivity = [
   {
     type: 'investment',
-    text: 'Nueva inversión de €2.500 en Torre Oficinas',
-    time: 'Hace 12 min',
+    text: 'New subscription €50,000 — Basel Riverside Offices · R. Zimmermann (CH)',
+    time: '14 min ago',
     icon: DollarSign,
   },
   {
     type: 'kyc',
-    text: 'Inversor 0x3f4a...verificado por KYC',
-    time: 'Hace 45 min',
+    text: 'Identity verified — Lars Petersen (DK) via Sumsub · wallet 0x1b2c...8c',
+    time: '52 min ago',
     icon: CheckCircle2,
   },
   {
     type: 'investment',
-    text: 'Nueva inversión de €500 en Residencial Costa Brava',
-    time: 'Hace 1h 20min',
+    text: 'New subscription €25,000 — Zurich Residential Portfolio · C. Beaumont (FR)',
+    time: '2h 08min ago',
     icon: DollarSign,
   },
-  { type: 'kyc', text: 'KYC rechazado: documento expirado', time: 'Hace 2h', icon: AlertCircle },
   {
     type: 'system',
-    text: 'Distribución trimestral enviada a 60 inversores',
-    time: 'Hace 3h',
+    text: 'Q1 2026 distribution processed · €142,500 across 2 offerings to 396 token holders',
+    time: '6h ago',
     icon: Zap,
+  },
+  {
+    type: 'kyc',
+    text: 'KYC renewal required — H.-P. Vogt (CH) · expiry 30 Apr 2026',
+    time: '1 day ago',
+    icon: AlertCircle,
+  },
+  {
+    type: 'document',
+    text: 'RICS Valuation Report uploaded — Madrid Prime Offices (v2.0, 4.7 MB)',
+    time: '2 days ago',
+    icon: CheckCircle2,
   },
 ];
 
@@ -160,7 +197,7 @@ export default function OnboardingDashboardPage() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header
           title="Projects Management"
-          subtitle="Digital securities issuance and lifecycle · ERC-3643 compliant"
+          subtitle="Meridian Capital AG · Digital securities issuance and lifecycle · ERC-3643"
         />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
           {/* Stats — 🟡 DEMO DATA (replace with real blockchain reads in production) */}
@@ -178,29 +215,29 @@ export default function OnboardingDashboardPage() {
             <StatCard
               label="Active Projects"
               value="2"
-              sub="1 in structuring"
+              sub="1 in review · 1 in structuring"
               icon={Building2}
               color="blue"
             />
             <StatCard
               label="Capital Raised"
-              value="€2.235.000"
-              sub="Across 3 projects"
+              value="€35,840,000"
+              sub="Across 5 offerings · Basel, Zurich, Madrid"
               icon={DollarSign}
-              trend="+12% this month"
+              trend="+€1.2M this month"
               color="green"
             />
             <StatCard
               label="Verified Investors"
-              value="60"
-              sub="Identity verified (KYC)"
+              value="580"
+              sub="Identity verified (KYC) · ERC-3643"
               icon={Users}
-              trend="+8 this week"
+              trend="+23 this week"
               color="blue"
             />
             <StatCard
               label="Avg. Target Return"
-              value="7.1% p.a."
+              value="8.1% p.a."
               sub="Issuer projection · not guaranteed"
               icon={TrendingUp}
               color="amber"
@@ -293,7 +330,7 @@ export default function OnboardingDashboardPage() {
                         <StatusBadge status={c.status} />
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
-                        {new Date(c.deadline).toLocaleDateString('es-ES')}
+                        {new Date(c.deadline).toLocaleDateString('en-GB')}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
@@ -328,8 +365,10 @@ export default function OnboardingDashboardPage() {
                       act.type === 'investment'
                         ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
                         : act.type === 'kyc'
-                          ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
-                          : 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                          ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                          : act.type === 'document'
+                            ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                     }`}
                   >
                     <act.icon className="w-3.5 h-3.5" />

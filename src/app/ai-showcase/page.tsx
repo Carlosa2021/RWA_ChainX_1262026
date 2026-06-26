@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 // Force Vercel redeploy - v2.0
 import React, { useState } from 'react';
@@ -14,98 +14,99 @@ import { useFeatureGuard } from '@/hooks/useFeatureGuard';
 import { UpgradePrompt } from '@/components/UpgradePrompt';
 import { logger } from '@/lib/logger';
 
-// Datos de ejemplo para las propiedades
+// Meridian Capital AG — Tokenized real estate portfolio
 const sampleProperties = [
   {
-    id: "torre-valencia-premium",
-    name: "Torre Valencia Premium",
-    location: "Valencia, España",
-    totalValue: "€2.5M",
-    pricePerToken: "€20",
-    tokensAvailable: 8500,
-    tokensTotal: 12500,
-    apy: "12.5%",
-    status: "active" as const,
-    progress: 68,
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=500&h=300&fit=crop",
+    id: 'basel-riverside-offices',
+    name: 'Basel Riverside Offices',
+    location: 'Basel, Switzerland',
+    totalValue: '€18.5M',
+    pricePerToken: '€500',
+    tokensAvailable: 7400,
+    tokensTotal: 37000,
+    apy: '8.2%',
+    status: 'active' as const,
+    progress: 80,
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&h=300&fit=crop',
     images: [
-      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=500&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1560184897-ae75f418493e?w=500&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&h=300&fit=crop"
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=500&h=300&fit=crop',
     ],
-    investors: 23,
+    investors: 84,
+    minInvestment: 500,
+    maxInvestment: 500000,
+  },
+  {
+    id: 'zurich-residential-portfolio',
+    name: 'Zurich Residential Portfolio',
+    location: 'Zurich, Switzerland',
+    totalValue: '€12.2M',
+    pricePerToken: '€200',
+    tokensAvailable: 24400,
+    tokensTotal: 61000,
+    apy: '6.8%',
+    status: 'active' as const,
+    progress: 60,
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&h=300&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1571055107559-3e67626fa8be?w=500&h=300&fit=crop',
+    ],
+    investors: 156,
+    minInvestment: 200,
+    maxInvestment: 250000,
+  },
+  {
+    id: 'madrid-prime-offices',
+    name: 'Madrid Prime Offices',
+    location: 'Madrid, Spain',
+    totalValue: '€24.5M',
+    pricePerToken: '€1,000',
+    tokensAvailable: 20580,
+    tokensTotal: 24500,
+    apy: '7.5%',
+    status: 'upcoming' as const,
+    progress: 16,
+    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=500&h=300&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=500&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=500&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=500&h=300&fit=crop',
+    ],
+    investors: 28,
     minInvestment: 1000,
-    maxInvestment: 50000
+    maxInvestment: 1000000,
   },
   {
-    id: "residencial-barcelona",
-    name: "Residencial Barcelona Luxury",
-    location: "Barcelona, Cataluña",
-    totalValue: "€3.2M",
-    pricePerToken: "€25",
-    tokensAvailable: 4200,
-    tokensTotal: 12800,
-    apy: "14.2%",
-    status: "active" as const,
-    progress: 67,
-    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&h=300&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1571055107559-3e67626fa8be?w=500&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1566908829077-2e3b0a8b4c8c?w=500&h=300&fit=crop"
-    ],
-    investors: 31,
-    minInvestment: 1500,
-    maxInvestment: 75000
-  },
-  {
-    id: "oficinas-madrid-centro",
-    name: "Oficinas Madrid Centro",
-    location: "Madrid, España",
-    totalValue: "€4.1M",
-    pricePerToken: "€30",
-    tokensAvailable: 2100,
-    tokensTotal: 13667,
-    apy: "11.8%",
-    status: "active" as const,
-    progress: 85,
-    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=500&h=300&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=500&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=500&h=300&fit=crop"
-    ],
-    investors: 45,
-    minInvestment: 2000,
-    maxInvestment: 100000
-  },
-  {
-    id: "sevilla-innovation-hub",
-    name: "Sevilla Innovation Hub",
-    location: "Sevilla, Andalucía",
-    totalValue: "€1.8M",
-    pricePerToken: "€15",
-    tokensAvailable: 12000,
-    tokensTotal: 12000,
-    apy: "15.3%",
-    status: "upcoming" as const,
+    id: 'ibiza-luxury-villas',
+    name: 'Ibiza Luxury Villas',
+    location: 'Ibiza, Spain',
+    totalValue: '€6.5M',
+    pricePerToken: '€250',
+    tokensAvailable: 26000,
+    tokensTotal: 26000,
+    apy: '11.2%',
+    status: 'upcoming' as const,
     progress: 0,
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&h=300&fit=crop",
+    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=500&h=300&fit=crop',
     images: [
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=500&h=300&fit=crop"
+      'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=500&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=500&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&h=300&fit=crop',
     ],
     investors: 0,
-    minInvestment: 500,
-    maxInvestment: 25000
-  }
+    minInvestment: 250,
+    maxInvestment: 100000,
+  },
 ];
 
 export default function AIPaymentsShowcase() {
   // Feature Guard Protection
-  const { hasAccess, showUpgradePrompt, upgradePromptOpen, closeUpgradePrompt, requiredFeature } = useFeatureGuard('aiEnabled', 'AI Showcase');
-  
+  const { hasAccess, showUpgradePrompt, upgradePromptOpen, closeUpgradePrompt, requiredFeature } =
+    useFeatureGuard('aiEnabled', 'AI Showcase');
+
   const [selectedProperty, setSelectedProperty] = useState(sampleProperties[0]);
   const [view, setView] = useState<'properties' | 'dashboard' | 'ai'>('properties');
 
@@ -140,7 +141,7 @@ export default function AIPaymentsShowcase() {
             </div>
           </main>
         </div>
-        <UpgradePrompt 
+        <UpgradePrompt
           feature={requiredFeature}
           isOpen={upgradePromptOpen}
           onClose={closeUpgradePrompt}
@@ -160,7 +161,7 @@ export default function AIPaymentsShowcase() {
     price: parseFloat(selectedProperty.pricePerToken.replace(/[€,]/g, '')),
     location: selectedProperty.location,
     roi: parseFloat(selectedProperty.apy.replace('%', '')),
-    type: 'mixed'
+    type: 'mixed',
   };
 
   return (
@@ -174,9 +175,19 @@ export default function AIPaymentsShowcase() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-2 shadow-lg border border-gray-200 dark:border-gray-700">
             <div className="flex gap-2">
               {[
-                { id: 'properties', label: 'Propiedades AI', icon: Brain, desc: 'Con análisis inteligente' },
-                { id: 'dashboard', label: 'Dashboard', icon: TrendingUp, desc: 'Analytics en tiempo real' },
-                { id: 'ai', label: 'Asistente AI', icon: Sparkles, desc: 'Consultor personal' }
+                {
+                  id: 'properties',
+                  label: 'Propiedades AI',
+                  icon: Brain,
+                  desc: 'Con análisis inteligente',
+                },
+                {
+                  id: 'dashboard',
+                  label: 'Dashboard',
+                  icon: TrendingUp,
+                  desc: 'Analytics en tiempo real',
+                },
+                { id: 'ai', label: 'Asistente AI', icon: Sparkles, desc: 'Consultor personal' },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -206,7 +217,8 @@ export default function AIPaymentsShowcase() {
                 🏠 Propiedades Inteligentes
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Cada propiedad incluye análisis AI en tiempo real, predicciones de ROI y sistema de pagos instantáneo
+                Cada propiedad incluye análisis AI en tiempo real, predicciones de ROI y sistema de
+                pagos instantáneo
               </p>
             </div>
 
@@ -252,7 +264,9 @@ export default function AIPaymentsShowcase() {
                   <div className="w-16 h-16 bg-linear-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <CreditCard className="w-8 h-8 text-white" />
                   </div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Pagos Instantáneos</h4>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Pagos Instantáneos
+                  </h4>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
                     Fiat-to-crypto directo: EUR, USD, USDC, USDT, ETH con fees mínimos
                   </p>
@@ -337,9 +351,7 @@ export default function AIPaymentsShowcase() {
               </div>
 
               {/* Asistente AI */}
-              <AIInvestmentAssistant 
-                property={propertyDataForAI}
-              />
+              <AIInvestmentAssistant property={propertyDataForAI} />
             </div>
           </div>
         )}
@@ -353,11 +365,11 @@ export default function AIPaymentsShowcase() {
               🔥 La plataforma más disruptiva del mercado inmobiliario
             </h3>
             <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-4xl">
-              Combinamos inteligencia artificial, pagos instantáneos y tokenización blockchain 
-              para crear una experiencia de inversión inmobiliaria sin precedentes. 
-              Desarrollado por ChainX para máxima seguridad y escalabilidad.
+              Combinamos inteligencia artificial, pagos instantáneos y tokenización blockchain para
+              crear una experiencia de inversión inmobiliaria sin precedentes. Desarrollado por
+              ChainX para máxima seguridad y escalabilidad.
             </p>
-            
+
             <div className="flex justify-center gap-8 mt-8 text-sm">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
@@ -379,7 +391,7 @@ export default function AIPaymentsShowcase() {
           </div>
         </div>
       </div>
-      
+
       {/* Footer */}
       <Footer />
     </div>

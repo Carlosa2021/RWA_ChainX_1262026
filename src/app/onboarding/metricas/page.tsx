@@ -113,61 +113,80 @@ function KPICard({
 }
 
 const investmentHistory = [
-  120000, 145000, 138000, 165000, 178000, 210000, 235000, 198000, 245000, 268000, 290000, 310000,
+  2400000, 4800000, 7200000, 9800000, 13500000, 17200000, 21400000, 25100000, 28700000, 31900000,
+  34200000, 35840000,
 ];
-const investorGrowth = [8, 12, 15, 18, 22, 25, 28, 32, 38, 45, 52, 60];
-const apyPerf = [6.8, 7.0, 7.1, 7.2, 7.0, 7.3, 7.4, 7.2, 7.5, 7.4, 7.6, 7.5];
-const conversionRate = [38, 42, 45, 41, 48, 52, 49, 55, 58, 54, 61, 65];
+const investorGrowth = [28, 54, 89, 134, 198, 245, 312, 378, 442, 510, 552, 580];
+const apyPerf = [8.1, 8.2, 8.1, 8.3, 8.4, 8.2, 8.5, 8.4, 8.3, 8.6, 8.5, 8.4];
+const conversionRate = [48, 52, 55, 58, 61, 59, 64, 67, 65, 69, 71, 71];
 
 const distributionHistory = [
   {
+    date: 'Q2 2026',
+    amount: '€198,500',
+    investors: 580,
+    campaign: 'All offerings',
+    status: 'scheduled',
+  },
+  {
     date: 'Q1 2026',
-    amount: '€18.750',
-    investors: 42,
-    campaign: 'Torre Oficinas',
+    amount: '€184,200',
+    investors: 540,
+    campaign: 'Basel Riverside + Valencia Hub',
     status: 'completed',
   },
   {
     date: 'Q4 2025',
-    amount: '€15.200',
-    investors: 38,
-    campaign: 'Torre Oficinas',
+    amount: '€156,800',
+    investors: 412,
+    campaign: 'Basel Riverside + Valencia Hub',
     status: 'completed',
   },
   {
     date: 'Q3 2025',
-    amount: '€12.400',
-    investors: 31,
-    campaign: 'Torre Oficinas',
+    amount: '€89,400',
+    investors: 198,
+    campaign: 'Valencia Hub',
     status: 'completed',
-  },
-  {
-    date: 'Jun 2026',
-    amount: '€3.720',
-    investors: 18,
-    campaign: 'Costa Brava',
-    status: 'scheduled',
   },
 ];
 
 const campaignMetrics = [
   {
-    name: 'Torre Oficinas Madrid',
-    raised: 1875000,
-    target: 2500000,
-    investors: 42,
-    apy: 7.5,
-    distributed: 46350,
-    convRate: 65,
+    name: 'Basel Riverside Offices',
+    raised: 14800000,
+    target: 18500000,
+    investors: 84,
+    apy: 8.2,
+    distributed: 892400,
+    convRate: 71,
   },
   {
-    name: 'Residencial Costa Brava',
-    raised: 360000,
-    target: 1200000,
-    investors: 18,
-    apy: 6.2,
-    distributed: 3720,
+    name: 'Zurich Residential Portfolio',
+    raised: 7320000,
+    target: 12200000,
+    investors: 156,
+    apy: 6.8,
+    distributed: 248880,
+    convRate: 68,
+  },
+  {
+    name: 'Madrid Prime Offices',
+    raised: 3920000,
+    target: 24500000,
+    investors: 28,
+    apy: 7.5,
+    distributed: 73500,
     convRate: 41,
+  },
+  {
+    name: 'Valencia Logistics Hub',
+    raised: 9800000,
+    target: 9800000,
+    investors: 312,
+    apy: 9.1,
+    distributed: 1424200,
+    convRate: 89,
   },
 ];
 
@@ -175,10 +194,10 @@ export default function MetricasPage() {
   const [period, setPeriod] = useState<Period>('30d');
 
   const periods: { id: Period; label: string }[] = [
-    { id: '7d', label: '7 días' },
-    { id: '30d', label: '30 días' },
-    { id: '90d', label: '90 días' },
-    { id: '1y', label: '1 año' },
+    { id: '7d', label: '7 days' },
+    { id: '30d', label: '30 days' },
+    { id: '90d', label: '90 days' },
+    { id: '1y', label: '1 year' },
   ];
 
   return (
@@ -187,7 +206,7 @@ export default function MetricasPage() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header
           title="Analytics & Reporting"
-          subtitle="Portfolio performance, asset distributions and MiCA compliance reporting"
+          subtitle="Meridian Capital AG · Portfolio performance, asset distributions and MiCA compliance reporting"
         />
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
           {/* DEMO badge — PHASE 2: replace mock data with blockchain event reads + InvestmentController */}
@@ -218,7 +237,7 @@ export default function MetricasPage() {
               ))}
             </div>
             <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-gray-800/60 transition-colors">
-              <Download className="w-3.5 h-3.5" /> Exportar informe MiCA
+              <Download className="w-3.5 h-3.5" /> Export MiCA Report
             </button>
           </div>
 
@@ -226,9 +245,9 @@ export default function MetricasPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <KPICard
               label="Capital Raised"
-              value="€2.235.000"
-              sub="Total committed"
-              trend="+€87.000 this period"
+              value="€35,840,000"
+              sub="Total committed across 5 offerings"
+              trend="+€1.64M this period"
               trendPositive
               chartValues={investmentHistory}
               color="purple"
@@ -236,9 +255,9 @@ export default function MetricasPage() {
             />
             <KPICard
               label="Verified Participants"
-              value="60"
-              sub="Identity verified (KYC)"
-              trend="+8 new"
+              value="580"
+              sub="Identity verified (KYC) · ERC-3643"
+              trend="+23 new"
               trendPositive
               chartValues={investorGrowth}
               color="blue"
@@ -246,9 +265,9 @@ export default function MetricasPage() {
             />
             <KPICard
               label="Avg. Target Return (p.a.)"
-              value="7.1%"
+              value="8.4%"
               sub="Issuer projection · not guaranteed"
-              trend="+0.3% vs prior period"
+              trend="+0.1% vs prior period"
               trendPositive
               chartValues={apyPerf}
               color="green"
@@ -256,9 +275,9 @@ export default function MetricasPage() {
             />
             <KPICard
               label="Conversion Rate"
-              value="65%"
+              value="71%"
               sub="Sessions → subscriptions"
-              trend="+4% vs prior period"
+              trend="+2% vs prior period"
               trendPositive
               chartValues={conversionRate}
               color="amber"
@@ -280,21 +299,21 @@ export default function MetricasPage() {
                       <p className="text-sm font-medium text-gray-900 dark:text-white">{c.name}</p>
                       <p className="text-xs text-gray-500">
                         {c.investors} participants · Target {c.apy}% p.a. · Distributed: €
-                        {c.distributed.toLocaleString('es-ES')}
+                        {c.distributed.toLocaleString('en-GB')}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-bold text-gray-900 dark:text-white">
-                        €{c.raised.toLocaleString('es-ES')}
+                        €{c.raised.toLocaleString('en-GB')}
                       </p>
                       <p className="text-xs text-gray-500">
-                        de €{c.target.toLocaleString('es-ES')}
+                        of €{c.target.toLocaleString('en-GB')}
                       </p>
                     </div>
                   </div>
                   <div className="space-y-1">
                     <div className="flex justify-between text-xs text-gray-600">
-                      <span>Recaudación</span>
+                      <span>Capital Raised</span>
                       <span>{Math.round((c.raised / c.target) * 100)}%</span>
                     </div>
                     <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
@@ -309,12 +328,12 @@ export default function MetricasPage() {
                       { label: 'Conversion', value: `${c.convRate}%`, color: 'text-amber-400' },
                       {
                         label: 'Avg. Ticket',
-                        value: `€${Math.round(c.raised / (c.investors || 1)).toLocaleString('es-ES')}`,
+                        value: `€${Math.round(c.raised / (c.investors || 1)).toLocaleString('en-GB')}`,
                         color: 'text-blue-400',
                       },
                       {
                         label: 'Distributed',
-                        value: `€${c.distributed.toLocaleString('es-ES')}`,
+                        value: `€${c.distributed.toLocaleString('en-GB')}`,
                         color: 'text-emerald-400',
                       },
                     ].map(({ label, value, color }) => (
@@ -404,10 +423,10 @@ export default function MetricasPage() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
-                { label: 'Inversores UE', value: '100%', status: 'ok' },
-                { label: 'KYC completado', value: '93.3%', status: 'ok' },
-                { label: 'Docs. actualizados', value: '85.7%', status: 'warning' },
-                { label: 'Whitepaper publicado', value: 'Sí', status: 'ok' },
+                { label: 'EU Investors', value: '100%', status: 'ok' },
+                { label: 'KYC Completed', value: '95.8%', status: 'ok' },
+                { label: 'Docs Up-to-Date', value: '83.3%', status: 'warning' },
+                { label: 'Whitepaper Published', value: 'Yes', status: 'ok' },
               ].map(({ label, value, status }) => (
                 <div
                   key={label}
