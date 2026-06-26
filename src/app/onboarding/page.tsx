@@ -46,32 +46,38 @@ import {
 
 // ─── Initial State ───────────────────────────────────────────
 const initialTokenizationSteps: TokenizationStepLog[] = [
-  { label: 'Preparando contrato de seguridad', status: 'pending' },
-  { label: 'Configurando registro de identidad', status: 'pending' },
-  { label: 'Estableciendo reglas de compliance', status: 'pending' },
-  { label: 'Emitiendo tokens de inversión', status: 'pending' },
-  { label: 'Registrando en ProjectRegistry', status: 'pending' },
+  { label: 'Preparing security token contract', status: 'pending' },
+  { label: 'Configuring identity registry', status: 'pending' },
+  { label: 'Establishing compliance rules', status: 'pending' },
+  { label: 'Minting investment tokens', status: 'pending' },
+  { label: 'Registering in ProjectRegistry', status: 'pending' },
 ];
 
 // ─── Progress Bar ─────────────────────────────────────────────
 function WizardProgress({ currentStep, steps }: { currentStep: number; steps: WizardStepMeta[] }) {
   return (
     <div className="w-full">
-      {/* Mobile: step counter */}
-      <div className="flex items-center justify-between mb-4 md:hidden">
-        <span className="text-sm text-gray-400">
-          Paso {currentStep} de {steps.length}
-        </span>
-        <span className="text-sm font-medium text-purple-400">
-          {steps[currentStep - 1]?.icon} {steps[currentStep - 1]?.title}
-        </span>
+      {/* Mobile: step counter + progress bar */}
+      <div className="md:hidden space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Step {currentStep} of {steps.length}
+          </span>
+          <span className="text-xs font-semibold text-white">{steps[currentStep - 1]?.title}</span>
+        </div>
+        <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-white transition-all duration-500 rounded-full"
+            style={{ width: `${(currentStep / steps.length) * 100}%` }}
+          />
+        </div>
       </div>
 
       {/* Desktop: full step indicators */}
       <div className="hidden md:flex items-center justify-between relative">
-        <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-800 z-0" />
+        <div className="absolute top-4 left-0 right-0 h-px bg-gray-800 z-0" />
         <div
-          className="absolute top-4 left-0 h-0.5 bg-purple-600 z-0 transition-all duration-500"
+          className="absolute top-4 left-0 h-px bg-gray-500 z-0 transition-all duration-500"
           style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
         />
         {steps.map((step) => {
@@ -80,11 +86,11 @@ function WizardProgress({ currentStep, steps }: { currentStep: number; steps: Wi
           return (
             <div key={step.id} className="flex flex-col items-center relative z-10">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border transition-all duration-300 ${
                   isCompleted
-                    ? 'bg-purple-600 border-purple-600 text-white'
+                    ? 'bg-white border-white text-gray-900'
                     : isCurrent
-                      ? 'bg-gray-900 border-purple-500 text-purple-400'
+                      ? 'bg-gray-900 border-gray-400 text-white ring-2 ring-gray-700'
                       : 'bg-gray-900 border-gray-700 text-gray-600'
                 }`}
               >
@@ -92,22 +98,14 @@ function WizardProgress({ currentStep, steps }: { currentStep: number; steps: Wi
               </div>
               <span
                 className={`mt-2 text-xs font-medium whitespace-nowrap ${
-                  isCurrent ? 'text-purple-400' : isCompleted ? 'text-gray-400' : 'text-gray-600'
+                  isCurrent ? 'text-white' : isCompleted ? 'text-gray-500' : 'text-gray-700'
                 }`}
               >
-                {step.icon} {step.title}
+                {step.title}
               </span>
             </div>
           );
         })}
-      </div>
-
-      {/* Progress bar (mobile) */}
-      <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden md:hidden">
-        <div
-          className="h-full bg-purple-600 transition-all duration-500 rounded-full"
-          style={{ width: `${(currentStep / steps.length) * 100}%` }}
-        />
       </div>
     </div>
   );
@@ -129,16 +127,16 @@ function StepRegistro({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-1">Registro de empresa</h2>
+        <h2 className="text-xl font-semibold text-white mb-1">Company Registration</h2>
         <p className="text-gray-400 text-sm">
-          Crea tu cuenta empresarial para gestionar activos tokenizados
+          Set up your institutional account to manage tokenized real-world assets.
         </p>
       </div>
 
       {/* Company info */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Datos empresariales
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Company Details
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -146,7 +144,7 @@ function StepRegistro({
               Nombre legal <span className="text-red-400">*</span>
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="Inmobiliaria García S.L."
               value={data.legalName || ''}
               onChange={(e) => set('legalName', e.target.value)}
@@ -155,7 +153,7 @@ function StepRegistro({
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">Nombre comercial</label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="García Real Estate"
               value={data.tradeName || ''}
               onChange={(e) => set('tradeName', e.target.value)}
@@ -163,10 +161,10 @@ function StepRegistro({
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Forma jurídica <span className="text-red-400">*</span>
+              Legal Form <span className="text-red-400">*</span>
             </label>
             <select
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-gray-500 focus:outline-none"
               value={data.legalForm || ''}
               onChange={(e) => set('legalForm', e.target.value)}
             >
@@ -183,10 +181,10 @@ function StepRegistro({
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              País <span className="text-red-400">*</span>
+              Country <span className="text-red-400">*</span>
             </label>
             <select
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-gray-500 focus:outline-none"
               value={data.country || ''}
               onChange={(e) => set('country', e.target.value)}
             >
@@ -208,7 +206,7 @@ function StepRegistro({
               CIF / NIF / VAT <span className="text-red-400">*</span>
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="B12345678"
               value={data.taxId || ''}
               onChange={(e) => set('taxId', e.target.value)}
@@ -217,7 +215,7 @@ function StepRegistro({
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">Sitio web</label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="https://tuempresa.com"
               value={data.website || ''}
               onChange={(e) => set('website', e.target.value)}
@@ -226,10 +224,10 @@ function StepRegistro({
         </div>
         <div>
           <label className="block text-sm text-gray-300 mb-1.5">
-            Dirección completa <span className="text-red-400">*</span>
+            Full Address <span className="text-red-400">*</span>
           </label>
           <input
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
             placeholder="Calle Gran Vía 23, 2ª planta"
             value={data.address || ''}
             onChange={(e) => set('address', e.target.value)}
@@ -241,7 +239,7 @@ function StepRegistro({
               Ciudad <span className="text-red-400">*</span>
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="Madrid"
               value={data.city || ''}
               onChange={(e) => set('city', e.target.value)}
@@ -249,10 +247,10 @@ function StepRegistro({
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Código postal <span className="text-red-400">*</span>
+              Postal Code <span className="text-red-400">*</span>
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="28001"
               value={data.postalCode || ''}
               onChange={(e) => set('postalCode', e.target.value)}
@@ -263,8 +261,8 @@ function StepRegistro({
 
       {/* Contact person */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Persona responsable
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Authorized Representative
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -272,7 +270,7 @@ function StepRegistro({
               Nombre completo <span className="text-red-400">*</span>
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="María García López"
               value={data.contactName || ''}
               onChange={(e) => set('contactName', e.target.value)}
@@ -283,7 +281,7 @@ function StepRegistro({
               Cargo <span className="text-red-400">*</span>
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="CEO / Director General"
               value={data.contactRole || ''}
               onChange={(e) => set('contactRole', e.target.value)}
@@ -295,7 +293,7 @@ function StepRegistro({
             </label>
             <input
               type="email"
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="maria@tuempresa.com"
               value={data.contactEmail || ''}
               onChange={(e) => set('contactEmail', e.target.value)}
@@ -303,11 +301,11 @@ function StepRegistro({
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Teléfono <span className="text-red-400">*</span>
+              Phone <span className="text-red-400">*</span>
             </label>
             <input
               type="tel"
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="+34 600 000 000"
               value={data.contactPhone || ''}
               onChange={(e) => set('contactPhone', e.target.value)}
@@ -318,18 +316,18 @@ function StepRegistro({
 
       {/* Password */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Acceso a la plataforma
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Platform Access
         </h3>
         <div className="relative">
           <label className="block text-sm text-gray-300 mb-1.5">
-            Contraseña <span className="text-red-400">*</span>
+            Password <span className="text-red-400">*</span>
           </label>
           <div className="relative">
             <input
               type={showPass ? 'text' : 'password'}
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 pr-10 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
-              placeholder="Mínimo 12 caracteres"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 pr-10 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
+              placeholder="Minimum 12 characters"
               value={data.password || ''}
               onChange={(e) => set('password', e.target.value)}
             />
@@ -342,7 +340,7 @@ function StepRegistro({
             </button>
           </div>
           <p className="text-xs text-gray-600 mt-1">
-            Mínimo 12 caracteres, mayúsculas, números y símbolos
+            At least 12 characters with uppercase, numbers, and symbols.
           </p>
         </div>
       </div>
@@ -352,19 +350,17 @@ function StepRegistro({
         {[
           {
             key: 'acceptedTerms' as keyof CompanyData,
-            label: 'Acepto los Términos y Condiciones de ChainX®',
+            label: 'I accept the ChainX® Terms and Conditions',
           },
           {
             key: 'acceptedPrivacy' as keyof CompanyData,
-            label: 'Acepto la Política de Privacidad y el tratamiento de datos (RGPD)',
+            label: 'I accept the Privacy Policy and data processing (GDPR)',
           },
         ].map(({ key, label }) => (
           <label key={key} className="flex items-start gap-3 cursor-pointer group">
             <div
               className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
-                data[key]
-                  ? 'bg-purple-600 border-purple-600'
-                  : 'border-gray-600 group-hover:border-purple-500'
+                data[key] ? 'bg-white border-white' : 'border-gray-600 group-hover:border-gray-400'
               }`}
               onClick={() => set(key, !data[key])}
             >
@@ -392,31 +388,31 @@ function StepPlan({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-1">Selecciona tu plan</h2>
-        <p className="text-gray-400 text-sm">Sin permanencia. Cambia o cancela cuando quieras.</p>
+        <h2 className="text-xl font-semibold text-white mb-1">Choose Your Plan</h2>
+        <p className="text-gray-400 text-sm">No lock-in. Change or cancel anytime.</p>
       </div>
 
       {/* Billing toggle */}
       <div className="flex items-center justify-center gap-3">
         <span className={`text-sm ${billing === 'monthly' ? 'text-white' : 'text-gray-500'}`}>
-          Mensual
+          Monthly
         </span>
         <button
           onClick={() =>
             onChange({ ...data, billing: billing === 'monthly' ? 'annual' : 'monthly' })
           }
           className={`relative w-12 h-6 rounded-full transition-colors ${
-            billing === 'annual' ? 'bg-purple-600' : 'bg-gray-700'
+            billing === 'annual' ? 'bg-white' : 'bg-gray-700'
           }`}
         >
           <div
-            className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-              billing === 'annual' ? 'translate-x-7' : 'translate-x-1'
+            className={`absolute top-1 w-4 h-4 rounded-full shadow transition-transform ${
+              billing === 'annual' ? 'bg-gray-900 translate-x-7' : 'bg-white translate-x-1'
             }`}
           />
         </button>
         <span className={`text-sm ${billing === 'annual' ? 'text-white' : 'text-gray-500'}`}>
-          Anual <span className="text-green-400 text-xs font-medium ml-1">-20%</span>
+          Annual <span className="text-green-400 text-xs font-medium ml-1">-20%</span>
         </span>
       </div>
 
@@ -433,23 +429,23 @@ function StepPlan({
               onClick={() => onChange({ ...data, tier })}
               className={`relative rounded-xl border-2 p-5 cursor-pointer transition-all duration-200 ${
                 isSelected
-                  ? 'border-purple-500 bg-purple-900/20'
+                  ? 'border-gray-400 bg-gray-800/60'
                   : plan.highlighted
-                    ? 'border-purple-700/50 bg-gray-800/60 hover:border-purple-600'
+                    ? 'border-gray-600 bg-gray-800/60 hover:border-gray-500'
                     : 'border-gray-700/50 bg-gray-800/40 hover:border-gray-600'
               }`}
             >
               {plan.highlighted && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                    MÁS POPULAR
+                  <span className="bg-white text-gray-900 text-xs font-semibold px-3 py-1 rounded-full">
+                    Most Popular
                   </span>
                 </div>
               )}
 
               {isSelected && (
                 <div className="absolute top-3 right-3">
-                  <CheckCircle2 className="w-5 h-5 text-purple-400" />
+                  <CheckCircle2 className="w-5 h-5 text-white" />
                 </div>
               )}
 
@@ -457,11 +453,11 @@ function StepPlan({
                 <h3 className="text-lg font-bold text-white">{plan.name}</h3>
                 <div className="flex items-baseline gap-1 mt-1">
                   <span className="text-3xl font-bold text-white">€{price}</span>
-                  <span className="text-gray-400 text-sm">/mes</span>
+                  <span className="text-gray-400 text-sm">/mo</span>
                 </div>
                 {billing === 'annual' && (
                   <p className="text-xs text-green-400 mt-0.5">
-                    Ahorras €{(plan.monthlyPrice - plan.annualPrice) * 12}/año
+                    Save €{(plan.monthlyPrice - plan.annualPrice) * 12}/yr
                   </p>
                 )}
               </div>
@@ -469,7 +465,7 @@ function StepPlan({
               <ul className="space-y-2">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm text-gray-300">
-                    <Check className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" />
                     {feature}
                   </li>
                 ))}
@@ -480,7 +476,7 @@ function StepPlan({
       </div>
 
       <p className="text-center text-xs text-gray-600">
-        El pago se gestiona de forma segura mediante Stripe. No almacenamos datos de tarjeta.
+        Payments processed securely by Stripe. We never store card details.
       </p>
     </div>
   );
@@ -497,26 +493,26 @@ function StepVerificacion({
   const docs = [
     {
       key: 'incorporationCertificate' as keyof VerificationData,
-      label: 'Certificado de constitución',
-      description: 'Escritura de constitución o equivalente. Máx. 10MB.',
+      label: 'Certificate of Incorporation',
+      description: 'Articles of incorporation or equivalent. Max 10 MB.',
       required: true,
     },
     {
       key: 'fiscalDocument' as keyof VerificationData,
-      label: 'Documento de identificación fiscal',
-      description: 'Tarjeta de identificación fiscal o equivalente UE.',
+      label: 'Tax Identification Document',
+      description: 'Tax ID card or EU equivalent.',
       required: true,
     },
     {
       key: 'directorId' as keyof VerificationData,
-      label: 'DNI/Pasaporte del representante legal',
-      description: 'Documento de identidad vigente del administrador.',
+      label: "Director's Identity Document",
+      description: 'Valid government-issued ID of the authorized director.',
       required: true,
     },
     {
       key: 'beneficialOwnerDeclaration' as keyof VerificationData,
-      label: 'Declaración de beneficiarios reales',
-      description: 'Titularidades reales ≥25%. Requerido por directiva AML5.',
+      label: 'Beneficial Ownership Declaration',
+      description: 'Declare all beneficial owners ≥25%. Required under AML5 directive.',
       required: false,
     },
   ];
@@ -524,10 +520,10 @@ function StepVerificacion({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-1">Verificación empresarial</h2>
+        <h2 className="text-xl font-semibold text-white mb-1">Company Verification</h2>
         <p className="text-gray-400 text-sm">
-          Necesitamos verificar tu empresa para cumplir con la normativa AML/KYC europea. Revisión
-          en 24-48h laborables.
+          We verify your entity to comply with EU AML/KYC regulations. Documents reviewed within
+          24–48 business hours.
         </p>
       </div>
 
@@ -536,9 +532,9 @@ function StepVerificacion({
         <div className="flex items-center gap-3 bg-amber-900/20 border border-amber-700/40 rounded-xl p-4">
           <Clock className="w-5 h-5 text-amber-400 shrink-0" />
           <div>
-            <p className="text-sm font-medium text-amber-300">Documentación en revisión</p>
+            <p className="text-sm font-medium text-amber-300">Documents Under Review</p>
             <p className="text-xs text-amber-500 mt-0.5">
-              Nuestro equipo de compliance revisará tu documentación. Tiempo estimado: 24-48h.
+              Our compliance team is reviewing your documents. Estimated time: 24–48 hours.
             </p>
           </div>
         </div>
@@ -547,9 +543,9 @@ function StepVerificacion({
         <div className="flex items-center gap-3 bg-red-900/20 border border-red-700/40 rounded-xl p-4">
           <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
           <div>
-            <p className="text-sm font-medium text-red-300">Documentación rechazada</p>
+            <p className="text-sm font-medium text-red-300">Documents Rejected</p>
             <p className="text-xs text-red-400 mt-0.5">
-              {data.rejectionReason || 'Revisa los documentos y vuelve a enviarlos.'}
+              {data.rejectionReason || 'Please review and re-upload the flagged documents.'}
             </p>
           </div>
         </div>
@@ -558,9 +554,9 @@ function StepVerificacion({
         <div className="flex items-center gap-3 bg-green-900/20 border border-green-700/40 rounded-xl p-4">
           <CheckCircle2 className="w-5 h-5 text-green-400 shrink-0" />
           <div>
-            <p className="text-sm font-medium text-green-300">Empresa verificada</p>
+            <p className="text-sm font-medium text-green-300">Verification Complete</p>
             <p className="text-xs text-green-500 mt-0.5">
-              Tu empresa ha sido verificada correctamente. Puedes continuar.
+              Your company has been successfully verified. You may continue.
             </p>
           </div>
         </div>
@@ -578,8 +574,8 @@ function StepVerificacion({
                     <p className="text-sm font-medium text-white">{doc.label}</p>
                     {doc.required && <span className="text-red-400 text-xs">*</span>}
                     {!doc.required && (
-                      <span className="text-xs text-gray-600 bg-gray-800 px-2 py-0.5 rounded">
-                        Recomendado
+                      <span className="text-xs text-gray-500 bg-gray-800 border border-gray-700 px-2 py-0.5 rounded">
+                        Recommended
                       </span>
                     )}
                   </div>
@@ -608,11 +604,11 @@ function StepVerificacion({
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                       file
                         ? 'bg-green-900/30 text-green-400 border border-green-700/40 hover:bg-green-900/50'
-                        : 'bg-purple-900/30 text-purple-400 border border-purple-700/40 hover:bg-purple-900/50'
+                        : 'bg-gray-700 text-gray-300 border border-gray-600 hover:bg-gray-600'
                     }`}
                   >
                     <Upload className="w-3.5 h-3.5" />
-                    {file ? 'Cambiar' : 'Subir'}
+                    {file ? 'Replace' : 'Upload'}
                   </div>
                 </label>
               </div>
@@ -625,9 +621,8 @@ function StepVerificacion({
         <div className="flex items-start gap-2">
           <Shield className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
           <p className="text-xs text-blue-300">
-            Todos los documentos se transmiten cifrados (TLS 1.3) y se almacenan con cifrado
-            AES-256. Sólo el equipo de compliance tiene acceso. Se eliminan según la normativa RGPD
-            tras verificación.
+            All documents are transmitted with TLS 1.3 encryption and stored with AES-256. Only the
+            compliance team has access. Data is deleted in accordance with GDPR after verification.
           </p>
         </div>
       </div>
@@ -648,39 +643,42 @@ function StepKYCConfig({
       id: 'sumsub',
       name: 'Sumsub',
       logo: '🔐',
-      description: 'Líder europeo en KYC/AML. Recomendado para MiCA.',
+      description: 'EU-leading KYC/AML provider. Recommended for MiCA compliance.',
     },
     {
       id: 'veriff',
       name: 'Veriff',
       logo: '✅',
-      description: 'Alta tasa de conversión. Ideal para UE y España.',
+      description: 'High conversion rate. Ideal for EU markets and Spain.',
     },
-    { id: 'onfido', name: 'Onfido', logo: '🛡️', description: 'ML avanzado. Cobertura global.' },
+    {
+      id: 'onfido',
+      name: 'Onfido',
+      logo: '🛡️',
+      description: 'ML-powered identity checks. Global coverage.',
+    },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-1">Configuración de KYC</h2>
+        <h2 className="text-xl font-semibold text-white mb-1">Investor Identity Verification</h2>
         <p className="text-gray-400 text-sm">
-          Tus inversores deberán verificar su identidad antes de invertir. Selecciona el proveedor y
-          conecta tu cuenta.
+          Investors must verify their identity before committing funds. Select a KYC provider and
+          connect your account.
         </p>
       </div>
 
       {/* Provider selection */}
       <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Proveedor KYC
-        </h3>
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">KYC Provider</h3>
         {providers.map((p) => (
           <div
             key={p.id}
             onClick={() => onChange({ ...data, provider: p.id })}
             className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
               data.provider === p.id
-                ? 'border-purple-500 bg-purple-900/20'
+                ? 'border-gray-400 bg-gray-800/60'
                 : 'border-gray-700/50 bg-gray-800/40 hover:border-gray-600'
             }`}
           >
@@ -689,14 +687,14 @@ function StepKYCConfig({
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-white">{p.name}</span>
                 {p.id === 'sumsub' && (
-                  <span className="text-xs bg-purple-900/50 text-purple-300 border border-purple-700/40 px-2 py-0.5 rounded-full">
-                    Recomendado
+                  <span className="text-xs bg-gray-700 text-gray-300 border border-gray-600 px-2 py-0.5 rounded-full">
+                    Recommended
                   </span>
                 )}
               </div>
               <p className="text-xs text-gray-400 mt-0.5">{p.description}</p>
             </div>
-            {data.provider === p.id && <CheckCircle2 className="w-5 h-5 text-purple-400" />}
+            {data.provider === p.id && <CheckCircle2 className="w-5 h-5 text-white" />}
           </div>
         ))}
       </div>
@@ -704,14 +702,17 @@ function StepKYCConfig({
       {/* API credentials */}
       {data.provider && (
         <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-          <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-            Credenciales API — {providers.find((p) => p.id === data.provider)?.name}
+          <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+            API Credentials — {providers.find((p) => p.id === data.provider)?.name}
           </h3>
           <p className="text-xs text-gray-500">
-            Obtén tus credenciales desde el dashboard de{' '}
-            {providers.find((p) => p.id === data.provider)?.name}.{' '}
-            <a href="#" className="text-purple-400 hover:underline inline-flex items-center gap-1">
-              Ver guía de integración <ExternalLink className="w-3 h-3" />
+            Obtain your credentials from the {providers.find((p) => p.id === data.provider)?.name}{' '}
+            dashboard.{' '}
+            <a
+              href="#"
+              className="text-gray-400 hover:text-white underline inline-flex items-center gap-1"
+            >
+              View integration guide <ExternalLink className="w-3 h-3" />
             </a>
           </p>
           <div className="grid grid-cols-1 gap-4">
@@ -721,7 +722,7 @@ function StepKYCConfig({
               </label>
               <input
                 type="password"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none font-mono"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none font-mono"
                 placeholder="sbx_xxxxxxxxxxxxxxxxxxxxxxxx"
                 value={data.apiKey || ''}
                 onChange={(e) => onChange({ ...data, apiKey: e.target.value })}
@@ -733,7 +734,7 @@ function StepKYCConfig({
               </label>
               <input
                 type="password"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none font-mono"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none font-mono"
                 placeholder="secret_xxxxxxxxxxxxxxxxxxxxxxxx"
                 value={data.apiSecret || ''}
                 onChange={(e) => onChange({ ...data, apiSecret: e.target.value })}
@@ -743,7 +744,7 @@ function StepKYCConfig({
               <label className="block text-sm text-gray-300 mb-1.5">Webhook Secret</label>
               <input
                 type="password"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none font-mono"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none font-mono"
                 placeholder="whsec_xxxxxxxxxxxxxxxxxxxxxxxx"
                 value={data.webhookSecret || ''}
                 onChange={(e) => onChange({ ...data, webhookSecret: e.target.value })}
@@ -754,10 +755,8 @@ function StepKYCConfig({
           {/* Test mode toggle */}
           <label className="flex items-center justify-between cursor-pointer">
             <div>
-              <p className="text-sm text-white">Modo sandbox</p>
-              <p className="text-xs text-gray-500">
-                Actívalo para pruebas antes de ir a producción
-              </p>
+              <p className="text-sm text-white">Sandbox Mode</p>
+              <p className="text-xs text-gray-500">Enable for testing before going live.</p>
             </div>
             <div
               onClick={() => onChange({ ...data, testMode: !data.testMode })}
@@ -777,8 +776,8 @@ function StepKYCConfig({
             <div className="flex items-center gap-2 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
               <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
               <p className="text-xs text-amber-300">
-                Modo sandbox activo. Las verificaciones no tendrán efecto real hasta que cambies a
-                producción.
+                Sandbox mode is active. Verifications will have no real effect until you switch to
+                production.
               </p>
             </div>
           )}
@@ -829,16 +828,17 @@ function StepCampana({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-1">Crear campaña de inversión</h2>
+        <h2 className="text-xl font-semibold text-white mb-1">Configure Your First Asset</h2>
         <p className="text-gray-400 text-sm">
-          Describe la propiedad que vas a tokenizar. Esto es lo que verán tus inversores.
+          Describe the asset you intend to tokenize. This information will be displayed to qualified
+          investors.
         </p>
       </div>
 
       {/* Property type */}
       <div>
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-3">
-          Tipo de activo
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+          Asset Type
         </h3>
         <div className="flex flex-wrap gap-2">
           {propertyTypes.map((t) => (
@@ -847,7 +847,7 @@ function StepCampana({
               onClick={() => onChange({ ...data, propertyType: t.id })}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
                 data.propertyType === t.id
-                  ? 'bg-purple-600 border-purple-500 text-white'
+                  ? 'bg-white border-white text-gray-900'
                   : 'bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600'
               }`}
             >
@@ -859,16 +859,16 @@ function StepCampana({
 
       {/* Basic info */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Información del activo
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Asset Information
         </h3>
         <div>
           <label className="block text-sm text-gray-300 mb-1.5">
-            Nombre de la campaña <span className="text-red-400">*</span>
+            Offering Name <span className="text-red-400">*</span>
           </label>
           <input
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
-            placeholder="Torre Oficinas Madrid Centro"
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
+            placeholder="Madrid Financial District Office Tower"
             value={data.name || ''}
             onChange={(e) =>
               onChange({
@@ -881,15 +881,15 @@ function StepCampana({
               })
             }
           />
-          {data.slug && <p className="text-xs text-gray-600 mt-1">URL: /inversiones/{data.slug}</p>}
+          {data.slug && <p className="text-xs text-gray-600 mt-1">URL: /assets/{data.slug}</p>}
         </div>
         <div>
           <label className="block text-sm text-gray-300 mb-1.5">
-            Descripción breve (para listados) <span className="text-red-400">*</span>
+            Short Description (for listings) <span className="text-red-400">*</span>
           </label>
           <input
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
-            placeholder="Edificio de oficinas AAA en el corazón financiero de Madrid"
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
+            placeholder="Prime-grade office building in Madrid’s central financial district"
             maxLength={150}
             value={data.shortDescription || ''}
             onChange={(e) => onChange({ ...data, shortDescription: e.target.value })}
@@ -898,12 +898,12 @@ function StepCampana({
         </div>
         <div>
           <label className="block text-sm text-gray-300 mb-1.5">
-            Descripción completa <span className="text-red-400">*</span>
+            Full Description <span className="text-red-400">*</span>
           </label>
           <textarea
             rows={5}
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none resize-none"
-            placeholder="Describe en detalle la propiedad, su ubicación, características, inquilinos actuales, contratos de arrendamiento, estado de reforma..."
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none resize-none"
+            placeholder="Provide a detailed description of the asset: location, characteristics, current tenants, lease agreements, renovation status..."
             value={data.description || ''}
             onChange={(e) => onChange({ ...data, description: e.target.value })}
           />
@@ -912,15 +912,13 @@ function StepCampana({
 
       {/* Location */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Ubicación
-        </h3>
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Location</h3>
         <div>
           <label className="block text-sm text-gray-300 mb-1.5">
-            Dirección completa <span className="text-red-400">*</span>
+            Full Address <span className="text-red-400">*</span>
           </label>
           <input
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
             placeholder="Paseo de la Castellana 123"
             value={data.address || ''}
             onChange={(e) => onChange({ ...data, address: e.target.value })}
@@ -929,31 +927,31 @@ function StepCampana({
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Ciudad <span className="text-red-400">*</span>
+              City <span className="text-red-400">*</span>
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="Madrid"
               value={data.city || ''}
               onChange={(e) => onChange({ ...data, city: e.target.value })}
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-1.5">País</label>
+            <label className="block text-sm text-gray-300 mb-1.5">Country</label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
-              placeholder="España"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
+              placeholder="Spain"
               value={data.country || ''}
               onChange={(e) => onChange({ ...data, country: e.target.value })}
             />
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Superficie (m²) <span className="text-red-400">*</span>
+              Floor Area (m²) <span className="text-red-400">*</span>
             </label>
             <input
               type="number"
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="850"
               value={data.surface || ''}
               onChange={(e) => onChange({ ...data, surface: e.target.value })}
@@ -961,10 +959,10 @@ function StepCampana({
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Licencia / Referencia catastral
+              License / Land Registry Ref
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="7845921VK4874N0001ZP"
               value={data.licenseNumber || ''}
               onChange={(e) => onChange({ ...data, licenseNumber: e.target.value })}
@@ -975,18 +973,19 @@ function StepCampana({
 
       {/* Key highlights */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-3">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Puntos clave de inversión
-          <span className="ml-2 text-gray-600 text-xs normal-case font-normal">Hasta 6</span>
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Investment Highlights
+          <span className="ml-2 text-gray-600 text-xs normal-case font-normal">Up to 6</span>
         </h3>
         <p className="text-xs text-gray-500">
-          Razones por las que invertir en esta propiedad. Aparecerán como bullets destacados.
+          Key reasons for qualified investors to consider this asset. Shown as featured bullet
+          points.
         </p>
         {highlights.map((hl, i) => (
           <div key={i} className="flex items-center gap-2">
             <input
-              className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
-              placeholder={`Ej: Contrato de arrendamiento AAA firmado hasta 2031`}
+              className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
+              placeholder={`e.g. AAA lease agreement secured through 2031`}
               value={hl}
               onChange={(e) => updateHighlight(i, e.target.value)}
             />
@@ -1003,9 +1002,9 @@ function StepCampana({
         {highlights.length < 6 && (
           <button
             onClick={addHighlight}
-            className="flex items-center gap-1.5 text-sm text-purple-400 hover:text-purple-300"
+            className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors"
           >
-            <Plus className="w-4 h-4" /> Añadir punto
+            <Plus className="w-4 h-4" /> + Add Highlight
           </button>
         )}
       </div>
@@ -1031,27 +1030,27 @@ function StepFinanciero({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-1">Configuración financiera</h2>
+        <h2 className="text-xl font-semibold text-white mb-1">Financial Structure</h2>
         <p className="text-gray-400 text-sm">
-          Define la estructura de inversión y los tokenomics de tu campaña.
+          Define the investment structure and tokenomics for this asset offering.
         </p>
       </div>
 
       {/* Valuation */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Valoración y tokens
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Valuation &amp; Tokenomics
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Valor total del activo (EUR) <span className="text-red-400">*</span>
+              Total Asset Value (EUR) <span className="text-red-400">*</span>
             </label>
             <div className="relative">
               <span className="absolute left-3 top-2.5 text-gray-500 text-sm">€</span>
               <input
                 type="number"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
                 placeholder="2500000"
                 value={data.totalValueEur || ''}
                 onChange={(e) => onChange({ ...data, totalValueEur: e.target.value })}
@@ -1060,13 +1059,13 @@ function StepFinanciero({
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Precio por token (EUR) <span className="text-red-400">*</span>
+              Token Price (EUR) <span className="text-red-400">*</span>
             </label>
             <div className="relative">
               <span className="absolute left-3 top-2.5 text-gray-500 text-sm">€</span>
               <input
                 type="number"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
                 placeholder="100"
                 value={data.pricePerTokenEur || ''}
                 onChange={(e) => onChange({ ...data, pricePerTokenEur: e.target.value })}
@@ -1075,10 +1074,10 @@ function StepFinanciero({
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Símbolo del token <span className="text-red-400">*</span>
+              Token Symbol <span className="text-red-400">*</span>
             </label>
             <input
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none uppercase"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none uppercase"
               placeholder="MADROFFICE"
               maxLength={10}
               value={data.tokenSymbol || ''}
@@ -1086,8 +1085,8 @@ function StepFinanciero({
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-1.5">Tokens totales (calculado)</label>
-            <div className="bg-gray-950 border border-gray-800 rounded-lg px-3 py-2.5 text-purple-400 text-sm font-mono">
+            <label className="block text-sm text-gray-300 mb-1.5">Total Tokens (calculated)</label>
+            <div className="bg-gray-950 border border-gray-800 rounded-lg px-3 py-2.5 text-gray-300 text-sm font-mono">
               {totalTokens} tokens
             </div>
           </div>
@@ -1096,19 +1095,19 @@ function StepFinanciero({
 
       {/* Investment limits */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Límites de inversión
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Investment Parameters
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              Inversión mínima (EUR) <span className="text-red-400">*</span>
+              Minimum Investment (EUR) <span className="text-red-400">*</span>
             </label>
             <div className="relative">
               <span className="absolute left-3 top-2.5 text-gray-500 text-sm">€</span>
               <input
                 type="number"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
                 placeholder="500"
                 value={data.minInvestmentEur || ''}
                 onChange={(e) => onChange({ ...data, minInvestmentEur: e.target.value })}
@@ -1116,14 +1115,12 @@ function StepFinanciero({
             </div>
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-1.5">
-              Inversión máxima por wallet (EUR)
-            </label>
+            <label className="block text-sm text-gray-300 mb-1.5">Maximum per Wallet (EUR)</label>
             <div className="relative">
               <span className="absolute left-3 top-2.5 text-gray-500 text-sm">€</span>
               <input
                 type="number"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
                 placeholder="50000"
                 value={data.maxInvestmentEur || ''}
                 onChange={(e) => onChange({ ...data, maxInvestmentEur: e.target.value })}
@@ -1136,14 +1133,14 @@ function StepFinanciero({
               <span className="absolute left-3 top-2.5 text-gray-500 text-sm">€</span>
               <input
                 type="number"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
                 placeholder="1000000"
                 value={data.softCap || ''}
                 onChange={(e) => onChange({ ...data, softCap: e.target.value })}
               />
             </div>
             <p className="text-xs text-gray-600 mt-1">
-              Si no se alcanza, se reembolsa automáticamente
+              If not reached, commitments are automatically refunded.
             </p>
           </div>
           <div>
@@ -1154,7 +1151,7 @@ function StepFinanciero({
               <span className="absolute left-3 top-2.5 text-gray-500 text-sm">€</span>
               <input
                 type="number"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-7 pr-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
                 placeholder="2500000"
                 value={data.hardCap || ''}
                 onChange={(e) => onChange({ ...data, hardCap: e.target.value })}
@@ -1166,19 +1163,19 @@ function StepFinanciero({
 
       {/* Returns */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Rendimiento y plazos
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Returns &amp; Timeline
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-300 mb-1.5">
-              APY esperado (%) <span className="text-red-400">*</span>
+              Target Return (%) <span className="text-red-400">*</span>
             </label>
             <div className="relative">
               <input
                 type="number"
                 step="0.1"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 pr-8 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 pr-8 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
                 placeholder="7.5"
                 value={data.expectedApyPercent || ''}
                 onChange={(e) => onChange({ ...data, expectedApyPercent: e.target.value })}
@@ -1187,9 +1184,9 @@ function StepFinanciero({
             </div>
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-1.5">Frecuencia de distribución</label>
+            <label className="block text-sm text-gray-300 mb-1.5">Distribution Frequency</label>
             <select
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-gray-500 focus:outline-none"
               value={data.distributionFrequency || 'quarterly'}
               onChange={(e) =>
                 onChange({
@@ -1198,42 +1195,40 @@ function StepFinanciero({
                 })
               }
             >
-              <option value="monthly">Mensual</option>
-              <option value="quarterly">Trimestral</option>
-              <option value="annual">Anual</option>
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="annual">Annual</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-1.5">Período de lock-up (meses)</label>
+            <label className="block text-sm text-gray-300 mb-1.5">Lock-up Period (months)</label>
             <input
               type="number"
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none"
               placeholder="12"
               value={data.lockupPeriod || ''}
               onChange={(e) => onChange({ ...data, lockupPeriod: e.target.value })}
             />
             <p className="text-xs text-gray-600 mt-1">
-              Tiempo mínimo de tenencia antes de poder vender
+              Minimum holding period before transfers are permitted.
             </p>
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-1.5">
-              Fecha límite de financiación
-            </label>
+            <label className="block text-sm text-gray-300 mb-1.5">Funding Deadline</label>
             <input
               type="date"
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-purple-500 focus:outline-none"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-gray-500 focus:outline-none"
               value={data.fundingDeadline || ''}
               onChange={(e) => onChange({ ...data, fundingDeadline: e.target.value })}
             />
           </div>
         </div>
         <div>
-          <label className="block text-sm text-gray-300 mb-1.5">Estrategia de salida</label>
+          <label className="block text-sm text-gray-300 mb-1.5">Exit Strategy</label>
           <textarea
             rows={2}
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-purple-500 focus:outline-none resize-none"
-            placeholder="Venta del activo en 5 años con distribución del 100% del beneficio entre tokenholders..."
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:border-gray-500 focus:outline-none resize-none"
+            placeholder="Asset sale in year 5 with full proceeds distributed pro-rata to all tokenholders..."
             value={data.exitStrategy || ''}
             onChange={(e) => onChange({ ...data, exitStrategy: e.target.value })}
           />
@@ -1242,24 +1237,24 @@ function StepFinanciero({
 
       {/* Payment methods */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-3">
-        <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-          Métodos de pago aceptados
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Accepted Payment Methods
         </h3>
         {[
           {
             id: 'usdc' as const,
-            label: 'USDC (stablecoin)',
-            description: 'Pago en cripto, instantáneo',
+            label: 'USDC (Stablecoin)',
+            description: 'Crypto payment — instant settlement',
           },
           {
             id: 'card' as const,
-            label: 'Tarjeta de crédito/débito',
-            description: 'Via Stripe, conversión automática a USDC',
+            label: 'Credit / Debit Card',
+            description: 'Via Stripe, auto-converted to USDC',
           },
           {
             id: 'wire' as const,
-            label: 'Transferencia bancaria',
-            description: 'SEPA, 1-2 días hábiles',
+            label: 'Bank Transfer',
+            description: 'SEPA wire, 1–2 business days',
           },
         ].map((method) => {
           const methods = data.paymentMethods || [];
@@ -1278,7 +1273,7 @@ function StepFinanciero({
                   onChange({ ...data, paymentMethods: updated });
                 }}
                 className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors cursor-pointer ${
-                  isSelected ? 'bg-purple-600 border-purple-600' : 'border-gray-600'
+                  isSelected ? 'bg-white border-white' : 'border-gray-600'
                 }`}
               >
                 {isSelected && <Check className="w-3 h-3 text-white" />}
@@ -1304,22 +1299,21 @@ function StepTokenizacion({ data }: { data: TokenizationData }) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-1">Tokenización automática</h2>
+        <h2 className="text-xl font-semibold text-white mb-1">Deploying to Blockchain</h2>
         <p className="text-gray-400 text-sm">
-          Estamos desplegando tu campaña en Polygon Mainnet. Este proceso tarda aproximadamente 2-3
-          minutos.
+          Deploying your asset on Polygon Mainnet. Estimated time: 2–3 minutes.
         </p>
       </div>
 
       {/* Main progress */}
       <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 space-y-5">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-400">Progreso general</span>
-          <span className="text-sm font-bold text-purple-400">{data.progress}%</span>
+          <span className="text-sm text-gray-400">Overall Progress</span>
+          <span className="text-sm font-bold text-gray-300">{data.progress}%</span>
         </div>
         <div className="h-3 bg-gray-900 rounded-full overflow-hidden">
           <div
-            className="h-full bg-linear-to-r from-purple-600 to-purple-400 rounded-full transition-all duration-700"
+            className="h-full bg-white rounded-full transition-all duration-700"
             style={{ width: `${data.progress}%` }}
           />
         </div>
@@ -1333,7 +1327,7 @@ function StepTokenizacion({ data }: { data: TokenizationData }) {
                   step.status === 'done'
                     ? 'bg-green-900/40 text-green-400 border border-green-700/40'
                     : step.status === 'running'
-                      ? 'bg-purple-900/40 text-purple-400 border border-purple-600 animate-pulse'
+                      ? 'bg-gray-700 text-white border border-gray-500 animate-pulse'
                       : step.status === 'error'
                         ? 'bg-red-900/40 text-red-400 border border-red-700/40'
                         : 'bg-gray-900 text-gray-600 border border-gray-700'
@@ -1364,7 +1358,7 @@ function StepTokenizacion({ data }: { data: TokenizationData }) {
                     href={`https://polygonscan.com/tx/${step.txHash}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-2 text-xs text-purple-400 hover:underline inline-flex items-center gap-0.5"
+                    className="ml-2 text-xs text-gray-400 hover:text-white underline inline-flex items-center gap-0.5"
                   >
                     Ver tx <ExternalLink className="w-3 h-3" />
                   </a>
@@ -1377,9 +1371,10 @@ function StepTokenizacion({ data }: { data: TokenizationData }) {
 
       {/* Status messages */}
       {data.status === 'idle' && (
-        <div className="bg-blue-900/10 border border-blue-700/30 rounded-xl p-4 text-center">
-          <p className="text-sm text-blue-300">
-            Haz clic en <strong>Iniciar tokenización</strong> para comenzar el despliegue.
+        <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-4 text-center">
+          <p className="text-sm text-gray-400">
+            Click <strong className="text-white">Launch Asset</strong> to begin the automated
+            deployment on Polygon Mainnet.
           </p>
         </div>
       )}
@@ -1388,16 +1383,16 @@ function StepTokenizacion({ data }: { data: TokenizationData }) {
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-green-400" />
             <p className="text-sm font-semibold text-green-300">
-              ¡Tokenización completada con éxito!
+              Asset successfully deployed on Polygon!
             </p>
           </div>
           <p className="text-xs text-gray-400">
-            Token desplegado en:{' '}
+            Deployed at:{' '}
             <a
               href={`https://polygonscan.com/address/${data.tokenAddress}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-purple-400 font-mono hover:underline"
+              className="text-gray-300 font-mono hover:text-white underline"
             >
               {data.tokenAddress.slice(0, 10)}...{data.tokenAddress.slice(-8)}
             </a>
@@ -1408,18 +1403,18 @@ function StepTokenizacion({ data }: { data: TokenizationData }) {
         <div className="bg-red-900/20 border border-red-700/40 rounded-xl p-4">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-5 h-5 text-red-400" />
-            <p className="text-sm font-semibold text-red-300">Error en el despliegue</p>
+            <p className="text-sm font-semibold text-red-300">Deployment failed</p>
           </div>
           <p className="text-xs text-red-400 mt-1">
-            {data.errorMessage || 'Error desconocido. Inténtalo de nuevo.'}
+            {data.errorMessage || 'Unknown error. Please try again.'}
           </p>
         </div>
       )}
 
       <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/30">
         <p className="text-xs text-gray-600 text-center">
-          La complejidad blockchain es gestionada automáticamente por ChainX®. Tu campaña se
-          despliega con contratos auditados y compliance ERC-3643 incorporado.
+          Blockchain complexity is fully managed by ChainX®. Your asset is deployed with audited
+          smart contracts and built-in ERC-3643 compliance.
         </p>
       </div>
     </div>
@@ -1450,48 +1445,49 @@ function StepPublicacion({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-1">Publicar campaña</h2>
+        <h2 className="text-xl font-semibold text-white mb-1">Review &amp; Launch Offering</h2>
         <p className="text-gray-400 text-sm">
-          Revisa el resumen y confirma para publicar tu campaña de inversión.
+          Review the summary below, then confirm to make your asset available to qualified
+          investors.
         </p>
       </div>
 
       {/* Campaign preview */}
       <div className="bg-gray-800/50 rounded-xl border border-gray-700/50 overflow-hidden">
-        <div className="bg-linear-to-r from-purple-900/40 to-gray-800/40 p-4 border-b border-gray-700/50">
+        <div className="bg-gray-800/30 p-4 border-b border-gray-700/50">
           <div className="flex items-center gap-2">
-            <Eye className="w-4 h-4 text-purple-400" />
-            <span className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
-              Resumen de campaña
+            <Eye className="w-4 h-4 text-gray-400" />
+            <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+              Offering Summary
             </span>
           </div>
         </div>
         <div className="p-5 space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Nombre', value: campaign.name || '—' },
-              { label: 'Activo', value: campaign.propertyType || '—' },
+              { label: 'Name', value: campaign.name || '—' },
+              { label: 'Type', value: campaign.propertyType || '—' },
               {
-                label: 'Ubicación',
+                label: 'Location',
                 value: campaign.city ? `${campaign.city}, ${campaign.country || ''}` : '—',
               },
-              { label: 'Superficie', value: campaign.surface ? `${campaign.surface} m²` : '—' },
+              { label: 'Area', value: campaign.surface ? `${campaign.surface} m²` : '—' },
               {
-                label: 'Valor total',
+                label: 'Value',
                 value: financial.totalValueEur
-                  ? `€${Number(financial.totalValueEur).toLocaleString('es-ES')}`
+                  ? `€${Number(financial.totalValueEur).toLocaleString('en-EU')}`
                   : '—',
               },
               {
-                label: 'Precio/token',
+                label: 'Token Price',
                 value: financial.pricePerTokenEur ? `€${financial.pricePerTokenEur}` : '—',
               },
               {
-                label: 'APY esperado',
+                label: 'Target Return',
                 value: financial.expectedApyPercent ? `${financial.expectedApyPercent}%` : '—',
               },
               {
-                label: 'Inv. mínima',
+                label: 'Min. Investment',
                 value: financial.minInvestmentEur ? `€${financial.minInvestmentEur}` : '—',
               },
             ].map(({ label, value }) => (
@@ -1506,37 +1502,37 @@ function StepPublicacion({
 
       {/* Legal confirmations */}
       <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 space-y-4">
-        <h3 className="text-sm font-semibold text-red-400 uppercase tracking-wider flex items-center gap-2">
-          <Shield className="w-4 h-4" /> Confirmaciones legales obligatorias
+        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider flex items-center gap-2">
+          <Shield className="w-4 h-4" /> Required Legal Confirmations
         </h3>
         {[
           {
             key: 'legalReview' as const,
             label:
-              'Confirmo que la documentación legal de la propiedad ha sido revisada por nuestro equipo legal y está en regla.',
+              'I confirm that the legal documentation for this property has been reviewed by our legal team and is in order.',
           },
           {
             key: 'micaCompliance' as const,
             label:
-              'Confirmo que esta campaña cumple con el Reglamento MiCA (UE 2023/1114) aplicable a los activos digitales.',
+              'I confirm this offering complies with Regulation MiCA (EU 2023/1114) as applicable to digital assets.',
           },
           {
             key: 'riskDisclosure' as const,
             label:
-              'Confirmo que los inversores recibirán el documento de divulgación de riesgos antes de invertir.',
+              'I confirm that investors will receive the risk disclosure document before committing funds.',
           },
           {
             key: 'authorizedRepresentative' as const,
             label:
-              'Actúo como representante legal autorizado de la empresa y tengo capacidad para publicar esta oferta.',
+              'I act as the authorized legal representative of the company and have authority to publish this offering.',
           },
         ].map(({ key, label }) => (
           <label key={key} className="flex items-start gap-3 cursor-pointer group">
             <div
               className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
                 confirmations[key]
-                  ? 'bg-purple-600 border-purple-600'
-                  : 'border-gray-600 group-hover:border-purple-500'
+                  ? 'bg-white border-white'
+                  : 'border-gray-600 group-hover:border-gray-400'
               }`}
               onClick={() =>
                 onChange({
@@ -1556,8 +1552,8 @@ function StepPublicacion({
         <div className="flex items-center gap-3 bg-green-900/20 border border-green-700/40 rounded-xl p-4">
           <CheckCircle2 className="w-5 h-5 text-green-400 shrink-0" />
           <p className="text-sm text-green-300 font-medium">
-            Todo listo. Haz clic en <strong>Publicar campaña</strong> para que tu propiedad esté
-            disponible para inversores.
+            Ready to launch. Click <strong>Launch Offering</strong> to make your asset available for
+            qualified investors.
           </p>
         </div>
       )}
@@ -1626,7 +1622,7 @@ export default function OnboardingPage() {
       tokenAddress: '0x' + Math.random().toString(16).slice(2, 42).padEnd(40, '0'),
     }));
 
-    toast.success('¡Tokenización completada! Tu campaña está lista para publicarse.');
+    toast.success('Asset deployed! Your offering is ready to publish.');
   }, [tokenization.status]);
 
   // ── Step validation ──────────────────────────────────────
@@ -1640,17 +1636,17 @@ export default function OnboardingPage() {
           !company.contactName ||
           !company.country
         ) {
-          toast.error('Completa los campos obligatorios');
+          toast.error('Please complete all required fields');
           return false;
         }
         if (!company.acceptedTerms || !company.acceptedPrivacy) {
-          toast.error('Debes aceptar los términos y la política de privacidad');
+          toast.error('Please accept the Terms and Privacy Policy');
           return false;
         }
         return true;
       case 2:
         if (!plan.tier) {
-          toast.error('Selecciona un plan para continuar');
+          toast.error('Please select a plan to continue');
           return false;
         }
         return true;
@@ -1660,19 +1656,19 @@ export default function OnboardingPage() {
           !verification.fiscalDocument ||
           !verification.directorId
         ) {
-          toast.error('Sube los documentos obligatorios');
+          toast.error('Please upload all required documents');
           return false;
         }
         return true;
       case 4:
         if (!kycConfig.provider) {
-          toast.error('Selecciona un proveedor de KYC');
+          toast.error('Please select a KYC provider');
           return false;
         }
         return true;
       case 5:
         if (!campaign.name || !campaign.description || !campaign.city || !campaign.propertyType) {
-          toast.error('Completa los campos obligatorios de la campaña');
+          toast.error('Please complete all required offering fields');
           return false;
         }
         return true;
@@ -1683,13 +1679,13 @@ export default function OnboardingPage() {
           !financial.tokenSymbol ||
           !financial.minInvestmentEur
         ) {
-          toast.error('Completa los campos financieros obligatorios');
+          toast.error('Please complete all required financial fields');
           return false;
         }
         return true;
       case 7:
         if (tokenization.status !== 'completed') {
-          toast.error('Completa la tokenización antes de continuar');
+          toast.error('Complete the deployment before continuing');
           return false;
         }
         return true;
@@ -1701,7 +1697,7 @@ export default function OnboardingPage() {
           !confs?.riskDisclosure ||
           !confs?.authorizedRepresentative
         ) {
-          toast.error('Confirma todas las declaraciones legales');
+          toast.error('Please confirm all legal declarations');
           return false;
         }
         return true;
@@ -1738,17 +1734,17 @@ export default function OnboardingPage() {
           contactName: company.contactName,
           contactEmail: company.contactEmail,
           country: company.country,
-          plan: plan.tier ?? 'No especificado',
+          plan: plan.tier ?? 'Not specified',
           submittedAt: new Date().toISOString(),
         }),
       }).catch((err) => console.warn('[onboarding] Notify failed (non-blocking):', err));
 
       // Publish
-      toast.success('🚀 ¡Campaña publicada! Redirigiendo al dashboard...');
+      toast.success('Offering published. Redirecting to your dashboard...');
       setPublication((prev) => ({
         ...prev,
         publishedAt: new Date().toISOString(),
-        campaignUrl: `/inversiones/${campaign.slug || 'campaign'}`,
+        campaignUrl: `/assets/${campaign.slug || 'offering'}`,
       }));
       setTimeout(() => router.push('/onboarding/dashboard'), 2000);
       return;
@@ -1768,29 +1764,32 @@ export default function OnboardingPage() {
   const isTokenStep = currentStep === 7;
 
   const getNextLabel = () => {
-    if (isLastStep) return '🚀 Publicar campaña';
-    if (isTokenStep && tokenization.status === 'idle') return '⛓️ Iniciar tokenización';
-    if (isTokenStep && tokenization.status === 'completed') return 'Continuar';
-    return 'Continuar';
+    if (isLastStep) return 'Launch Offering';
+    if (isTokenStep && tokenization.status === 'idle') return 'Launch Asset';
+    if (isTokenStep && tokenization.status === 'completed') return 'Continue';
+    return 'Continue';
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-950">
       {/* Header */}
-      <div className="border-b border-gray-800/60 backdrop-blur-sm sticky top-0 z-20 bg-gray-950/80">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="border-b border-gray-800 backdrop-blur-sm sticky top-0 z-20 bg-gray-950/95">
+        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
-              <Building2 className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
+              <Building2 className="w-4 h-4 text-gray-300" />
             </div>
-            <span className="font-bold text-white text-sm">
-              ChainX® <span className="text-purple-400">Onboarding</span>
-            </span>
+            <div>
+              <span className="font-semibold text-white text-sm tracking-tight">ChainX®</span>
+              <span className="text-gray-500 text-sm ml-1.5">Asset Issuance</span>
+            </div>
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-500">
-            <Clock className="w-3.5 h-3.5" />~
-            {WIZARD_STEPS.slice(currentStep - 1).reduce((a, s) => a + s.estimatedMinutes, 0)} min
-            restantes
+            <Clock className="w-3.5 h-3.5" />
+            <span>
+              ~{WIZARD_STEPS.slice(currentStep - 1).reduce((a, s) => a + s.estimatedMinutes, 0)} min
+              remaining
+            </span>
           </div>
         </div>
       </div>
@@ -1802,7 +1801,7 @@ export default function OnboardingPage() {
 
       {/* Content */}
       <div className="flex-1 max-w-4xl mx-auto w-full px-4 pb-8">
-        <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800/60 rounded-2xl p-6 md:p-8">
+        <div className="bg-gray-900/70 backdrop-blur-sm border border-gray-800/60 rounded-2xl p-6 md:p-8">
           {currentStep === 1 && <StepRegistro data={company} onChange={setCompany} />}
           {currentStep === 2 && <StepPlan data={plan} onChange={setPlan} />}
           {currentStep === 3 && <StepVerificacion data={verification} onChange={setVerification} />}
@@ -1827,7 +1826,7 @@ export default function OnboardingPage() {
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               <ChevronLeft className="w-4 h-4" />
-              Atrás
+              Back
             </button>
 
             <div className="flex items-center gap-1.5">
@@ -1836,9 +1835,9 @@ export default function OnboardingPage() {
                   key={s.id}
                   className={`rounded-full transition-all ${
                     s.id === currentStep
-                      ? 'w-6 h-2 bg-purple-500'
+                      ? 'w-6 h-2 bg-white'
                       : s.id < currentStep
-                        ? 'w-2 h-2 bg-purple-700'
+                        ? 'w-2 h-2 bg-gray-400'
                         : 'w-2 h-2 bg-gray-700'
                   }`}
                 />
@@ -1853,7 +1852,7 @@ export default function OnboardingPage() {
                 (isTokenStep && tokenization.status === 'setting_compliance') ||
                 (isTokenStep && tokenization.status === 'minting')
               }
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold bg-purple-600 hover:bg-purple-500 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-medium bg-white hover:bg-gray-100 text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               {getNextLabel()}
               {!isLastStep && !isTokenStep && <ChevronRight className="w-4 h-4" />}
