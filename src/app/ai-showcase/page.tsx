@@ -2,16 +2,12 @@
 
 // Force Vercel redeploy - v2.0
 import React, { useState } from 'react';
-import { EnhancedPropertyCard } from '@/components/EnhancedPropertyCard';
 import SmartPaymentsDashboard from '@/components/SmartPaymentsDashboard';
 import AIInvestmentAssistant from '@/components/AIInvestmentAssistant';
-import { SalesShowcaseBanner } from '@/components/SalesShowcaseBanner';
-import Footer from '@/components/Footer';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import {
   Brain,
-  CreditCard,
   TrendingUp,
   Sparkles,
   Lock,
