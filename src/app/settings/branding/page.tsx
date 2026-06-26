@@ -164,7 +164,7 @@ function BrandingPanel() {
           <Field label="Company Name">
             <input
               className={inputCls}
-              placeholder="MadroOffice Capital"
+              placeholder="Meridian Capital AG"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
             />
@@ -172,7 +172,7 @@ function BrandingPanel() {
           <Field label="Public Display Name">
             <input
               className={inputCls}
-              placeholder="MadroOffice"
+              placeholder="Meridian Capital"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
             />
@@ -181,7 +181,7 @@ function BrandingPanel() {
             <input
               type="email"
               className={inputCls}
-              placeholder="support@madrooffice.com"
+              placeholder="support@meridian-capital.ch"
               value={supportEmail}
               onChange={(e) => setSupportEmail(e.target.value)}
             />
@@ -189,7 +189,7 @@ function BrandingPanel() {
           <Field label="Email Sender Name">
             <input
               className={inputCls}
-              placeholder="MadroOffice Investor Relations"
+              placeholder="Meridian Capital Investor Relations"
               value={senderName}
               onChange={(e) => setSenderName(e.target.value)}
             />
@@ -254,7 +254,7 @@ function BrandingPanel() {
           >
             <input
               className={inputCls}
-              placeholder="invest.madrooffice.com"
+              placeholder="invest.meridian-capital.ch"
               value={customDomain}
               onChange={(e) => setCustomDomain(e.target.value)}
             />
@@ -262,7 +262,7 @@ function BrandingPanel() {
           <Field label="ChainX Subdomain">
             <input
               className={inputCls}
-              placeholder="madrooffice.chainx.app"
+              placeholder="meridian.chainx.app"
               value={subdomain}
               onChange={(e) => setSubdomain(e.target.value)}
             />
@@ -469,7 +469,7 @@ function BrandingPanel() {
               <div className="flex items-center gap-2 mb-3">
                 <Building2 className="w-4 h-4 text-gray-500" />
                 <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                  Torre Oficinas Madrid Centro
+                  Madrid Prime Offices
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3">

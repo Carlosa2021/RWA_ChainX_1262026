@@ -455,10 +455,10 @@ const CRITICAL_ACTIONS: ReadonlyArray<{
   entity: string;
   result: AuditResult;
 }> = [
-  { label: 'Project Published', entity: 'Torre Oficinas Madrid', result: 'success' },
-  { label: 'Branding Modified', entity: 'MadroOffice Capital', result: 'success' },
+  { label: 'Project Published', entity: 'Madrid Prime Offices', result: 'success' },
+  { label: 'Branding Modified', entity: 'Meridian Capital AG', result: 'success' },
   { label: 'KYC Approved', entity: 'Investor #245', result: 'success' },
-  { label: 'Role Changed', entity: 'compliance@madrooffice.com', result: 'success' },
+  { label: 'Role Changed', entity: 'compliance@meridian-capital.ch', result: 'success' },
   { label: 'Document Deleted', entity: 'Prospectus v1 (draft)', result: 'error' },
 ];
 

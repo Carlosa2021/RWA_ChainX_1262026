@@ -53,7 +53,7 @@ const INITIAL_USERS: readonly PlatformUser[] = [
   {
     id: 'u_1',
     name: 'Alicia Romero',
-    email: 'alicia@madrooffice.com',
+    email: 'alicia@meridian-capital.ch',
     role: Role.PLATFORM_ADMIN,
     status: 'active',
     lastLogin: '2026-06-12 09:14',
@@ -61,7 +61,7 @@ const INITIAL_USERS: readonly PlatformUser[] = [
   {
     id: 'u_2',
     name: 'Daniel Vega',
-    email: 'compliance@madrooffice.com',
+    email: 'compliance@meridian-capital.ch',
     role: Role.COMPLIANCE_OFFICER,
     status: 'active',
     lastLogin: '2026-06-11 18:02',
@@ -69,7 +69,7 @@ const INITIAL_USERS: readonly PlatformUser[] = [
   {
     id: 'u_3',
     name: 'Marta Ibáñez',
-    email: 'projects@madrooffice.com',
+    email: 'projects@meridian-capital.ch',
     role: Role.PROJECT_MANAGER,
     status: 'active',
     lastLogin: '2026-06-12 08:41',
@@ -77,7 +77,7 @@ const INITIAL_USERS: readonly PlatformUser[] = [
   {
     id: 'u_4',
     name: 'Sergio Lluch',
-    email: 'ir@madrooffice.com',
+    email: 'ir@meridian-capital.ch',
     role: Role.INVESTOR_RELATIONS,
     status: 'invited',
     lastLogin: '—',

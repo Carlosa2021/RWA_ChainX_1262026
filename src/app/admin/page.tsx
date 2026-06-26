@@ -21,6 +21,10 @@ import {
   Building2,
   TrendingUp,
   Coins,
+  AlertTriangle,
+  Activity,
+  ChevronRight,
+  Target,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { getTw } from '@/lib/thirdweb';
@@ -655,31 +659,139 @@ export default function AdminPage() {
               </thead>
               <tbody>
                 {safeProjects.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} className="px-6 py-20 text-center">
-                      <div className="flex flex-col items-center gap-4">
-                        <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                          <Building2 className="w-7 h-7 text-gray-400 dark:text-gray-500" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
-                            No projects deployed
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-                            Deploy your first tokenized asset on Polygon to start issuing digital
-                            securities.
-                          </p>
-                        </div>
-                        <button
-                          onClick={() => setShowCreateForm(true)}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 text-sm font-medium rounded-lg transition-colors"
-                        >
-                          <Plus className="w-4 h-4" />
-                          Deploy First Project
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                  <>
+                    {(
+                      [
+                        {
+                          name: 'Basel Riverside Offices',
+                          id: 'BROFFICE',
+                          location: 'Basel, Switzerland',
+                          type: 'Commercial Office',
+                          totalValue: '€18.5M',
+                          pricePerToken: '€100',
+                          tokensAvail: '37,000',
+                          tokensTotal: '185,000',
+                          status: 'active',
+                          progress: 80,
+                        },
+                        {
+                          name: 'Zurich Residential Portfolio',
+                          id: 'ZHRESID',
+                          location: 'Zurich, Switzerland',
+                          type: 'Residential',
+                          totalValue: '€12.2M',
+                          pricePerToken: '€100',
+                          tokensAvail: '48,800',
+                          tokensTotal: '122,000',
+                          status: 'active',
+                          progress: 60,
+                        },
+                        {
+                          name: 'Madrid Prime Offices',
+                          id: 'MADRPRIME',
+                          location: 'Madrid, Spain',
+                          type: 'Commercial Office',
+                          totalValue: '€24.5M',
+                          pricePerToken: '€100',
+                          tokensAvail: '205,800',
+                          tokensTotal: '245,000',
+                          status: 'review',
+                          progress: 16,
+                        },
+                        {
+                          name: 'Valencia Logistics Hub',
+                          id: 'VALHUB',
+                          location: 'Valencia, Spain',
+                          type: 'Logistics',
+                          totalValue: '€9.8M',
+                          pricePerToken: '€100',
+                          tokensAvail: '0',
+                          tokensTotal: '98,000',
+                          status: 'funded',
+                          progress: 100,
+                        },
+                        {
+                          name: 'Ibiza Luxury Villas',
+                          id: 'IBZVILLAS',
+                          location: 'Ibiza, Spain',
+                          type: 'Residential',
+                          totalValue: '€6.5M',
+                          pricePerToken: '€100',
+                          tokensAvail: '65,000',
+                          tokensTotal: '65,000',
+                          status: 'structuring',
+                          progress: 0,
+                        },
+                      ] as const
+                    ).map((project) => (
+                      <tr
+                        key={project.id}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center text-gray-600 dark:text-gray-300 text-sm font-semibold">
+                              {project.name.slice(0, 2).toUpperCase()}
+                            </div>
+                            <div>
+                              <div className="font-semibold text-gray-900 dark:text-white">
+                                {project.name}
+                              </div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400">
+                                {project.type}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                          {project.location}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="font-semibold text-gray-900 dark:text-white">
+                            {project.totalValue}
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {project.pricePerToken}/token
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                          {project.tokensAvail}/{project.tokensTotal}
+                        </td>
+                        <td className="px-6 py-4">
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              project.status === 'active'
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
+                                : project.status === 'funded'
+                                  ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
+                                  : project.status === 'review'
+                                    ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300'
+                                    : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
+                            }`}
+                          >
+                            {project.status === 'active'
+                              ? 'Active'
+                              : project.status === 'funded'
+                                ? 'Closed'
+                                : project.status === 'review'
+                                  ? 'In Review'
+                                  : 'Structuring'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5">
+                            <div
+                              className="bg-gray-900 dark:bg-white h-1.5 rounded-full"
+                              style={{ width: `${project.progress}%` }}
+                            />
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            {project.progress}%
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </>
                 ) : (
                   safeProjects.map((project) => (
                     <tr
@@ -785,6 +897,156 @@ export default function AdminPage() {
                     Online
                   </span>
                 </span>
+              </div>
+            </div>
+
+            {/* ─── Executive Portfolio Summary ───────────────────────── */}
+            <div className="mb-6 bg-gray-900 dark:bg-gray-950 border border-gray-800 rounded-2xl p-6">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                    Portfolio Overview · 26 Jun 2026
+                  </p>
+                  <h2 className="text-base font-semibold text-white mb-2">Meridian Capital AG</h2>
+                  <p className="text-sm text-gray-400 max-w-xl leading-relaxed">
+                    Meridian Capital AG operates five tokenized real estate offerings across
+                    Switzerland, Spain and Germany, with €35.84M committed and 580 verified
+                    investors.
+                  </p>
+                </div>
+                <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-900/40 border border-green-800/50 text-green-400 text-xs font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                  Portfolio Healthy
+                </span>
+              </div>
+              <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-4 pt-5 border-t border-gray-800">
+                {(
+                  [
+                    { label: 'Active Projects', value: '5', sub: 'on Polygon' },
+                    { label: 'Capital Raised', value: '€35.84M', sub: 'of €71.5M total' },
+                    { label: 'Avg. Target Return', value: '8.4%', sub: 'p.a. issuer projection' },
+                    { label: 'Verified Investors', value: '580', sub: 'ERC-3643 verified' },
+                  ] as const
+                ).map(({ label, value, sub }) => (
+                  <div key={label}>
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">{label}</p>
+                    <p className="text-xl font-bold text-white">{value}</p>
+                    <p className="text-xs text-gray-600 mt-0.5">{sub}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ─── Attention · Activity · Actions ───────────────────────── */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+              {/* Requires Attention */}
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <AlertTriangle className="w-4 h-4 text-amber-500" />
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                    Requires Attention
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {(
+                    [
+                      {
+                        label: 'Zurich Residential Portfolio',
+                        detail: '2 KYC renewals pending',
+                        urgency: 'amber',
+                      },
+                      {
+                        label: 'Valencia Logistics Hub',
+                        detail: 'Q2 distribution ready for approval',
+                        urgency: 'green',
+                      },
+                      {
+                        label: 'Ibiza Luxury Villas',
+                        detail: 'Structuring documents pending review',
+                        urgency: 'gray',
+                      },
+                    ] as const
+                  ).map(({ label, detail, urgency }) => (
+                    <div
+                      key={label}
+                      className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50"
+                    >
+                      <span
+                        className={`mt-1 w-2 h-2 rounded-full shrink-0 ${urgency === 'amber' ? 'bg-amber-400' : urgency === 'green' ? 'bg-green-400' : 'bg-gray-400'}`}
+                      />
+                      <div>
+                        <p className="text-xs font-medium text-gray-900 dark:text-white">{label}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{detail}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recent Activity */}
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <Activity className="w-4 h-4 text-blue-500" />
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                    Recent Activity
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    { event: 'Investor verified', meta: 'Hans-Peter Vogt · 2h ago' },
+                    { event: 'Q2 distribution prepared', meta: 'Valencia Logistics Hub · 4h ago' },
+                    { event: 'Legal document uploaded', meta: 'Madrid Prime Offices · 6h ago' },
+                    { event: 'Basel Riverside reached 80%', meta: 'Funding milestone · 1d ago' },
+                    { event: 'MiCA compliance report generated', meta: 'Platform-wide · 2d ago' },
+                  ].map(({ event, meta }) => (
+                    <div key={event} className="flex items-start gap-2.5">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+                      <div>
+                        <p className="text-xs font-medium text-gray-900 dark:text-white">{event}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{meta}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recommended Next Actions */}
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <Target className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                    Recommended Next Actions
+                  </h3>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    {
+                      action: 'Review Q2 distribution batch',
+                      detail: 'Valencia Logistics Hub — €61,250 pending',
+                    },
+                    {
+                      action: 'Approve pending KYC renewals',
+                      detail: '2 investors in Zurich Residential',
+                    },
+                    {
+                      action: 'Generate executive investor report',
+                      detail: 'Last report: 28 May 2026',
+                    },
+                  ].map(({ action, detail }) => (
+                    <div
+                      key={action}
+                      className="flex items-start justify-between gap-2 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                    >
+                      <div>
+                        <p className="text-xs font-medium text-gray-900 dark:text-white">
+                          {action}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{detail}</p>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0 mt-0.5" />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 

@@ -165,9 +165,9 @@ const REPORTS: readonly RegulatoryReport[] = [
 ];
 
 const OFFERINGS: ReadonlyArray<{ name: string; status: OfferingStatus }> = [
-  { name: 'Torre Madrid Centro', status: 'Compliant' },
-  { name: 'Barcelona Logistics Hub', status: 'Review Required' },
-  { name: 'Valencia Residencial', status: 'Pending Documentation' },
+  { name: 'Madrid Prime Offices', status: 'Compliant' },
+  { name: 'Valencia Logistics Hub', status: 'Review Required' },
+  { name: 'Ibiza Luxury Villas', status: 'Pending Documentation' },
 ];
 
 const JURISDICTIONS: ReadonlyArray<{ country: string; pct: number }> = [
@@ -192,19 +192,19 @@ const EXPIRATIONS: ReadonlyArray<{
 }> = [
   {
     document: 'Property Valuation Report',
-    project: 'Torre Madrid Centro',
+    project: 'Madrid Prime Offices',
     date: '28 Jun 2026',
     status: 'Expiring',
   },
   {
     document: 'Legal Opinion',
-    project: 'Barcelona Logistics Hub',
+    project: 'Valencia Logistics Hub',
     date: '04 Jul 2026',
     status: 'Expiring',
   },
   {
     document: 'Corporate Registry Extract',
-    project: 'Valencia Residencial',
+    project: 'Basel Riverside Offices',
     date: '19 Jul 2026',
     status: 'Valid',
   },
