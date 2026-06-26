@@ -296,62 +296,85 @@ export default function AdminPage() {
   // Renderizar contenido KYC
   const renderKYCContent = () => (
     <div className="space-y-6">
-      {/* Estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-linear-to-r from-orange-500 to-orange-600 p-6 rounded-xl text-white">
-          <div className="flex items-center justify-between">
+      {/* KYC statistics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-sm transition-shadow duration-200">
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-orange-100 text-sm font-medium">Pendientes</p>
-              <p className="text-3xl font-bold">{stats.pending}</p>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Pending Review
+              </p>
+              <p className="mt-3 text-4xl font-bold text-gray-900 dark:text-white">
+                {stats.pending}
+              </p>
+              <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">
+                Awaiting verification
+              </p>
             </div>
-            <Clock className="w-8 h-8 text-orange-200" />
+            <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-900/20 shrink-0">
+              <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-linear-to-r from-green-500 to-green-600 p-6 rounded-xl text-white">
-          <div className="flex items-center justify-between">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-sm transition-shadow duration-200">
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-green-100 text-sm font-medium">Aprobados</p>
-              <p className="text-3xl font-bold">{stats.approved}</p>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Verified Investors
+              </p>
+              <p className="mt-3 text-4xl font-bold text-gray-900 dark:text-white">
+                {stats.approved}
+              </p>
+              <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Cleared to invest</p>
             </div>
-            <CheckCircle className="w-8 h-8 text-green-200" />
+            <div className="p-2.5 rounded-xl bg-green-50 dark:bg-green-900/20 shrink-0">
+              <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-linear-to-r from-red-500 to-red-600 p-6 rounded-xl text-white">
-          <div className="flex items-center justify-between">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-sm transition-shadow duration-200">
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-red-100 text-sm font-medium">Rechazados</p>
-              <p className="text-3xl font-bold">{stats.rejected}</p>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Rejected
+              </p>
+              <p className="mt-3 text-4xl font-bold text-gray-900 dark:text-white">
+                {stats.rejected}
+              </p>
+              <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Failed compliance</p>
             </div>
-            <XCircle className="w-8 h-8 text-red-200" />
+            <div className="p-2.5 rounded-xl bg-red-50 dark:bg-red-900/20 shrink-0">
+              <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Tabs y búsqueda */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
+      {/* KYC table + filters */}
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+          <div className="flex gap-0 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
             <button
               onClick={() => setKycSubTab('pending')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
                 kycSubTab === 'pending'
-                  ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-600 dark:text-gray-300'
+                  ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
+                  : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
-              Pendientes
+              Pending
             </button>
             <button
               onClick={() => setKycSubTab('all')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`px-4 py-2 text-sm font-medium transition-colors border-l border-gray-200 dark:border-gray-700 ${
                 kycSubTab === 'all'
-                  ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-600 dark:text-gray-300'
+                  ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
+                  : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
-              Todas
+              All
             </button>
           </div>
 
@@ -360,19 +383,19 @@ export default function AdminPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscar por wallet address..."
+                placeholder="Search wallet address..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white"
+                className="pl-10 pr-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none dark:bg-gray-800 dark:text-white placeholder-gray-400"
               />
             </div>
 
             <button
               onClick={() => setShowRegisterForm(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
             >
               <Plus className="w-4 h-4" />
-              Registrar Wallet
+              Register Wallet
             </button>
           </div>
         </div>
@@ -401,18 +424,18 @@ export default function AdminPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
+                <tr className="border-b border-gray-200 dark:border-gray-800">
+                  <th className="text-left py-3 px-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Wallet
                   </th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
-                    Estado
+                  <th className="text-left py-3 px-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Status
                   </th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
-                    Fecha Registro
+                  <th className="text-left py-3 px-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Registered
                   </th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
-                    Verificación
+                  <th className="text-left py-3 px-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Clearance
                   </th>
                 </tr>
               </thead>
@@ -499,54 +522,70 @@ export default function AdminPage() {
 
     return (
       <div className="space-y-6">
-        {/* Header con botón crear */}
+        {/* Projects section header */}
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Gestionar Proyectos
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Tokenized Assets
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Administra propiedades tokenizadas y controla inversiones
+            <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+              Active digital securities on Polygon Mainnet
             </p>
           </div>
           <button
             onClick={() => setShowCreateForm(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 text-sm font-medium rounded-lg transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
-            Nuevo Proyecto
+            New Project
           </button>
         </div>
 
-        {/* Estadísticas de proyectos */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-linear-to-r from-purple-500 to-purple-600 p-6 rounded-xl text-white">
-            <div className="flex items-center justify-between">
+        {/* Project KPIs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-sm transition-shadow duration-200">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-purple-100 text-sm font-medium">Total Proyectos</p>
-                <p className="text-3xl font-bold">{safeProjects.length}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Total Projects
+                </p>
+                <p className="mt-3 text-4xl font-bold text-gray-900 dark:text-white">
+                  {safeProjects.length}
+                </p>
+                <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Deployed on-chain</p>
               </div>
-              <Building2 className="w-8 h-8 text-purple-200" />
+              <div className="p-2.5 rounded-xl bg-purple-50 dark:bg-purple-900/20 shrink-0">
+                <Building2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-linear-to-r from-green-500 to-green-600 p-6 rounded-xl text-white">
-            <div className="flex items-center justify-between">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-sm transition-shadow duration-200">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-green-100 text-sm font-medium">Activos</p>
-                <p className="text-3xl font-bold">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Active
+                </p>
+                <p className="mt-3 text-4xl font-bold text-gray-900 dark:text-white">
                   {safeProjects.filter((p) => p?.status === 'active').length}
                 </p>
+                <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">
+                  Open for investment
+                </p>
               </div>
-              <TrendingUp className="w-8 h-8 text-green-200" />
+              <div className="p-2.5 rounded-xl bg-green-50 dark:bg-green-900/20 shrink-0">
+                <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-linear-to-r from-blue-500 to-blue-600 p-6 rounded-xl text-white">
-            <div className="flex items-center justify-between">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-sm transition-shadow duration-200">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-blue-100 text-sm font-medium">Valor Total</p>
-                <p className="text-3xl font-bold">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Total Value
+                </p>
+                <p className="mt-3 text-4xl font-bold text-gray-900 dark:text-white">
                   €
                   {safeProjects
                     .reduce((acc, p) => {
@@ -556,71 +595,89 @@ export default function AdminPage() {
                     }, 0)
                     .toLocaleString('es-ES')}
                 </p>
+                <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Aggregate AUM</p>
               </div>
-              <Coins className="w-8 h-8 text-blue-200" />
+              <div className="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/20 shrink-0">
+                <Coins className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-linear-to-r from-orange-500 to-orange-600 p-6 rounded-xl text-white">
-            <div className="flex items-center justify-between">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-sm transition-shadow duration-200">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-orange-100 text-sm font-medium">Inversores</p>
-                <p className="text-3xl font-bold">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Investors
+                </p>
+                <p className="mt-3 text-4xl font-bold text-gray-900 dark:text-white">
                   {safeProjects.reduce((acc, p) => acc + (p?.investors || 0), 0)}
                 </p>
+                <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Qualified wallets</p>
               </div>
-              <Users className="w-8 h-8 text-orange-200" />
+              <div className="p-2.5 rounded-xl bg-orange-50 dark:bg-orange-900/20 shrink-0">
+                <Users className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Lista de proyectos */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Proyectos Registrados
+        {/* Projects table */}
+        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+              Registered Projects
             </h3>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-                  <th className="text-left py-3 px-6 font-medium text-gray-900 dark:text-white">
-                    Proyecto
+                <tr className="border-b border-gray-200 dark:border-gray-800">
+                  <th className="text-left py-3 px-6 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Project
                   </th>
-                  <th className="text-left py-3 px-6 font-medium text-gray-900 dark:text-white">
-                    Ubicación
+                  <th className="text-left py-3 px-6 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Location
                   </th>
-                  <th className="text-left py-3 px-6 font-medium text-gray-900 dark:text-white">
-                    Valor
+                  <th className="text-left py-3 px-6 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Value
                   </th>
-                  <th className="text-left py-3 px-6 font-medium text-gray-900 dark:text-white">
+                  <th className="text-left py-3 px-6 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Tokens
                   </th>
-                  <th className="text-left py-3 px-6 font-medium text-gray-900 dark:text-white">
-                    Estado
+                  <th className="text-left py-3 px-6 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Status
                   </th>
-                  <th className="text-left py-3 px-6 font-medium text-gray-900 dark:text-white">
-                    Progreso
+                  <th className="text-left py-3 px-6 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Progress
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {safeProjects.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center">
-                      <Building2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-600 dark:text-gray-400 mb-4">
-                        No hay proyectos registrados
-                      </p>
-                      <button
-                        onClick={() => setShowCreateForm(true)}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors"
-                      >
-                        <Plus className="w-4 h-4" />
-                        Crear primer proyecto
-                      </button>
+                    <td colSpan={6} className="px-6 py-20 text-center">
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                          <Building2 className="w-7 h-7 text-gray-400 dark:text-gray-500" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                            No projects deployed
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
+                            Deploy your first tokenized asset on Polygon to start issuing digital
+                            securities.
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setShowCreateForm(true)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 text-sm font-medium rounded-lg transition-colors"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Deploy First Project
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ) : (
@@ -631,7 +688,7 @@ export default function AdminPage() {
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-linear-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center text-white text-sm font-bold">
+                          <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center text-gray-600 dark:text-gray-300 text-sm font-semibold">
                             {project.name?.slice(0, 2)?.toUpperCase() || 'IN'}
                           </div>
                           <div>
@@ -678,9 +735,9 @@ export default function AdminPage() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5">
                           <div
-                            className="bg-linear-to-r from-purple-500 to-indigo-500 h-2 rounded-full transition-all duration-300"
+                            className="bg-gray-900 dark:bg-white h-1.5 rounded-full transition-all duration-300"
                             style={{ width: `${Math.min(project.progress || 0, 100)}%` }}
                           />
                         </div>
@@ -707,43 +764,59 @@ export default function AdminPage() {
         <Header />
 
         <main className="flex-1 overflow-auto">
-          <div className="p-6">
-            {/* Header del panel */}
-            <div className="mb-8">
-              <div className="flex items-center gap-3 mb-2">
-                <Shield className="w-8 h-8 text-purple-600" />
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  Admin Panel - KYC
+          <div className="px-8 py-8">
+            {/* Dashboard header */}
+            <div className="flex items-start justify-between mb-8">
+              <div>
+                <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  Dashboard
                 </h1>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  Manage digital securities issuance and asset lifecycle on Polygon.
+                </p>
               </div>
-              <p className="text-gray-600 dark:text-gray-400">
-                Gestiona las verificaciones de identidad
-              </p>
+              <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shrink-0">
+                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                  Enterprise
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 dark:bg-green-400" />
+                  <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                    Online
+                  </span>
+                </span>
+              </div>
             </div>
 
-            {/* Navegación por tabs */}
-            <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1 mb-6">
+            {/* Tab navigation */}
+            <div className="flex gap-0 border-b border-gray-200 dark:border-gray-800 mb-8 -mt-2">
               <button
                 onClick={() => setActiveTab('kyc')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
                   activeTab === 'kyc'
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300'
+                    ? 'text-gray-900 dark:text-white'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                 }`}
               >
                 <Shield className="w-4 h-4" />
-                KYC
+                Identity &amp; KYC
+                {activeTab === 'kyc' && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900 dark:bg-white rounded-t-full" />
+                )}
               </button>
               <button
                 onClick={() => setActiveTab('projects')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
                   activeTab === 'projects'
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300'
+                    ? 'text-gray-900 dark:text-white'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                 }`}
               >
                 <Building2 className="w-4 h-4" />
-                Proyectos
+                Projects
+                {activeTab === 'projects' && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900 dark:bg-white rounded-t-full" />
+                )}
               </button>
             </div>
 
