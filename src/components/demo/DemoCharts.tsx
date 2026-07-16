@@ -8,6 +8,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { DemoSeriesPoint, DemoSegment } from '@/lib/demo/data';
+import { useCountUp, useMounted, usePrefersReducedMotion } from '@/components/demo/DemoMotion';
 
 // ─── Area / line chart ───────────────────────────────────────────────────────
 
@@ -42,6 +43,9 @@ export function AreaChart({
   const line = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
   const area = `${line} L ${points[points.length - 1].x} ${height} L ${points[0].x} ${height} Z`;
   const gid = `area-${stroke.replace(/[^a-z0-9]/gi, '')}`;
+  const mounted = useMounted();
+  const reduced = usePrefersReducedMotion();
+  const drawn = reduced || mounted;
 
   return (
     <div>
@@ -56,7 +60,14 @@ export function AreaChart({
             <stop offset="100%" stopColor={fillTo} />
           </linearGradient>
         </defs>
-        <path d={area} fill={`url(#${gid})`} />
+        <path
+          d={area}
+          fill={`url(#${gid})`}
+          style={{
+            opacity: drawn ? 1 : 0,
+            transition: reduced ? undefined : 'opacity 900ms ease 250ms',
+          }}
+        />
         <path
           d={line}
           fill="none"
@@ -64,9 +75,28 @@ export function AreaChart({
           strokeWidth={1.5}
           strokeLinejoin="round"
           strokeLinecap="round"
+          pathLength={1}
+          style={{
+            strokeDasharray: 1,
+            strokeDashoffset: drawn ? 0 : 1,
+            transition: reduced
+              ? undefined
+              : 'stroke-dashoffset 1200ms cubic-bezier(0.65,0,0.35,1)',
+            filter: `drop-shadow(0 4px 6px ${fillFrom})`,
+          }}
         />
         {points.map((p, i) => (
-          <circle key={i} cx={p.x} cy={p.y} r={i === points.length - 1 ? 1.8 : 0} fill={stroke} />
+          <circle
+            key={i}
+            cx={p.x}
+            cy={p.y}
+            r={i === points.length - 1 ? 1.8 : 0}
+            fill={stroke}
+            style={{
+              opacity: drawn ? 1 : 0,
+              transition: reduced ? undefined : 'opacity 400ms ease 1150ms',
+            }}
+          />
         ))}
       </svg>
       <div className="mt-1.5 flex justify-between px-1 text-[10px] text-gray-400">
@@ -96,15 +126,24 @@ export function BarChart({
 }) {
   const max = Math.max(...data.map((d) => d.value)) || 1;
   const summary = data.map((d) => `${d.label}: ${valuePrefix}${d.value}${valueSuffix}`).join(', ');
+  const mounted = useMounted();
+  const reduced = usePrefersReducedMotion();
+  const grown = reduced || mounted;
   return (
     <div role="img" aria-label={summary}>
       <div className="flex h-28 items-end gap-2" aria-hidden="true">
-        {data.map((d) => (
+        {data.map((d, i) => (
           <div key={d.label} className="flex flex-1 flex-col items-center gap-1">
             <div className="flex w-full flex-1 items-end">
               <div
-                className="w-full rounded-t-md transition-all"
-                style={{ height: `${(d.value / max) * 100}%`, backgroundColor: color }}
+                className="w-full rounded-t-md"
+                style={{
+                  height: grown ? `${(d.value / max) * 100}%` : '0%',
+                  backgroundColor: color,
+                  transition: reduced
+                    ? undefined
+                    : `height 780ms cubic-bezier(0.22,1,0.36,1) ${i * 70}ms`,
+                }}
                 title={`${d.label}: ${valuePrefix}${d.value}${valueSuffix}`}
               />
             </div>
@@ -141,11 +180,27 @@ export function DonutChart({
   const radius = (size - thickness) / 2;
   const circumference = 2 * Math.PI * radius;
   let offset = 0;
+  const mounted = useMounted();
+  const reduced = usePrefersReducedMotion();
+  const shown = reduced || mounted;
 
   return (
     <div className="flex items-center gap-5">
       <div className="relative shrink-0" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
+        <svg
+          width={size}
+          height={size}
+          className="-rotate-90"
+          aria-hidden="true"
+          style={{
+            opacity: shown ? 1 : 0,
+            transform: shown ? 'scale(1)' : 'scale(0.9)',
+            transformOrigin: 'center',
+            transition: reduced
+              ? undefined
+              : 'opacity 600ms ease, transform 700ms cubic-bezier(0.22,1,0.36,1)',
+          }}
+        >
           {data.map((d) => {
             const fraction = d.value / total;
             const dash = fraction * circumference;
@@ -194,15 +249,24 @@ export function DonutChart({
 
 export function DistributionBars({ data }: { data: DemoSegment[] }) {
   const max = Math.max(...data.map((d) => d.value)) || 1;
+  const mounted = useMounted();
+  const reduced = usePrefersReducedMotion();
+  const grown = reduced || mounted;
   return (
     <div className="space-y-3">
-      {data.map((d) => (
+      {data.map((d, i) => (
         <div key={d.label} className="flex items-center gap-3">
           <span className="w-28 shrink-0 text-sm text-gray-600 dark:text-gray-300">{d.label}</span>
           <div className="h-2 flex-1 rounded-full bg-gray-100 dark:bg-gray-800">
             <div
               className="h-2 rounded-full"
-              style={{ width: `${(d.value / max) * 100}%`, backgroundColor: d.color }}
+              style={{
+                width: grown ? `${(d.value / max) * 100}%` : '0%',
+                backgroundColor: d.color,
+                transition: reduced
+                  ? undefined
+                  : `width 760ms cubic-bezier(0.22,1,0.36,1) ${i * 80}ms`,
+              }}
             />
           </div>
           <span className="w-10 text-right text-sm font-medium text-gray-900 dark:text-white">
@@ -232,6 +296,10 @@ export function ScoreGauge({
   const radius = (size - thickness) / 2;
   const circumference = 2 * Math.PI * radius;
   const dash = (score / 100) * circumference;
+  const mounted = useMounted();
+  const reduced = usePrefersReducedMotion();
+  const shown = reduced || mounted;
+  const animatedScore = useCountUp(score, 1200);
   return (
     <div className="flex flex-col items-center">
       <div className="relative" style={{ width: size, height: size }}>
@@ -254,10 +322,18 @@ export function ScoreGauge({
             strokeWidth={thickness}
             strokeLinecap="round"
             strokeDasharray={`${dash} ${circumference - dash}`}
+            style={{
+              strokeDashoffset: shown ? 0 : dash,
+              transition: reduced
+                ? undefined
+                : 'stroke-dashoffset 1200ms cubic-bezier(0.22,1,0.36,1)',
+            }}
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-bold text-gray-900 dark:text-white">{score}</span>
+          <span className="text-2xl font-bold text-gray-900 dark:text-white">
+            {Math.round(animatedScore)}
+          </span>
           <span className="text-[10px] text-gray-400">/ 100</span>
         </div>
       </div>
@@ -289,6 +365,9 @@ export function Sparkline({
       return `${x},${y}`;
     })
     .join(' ');
+  const mounted = useMounted();
+  const reduced = usePrefersReducedMotion();
+  const drawn = reduced || mounted;
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
@@ -304,6 +383,12 @@ export function Sparkline({
         strokeLinejoin="round"
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
+        pathLength={1}
+        style={{
+          strokeDasharray: 1,
+          strokeDashoffset: drawn ? 0 : 1,
+          transition: reduced ? undefined : 'stroke-dashoffset 1000ms cubic-bezier(0.65,0,0.35,1)',
+        }}
       />
     </svg>
   );

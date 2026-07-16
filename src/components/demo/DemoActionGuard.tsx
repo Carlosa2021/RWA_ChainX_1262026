@@ -12,6 +12,7 @@ import { createContext, useCallback, useContext, useMemo, useState, ReactNode } 
 import { Lock, ShieldCheck, ArrowRight, X, Sparkles } from 'lucide-react';
 import { useDemo } from '@/contexts/DemoContext';
 import { DemoActionId, DemoGuardMessage, resolveGuardMessage } from '@/lib/demo/guards';
+import { useMounted, usePrefersReducedMotion } from '@/components/demo/DemoMotion';
 
 interface DemoActionContextType {
   simulate: (action: DemoActionId) => void;
@@ -51,6 +52,9 @@ export function useDemoAction(): DemoActionContextType {
 
 function DemoActionModal({ message, onClose }: { message: DemoGuardMessage; onClose: () => void }) {
   const isUpgrade = message.variant === 'upgrade';
+  const mounted = useMounted();
+  const reduced = usePrefersReducedMotion();
+  const shown = reduced || mounted;
 
   return (
     <div
@@ -58,10 +62,21 @@ function DemoActionModal({ message, onClose }: { message: DemoGuardMessage; onCl
       onClick={onClose}
       role="dialog"
       aria-modal="true"
+      style={{
+        opacity: shown ? 1 : 0,
+        transition: reduced ? undefined : 'opacity 200ms ease',
+      }}
     >
       <div
         className="w-full max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
+        style={{
+          opacity: shown ? 1 : 0,
+          transform: shown ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.96)',
+          transition: reduced
+            ? undefined
+            : 'opacity 220ms ease, transform 260ms cubic-bezier(0.22,1,0.36,1)',
+        }}
       >
         <div className="p-6">
           <div className="flex items-start justify-between gap-4">

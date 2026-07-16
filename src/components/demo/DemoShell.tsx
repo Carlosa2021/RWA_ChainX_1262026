@@ -17,6 +17,7 @@ import { useDemo } from '@/contexts/DemoContext';
 import { DemoActionGuardProvider } from '@/components/demo/DemoActionGuard';
 import { DemoBanner } from '@/components/demo/DemoBanner';
 import { DemoViewRenderer } from '@/components/demo/DemoViews';
+import { Reveal, useBootDelay } from '@/components/demo/DemoMotion';
 import {
   getDemoNavigation,
   isViewUnlocked,
@@ -25,10 +26,40 @@ import {
 } from '@/lib/demo/navigation';
 import { MERIDIAN } from '@/lib/demo/data';
 
+// Brief "enterprise boot" skeleton shown once on first load.
+function DemoBootSkeleton() {
+  return (
+    <div className="space-y-6" aria-hidden="true">
+      <div className="space-y-2">
+        <div className="h-7 w-64 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
+        <div className="h-4 w-80 animate-pulse rounded bg-gray-100 dark:bg-gray-800/60" />
+      </div>
+      <div className="h-40 animate-pulse rounded-2xl bg-gray-200/70 dark:bg-gray-800/70" />
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="h-28 animate-pulse rounded-2xl bg-gray-200/60 dark:bg-gray-800/60"
+          />
+        ))}
+      </div>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="h-48 animate-pulse rounded-2xl bg-gray-200/60 dark:bg-gray-800/60"
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function DemoShell() {
   const { config, session } = useDemo();
   const [activeView, setActiveView] = useState<DemoView>('dashboard');
   const sections = getDemoNavigation(session.plan);
+  const booted = useBootDelay(220);
 
   return (
     <DemoActionGuardProvider>
@@ -71,10 +102,10 @@ export function DemoShell() {
                         <button
                           key={item.view}
                           onClick={() => setActiveView(item.view)}
-                          className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 ${
+                          className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 ${
                             active
-                              ? 'bg-gray-900 font-medium text-white dark:bg-white dark:text-gray-900'
-                              : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                              ? 'bg-gray-900 font-medium text-white shadow-sm dark:bg-white dark:text-gray-900'
+                              : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white'
                           }`}
                         >
                           <Icon className="h-4 w-4 shrink-0" />
@@ -127,7 +158,13 @@ export function DemoShell() {
             </div>
 
             <main className="flex-1 p-4 sm:p-6 lg:p-8">
-              <DemoViewRenderer view={activeView} />
+              {booted ? (
+                <Reveal key={activeView}>
+                  <DemoViewRenderer view={activeView} />
+                </Reveal>
+              ) : (
+                <DemoBootSkeleton />
+              )}
             </main>
           </div>
         </div>

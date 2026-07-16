@@ -75,6 +75,7 @@ import {
 import { DemoView, unlockPlanLabel } from '@/lib/demo/navigation';
 import { DemoActionId } from '@/lib/demo/guards';
 import { DemoPlanFeatures } from '@/lib/demo/plans';
+import { AnimatedNumber, Reveal } from '@/components/demo/DemoMotion';
 
 // ─── Shared primitives ───────────────────────────────────────────────────────
 
@@ -114,11 +115,11 @@ function SimulatedButton({
 }) {
   const { simulate } = useDemoAction();
   const base =
-    'inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950';
+    'inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950';
   const styles =
     variant === 'primary'
-      ? 'text-white bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100'
-      : 'text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800';
+      ? 'text-white bg-gray-900 hover:bg-gray-800 hover:shadow-md dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100'
+      : 'text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 hover:shadow-sm dark:hover:bg-gray-800';
   return (
     <button onClick={() => simulate(action)} className={`${base} ${styles}`}>
       {Icon && <Icon className="w-4 h-4" />}
@@ -188,7 +189,7 @@ function KpiCard({
   spark?: number[];
 }) {
   return (
-    <Panel className="p-5">
+    <Panel className="group p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-lg dark:hover:border-gray-700">
       <div className="flex items-start justify-between">
         <ExecLabel>{label}</ExecLabel>
         {trend && (
@@ -199,7 +200,7 @@ function KpiCard({
         )}
       </div>
       <p className="mt-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        {value}
+        <AnimatedNumber value={value} />
       </p>
       <div className="mt-1 flex items-end justify-between">
         {sub && <p className="text-xs text-gray-500">{sub}</p>}
@@ -219,7 +220,7 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <Panel className="p-5">
+    <Panel className="p-5 transition-shadow duration-200 hover:shadow-md">
       <div className="flex items-center justify-between">
         <SectionHeader>{title}</SectionHeader>
         {right}
@@ -288,63 +289,75 @@ function DashboardView() {
       <PageTitle title="Executive Dashboard" subtitle={`${data.org.legalName} · ${data.org.hq}`} />
 
       {/* Portfolio hero — institutional executive summary */}
-      <div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-linear-to-br from-gray-900 via-gray-900 to-gray-950 p-6 text-white sm:p-8">
-        <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 left-24 h-56 w-56 rounded-full bg-cyan-400/5 blur-3xl" />
-        <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="flex items-center gap-3">
-              <div
-                className="flex h-11 w-11 items-center justify-center rounded-xl shadow-lg"
-                style={{ backgroundColor: MERIDIAN.primaryColor }}
-              >
-                <Building2 className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">{data.org.legalName}</h3>
-                <p className="text-sm text-gray-400">
-                  {data.org.hq} · Enterprise White-label Platform
-                </p>
-              </div>
-            </div>
-            <div className="mt-5 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Portfolio Health · {PORTFOLIO_HEALTH.status}
-              </span>
-              {PORTFOLIO_HEALTH.badges.map((b) => (
-                <span
-                  key={b}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium text-gray-200"
+      <Reveal>
+        <div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-linear-to-br from-gray-900 via-gray-900 to-gray-950 p-6 text-white shadow-2xl ring-1 ring-white/5 sm:p-8">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/25 to-transparent" />
+          <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-blue-500/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-24 h-56 w-56 rounded-full bg-cyan-400/10 blur-3xl" />
+          <div className="pointer-events-none absolute right-1/3 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-indigo-500/5 blur-3xl" />
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="flex items-center gap-3">
+                <div
+                  className="flex h-11 w-11 items-center justify-center rounded-xl shadow-lg ring-1 ring-white/20"
+                  style={{ backgroundColor: MERIDIAN.primaryColor }}
                 >
-                  <BadgeCheck className="h-3.5 w-3.5 text-blue-300" />
-                  {b}
+                  <Building2 className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold tracking-tight">{data.org.legalName}</h3>
+                  <p className="text-sm text-gray-400">
+                    {data.org.hq} · Enterprise White-label Platform
+                  </p>
+                </div>
+              </div>
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-300 ring-1 ring-emerald-400/20">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+                  Portfolio Health · {PORTFOLIO_HEALTH.status}
                 </span>
-              ))}
+                {PORTFOLIO_HEALTH.badges.map((b) => (
+                  <span
+                    key={b}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium text-gray-200 ring-1 ring-white/5"
+                  >
+                    <BadgeCheck className="h-3.5 w-3.5 text-blue-300" />
+                    {b}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="shrink-0 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">
-              Assets Under Management
-            </p>
-            <p className="mt-1 text-3xl font-bold tracking-tight">€35.84M</p>
-            <div className="mt-3 flex items-center gap-4 text-sm">
-              <span className="text-gray-300">
-                <span className="font-semibold text-white">580</span> investors
-              </span>
-              <span className="text-gray-300">
-                <span className="font-semibold text-white">5</span> offerings
-              </span>
-              <span className="text-gray-300">
-                <span className="font-semibold text-white">8.4%</span> return
-              </span>
+            <div className="shrink-0 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-xl ring-1 ring-white/5 backdrop-blur-sm">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">
+                Assets Under Management
+              </p>
+              <p className="mt-1 text-3xl font-bold tracking-tight">
+                <AnimatedNumber value="€35.84M" />
+              </p>
+              <div className="mt-3 flex items-center gap-4 text-sm">
+                <span className="text-gray-300">
+                  <span className="font-semibold text-white">
+                    <AnimatedNumber value="580" />
+                  </span>{' '}
+                  investors
+                </span>
+                <span className="text-gray-300">
+                  <span className="font-semibold text-white">5</span> offerings
+                </span>
+                <span className="text-gray-300">
+                  <span className="font-semibold text-white">
+                    <AnimatedNumber value="8.4%" />
+                  </span>{' '}
+                  return
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Reveal>
 
       {/* Premium KPI cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <Reveal delay={90} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <KpiCard
           label="Assets Under Management"
           value="€35.84M"
@@ -373,10 +386,10 @@ function DashboardView() {
           trend="26%"
           spark={MONTHLY_DISTRIBUTIONS.map((d) => d.value)}
         />
-      </div>
+      </Reveal>
 
       {/* Charts row */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <Reveal delay={150} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <ChartCard
           title="Capital Raised"
           right={
@@ -393,7 +406,7 @@ function DashboardView() {
         <ChartCard title="Portfolio Allocation">
           <DonutChart data={PORTFOLIO_ALLOCATION} centerValue="€35.8M" centerLabel="AUM" />
         </ChartCard>
-      </div>
+      </Reveal>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Requires attention */}
@@ -406,7 +419,7 @@ function DashboardView() {
             {data.attention.map((item) => (
               <div
                 key={item.title}
-                className="flex items-start gap-3 rounded-xl border border-gray-100 dark:border-gray-800 p-3"
+                className="flex items-start gap-3 rounded-xl border border-gray-100 p-3 transition-colors hover:border-gray-200 hover:bg-gray-50/60 dark:border-gray-800 dark:hover:border-gray-700 dark:hover:bg-gray-800/40"
               >
                 <span
                   className={`mt-1 h-2 w-2 shrink-0 rounded-full ${
@@ -437,10 +450,13 @@ function DashboardView() {
               <button
                 key={a.label}
                 onClick={() => simulate(a.action)}
-                className="flex w-full items-center justify-between gap-2 rounded-xl border border-gray-100 dark:border-gray-800 p-3 text-left hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
+                className="group flex w-full items-center justify-between gap-2 rounded-xl border border-gray-100 p-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-200 hover:bg-gray-50 hover:shadow-sm dark:border-gray-800 dark:hover:border-gray-700 dark:hover:bg-gray-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
               >
                 <span className="text-sm text-gray-700 dark:text-gray-200">{a.label}</span>
-                <ChevronRight className="w-4 h-4 shrink-0 text-gray-400" aria-hidden="true" />
+                <ChevronRight
+                  className="w-4 h-4 shrink-0 text-gray-400 transition-transform group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
               </button>
             ))}
           </div>
@@ -482,7 +498,7 @@ function ProjectsView() {
   }
 
   return (
-    <div className="space-y-6">
+    <Reveal className="space-y-6">
       <div className="flex items-center justify-between">
         <PageTitle title="Projects" subtitle="Tokenized real estate offerings" />
         <SimulatedButton action="createProject" icon={Plus}>
@@ -561,7 +577,7 @@ function ProjectsView() {
       <p className="text-xs text-gray-400">
         Select a project to open the full investment overview.
       </p>
-    </div>
+    </Reveal>
   );
 }
 
@@ -571,12 +587,15 @@ function ProjectDetailView({ project, onBack }: { project: DemoProject; onBack: 
   const detail = PROJECT_DETAILS[project.symbol];
 
   return (
-    <div className="space-y-6">
+    <Reveal className="space-y-6">
       <button
         onClick={onBack}
-        className="inline-flex items-center gap-1.5 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:hover:text-white dark:focus-visible:ring-offset-gray-950"
+        className="group inline-flex items-center gap-1.5 rounded-lg text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:hover:text-white dark:focus-visible:ring-offset-gray-950"
       >
-        <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+        <ChevronLeft
+          className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+          aria-hidden="true"
+        />
         Back to projects
       </button>
 
@@ -786,7 +805,7 @@ function ProjectDetailView({ project, onBack }: { project: DemoProject; onBack: 
           )}
         </div>
       </div>
-    </div>
+    </Reveal>
   );
 }
 
@@ -869,7 +888,10 @@ function DocumentsView() {
       </div>
       <Panel className="divide-y divide-gray-100 dark:divide-gray-800">
         {DOCS.map((d) => (
-          <div key={d.name} className="flex items-center justify-between px-5 py-3.5">
+          <div
+            key={d.name}
+            className="flex items-center justify-between px-5 py-3.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/40"
+          >
             <div>
               <p className="text-sm font-medium text-gray-900 dark:text-white">{d.name}</p>
               <p className="text-xs text-gray-400">
@@ -1022,12 +1044,16 @@ function AICopilotView() {
         {/* Chat transcript */}
         <Panel className="flex min-h-[560px] flex-col overflow-hidden lg:col-span-2">
           <div className="flex items-center gap-2 border-b border-gray-100 px-5 py-3 dark:border-gray-800">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-600 to-cyan-500 text-white">
+            <span className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-600 to-cyan-500 text-white shadow-sm">
               <Brain className="h-4 w-4" />
+              <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-gray-900" />
             </span>
             <div>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">ChainX Copilot</p>
-              <p className="text-[11px] text-gray-400">Portfolio · Compliance · Reporting</p>
+              <p className="flex items-center gap-1 text-[11px] text-gray-400">
+                <span className="h-1 w-1 animate-pulse rounded-full bg-emerald-500" />
+                Online · Portfolio · Compliance · Reporting
+              </p>
             </div>
           </div>
 
@@ -1063,6 +1089,17 @@ function AICopilotView() {
                 </div>
               )
             )}
+            {/* Idle typing affordance — purely decorative, no pending request */}
+            <div className="flex gap-3" aria-hidden="true">
+              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-blue-600 to-cyan-500 text-white">
+                <Brain className="h-3.5 w-3.5" />
+              </span>
+              <div className="flex items-center gap-1 rounded-2xl rounded-tl-md border border-gray-100 bg-gray-50 px-4 py-3 dark:border-gray-800 dark:bg-gray-800/40">
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400" />
+              </div>
+            </div>
           </div>
 
           {/* Composer (simulated — no network) */}
@@ -1073,7 +1110,7 @@ function AICopilotView() {
             }}
             className="border-t border-gray-100 p-3 dark:border-gray-800"
           >
-            <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 dark:border-gray-800">
+            <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 transition-all focus-within:border-gray-400 focus-within:ring-2 focus-within:ring-blue-500/30 dark:border-gray-800 dark:focus-within:border-gray-600">
               <input
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
@@ -1104,10 +1141,13 @@ function AICopilotView() {
                 <button
                   key={q}
                   onClick={() => setDraft(q)}
-                  className="flex w-full items-center justify-between gap-2 rounded-xl border border-gray-100 p-3 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-800/60 dark:focus-visible:ring-offset-gray-950"
+                  className="group flex w-full items-center justify-between gap-2 rounded-xl border border-gray-100 p-3 text-left text-sm text-gray-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-200 hover:bg-gray-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-800/60 dark:focus-visible:ring-offset-gray-950"
                 >
                   {q}
-                  <ChevronRight className="h-4 w-4 shrink-0 text-gray-400" aria-hidden="true" />
+                  <ChevronRight
+                    className="h-4 w-4 shrink-0 text-gray-400 transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
                 </button>
               ))}
             </div>
@@ -1206,7 +1246,7 @@ function BrandingView() {
               {palette.map((c, i) => (
                 <span
                   key={c}
-                  className={`h-9 w-9 rounded-lg ${i === 0 ? 'ring-2 ring-offset-2 ring-gray-900 dark:ring-white dark:ring-offset-gray-900' : ''}`}
+                  className={`h-9 w-9 cursor-pointer rounded-lg shadow-sm transition-transform duration-200 hover:scale-110 ${i === 0 ? 'ring-2 ring-gray-900 ring-offset-2 dark:ring-white dark:ring-offset-gray-900' : ''}`}
                   style={{ backgroundColor: c }}
                   title={c}
                 />
@@ -1243,12 +1283,13 @@ function BrandingView() {
               <Monitor className="h-4 w-4 text-gray-400" />
               <SectionHeader>Desktop Portal Preview</SectionHeader>
             </div>
-            <div className="mt-4 overflow-hidden rounded-xl border border-gray-200 shadow-sm dark:border-gray-800">
+            <div className="mt-4 overflow-hidden rounded-xl border border-gray-200 shadow-sm transition-shadow duration-200 hover:shadow-lg dark:border-gray-800">
               <div className="flex items-center gap-1.5 border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-800 dark:bg-gray-800">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
                 <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
                 <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                <span className="ml-3 rounded bg-white px-2 py-0.5 text-[10px] text-gray-400 dark:bg-gray-900">
+                <span className="ml-3 flex items-center gap-1 rounded bg-white px-2 py-0.5 text-[10px] text-gray-400 dark:bg-gray-900">
+                  <Lock className="h-2.5 w-2.5" />
                   portal.{MERIDIAN.domain}
                 </span>
               </div>
@@ -1294,7 +1335,8 @@ function BrandingView() {
               <SectionHeader>Mobile Preview</SectionHeader>
             </div>
             <div className="mt-4 flex justify-center">
-              <div className="w-56 overflow-hidden rounded-[1.75rem] border-4 border-gray-900 shadow-lg dark:border-gray-700">
+              <div className="relative w-56 overflow-hidden rounded-[1.75rem] border-4 border-gray-900 shadow-xl transition-shadow duration-200 hover:shadow-2xl dark:border-gray-700">
+                <div className="absolute left-1/2 top-1.5 z-10 h-1 w-16 -translate-x-1/2 rounded-full bg-white/40" />
                 <div className="px-4 py-3 text-white" style={{ backgroundColor: brandColor }}>
                   <div className="flex items-center gap-2">
                     <Building2 className="h-4 w-4" />
@@ -1351,7 +1393,10 @@ function UsersView() {
       </div>
       <Panel className="divide-y divide-gray-100 dark:divide-gray-800">
         {data.team.map((m) => (
-          <div key={m.email} className="flex items-center justify-between px-5 py-3.5">
+          <div
+            key={m.email}
+            className="flex items-center justify-between px-5 py-3.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/40"
+          >
             <div>
               <p className="text-sm font-medium text-gray-900 dark:text-white">{m.name}</p>
               <p className="text-xs text-gray-400">{m.email}</p>
