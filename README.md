@@ -47,14 +47,14 @@ ChainX® RWA Platform is a **complete blockchain infrastructure** specifically d
 STARTER    →  €49/month      (Small Projects & Initial Setup)
 PRO        →  €499/month     (Medium Scale Operations)
 ENTERPRISE →  €4,999/month   (Unlimited Features & Support)
-CUSTOM     →  €15K-50K/month (White Label + Dedicated Infrastructure)
+CUSTOM     →  Custom quotation (White Label + Dedicated Infrastructure)
 ```
 
 ### 🎯 **Option 2: Complete Acquisition**
 
 ```
-Base Price: €500,000 - €2,000,000
-✅ Complete source code ownership
+Base Price: Individual commercial proposal (pricing available after technical discovery)
+✅ Optional source-code transfer
 ✅ ChainX® trademark transfer rights
 ✅ 12 months dedicated support
 ✅ Unlimited customization rights

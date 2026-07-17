@@ -10,13 +10,18 @@
 // (no real sub-routes) so the demo stays inside /demo/**.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Building2, Lock, Eye } from 'lucide-react';
 import { useDemo } from '@/contexts/DemoContext';
+import { DemoGuideProvider, useDemoGuide } from '@/contexts/DemoGuideContext';
 import { DemoActionGuardProvider } from '@/components/demo/DemoActionGuard';
 import { DemoBanner } from '@/components/demo/DemoBanner';
 import { DemoViewRenderer } from '@/components/demo/DemoViews';
+import { DemoGuideBar } from '@/components/demo/DemoGuideBar';
+import { DemoGuideIntro } from '@/components/demo/DemoGuideIntro';
+import { DemoGuideNotes } from '@/components/demo/DemoGuideNotes';
+import { DemoGuideComplete } from '@/components/demo/DemoGuideComplete';
 import { Reveal, useBootDelay } from '@/components/demo/DemoMotion';
 import {
   getDemoNavigation,
@@ -56,13 +61,75 @@ function DemoBootSkeleton() {
 }
 
 export function DemoShell() {
+  return (
+    <DemoGuideProvider>
+      <DemoActionGuardProvider>
+        <DemoShellInner />
+      </DemoActionGuardProvider>
+    </DemoGuideProvider>
+  );
+}
+
+function DemoShellInner() {
   const { config, session } = useDemo();
+  const guide = useDemoGuide();
   const [activeView, setActiveView] = useState<DemoView>('dashboard');
   const sections = getDemoNavigation(session.plan);
   const booted = useBootDelay(220);
 
+  const {
+    isGuideActive,
+    currentStep,
+    currentStepIndex,
+    isLastStep,
+    nextStep,
+    previousStep,
+    toggleNotes,
+    requestExit,
+    exitGuide,
+  } = guide;
+
+  // Auto-navigate the internal demo view when the guided step changes.
+  useEffect(() => {
+    if (isGuideActive && currentStep) {
+      setActiveView(currentStep.view);
+    }
+  }, [isGuideActive, currentStepIndex, currentStep]);
+
+  // Presenter keyboard controls (only while the guide is running).
+  useEffect(() => {
+    if (!isGuideActive) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const typing =
+        !!target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.tagName === 'SELECT' ||
+          target.isContentEditable);
+      if (typing) return;
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextStep();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        previousStep();
+      } else if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        toggleNotes();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        requestExit();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isGuideActive, nextStep, previousStep, toggleNotes, requestExit]);
+
+  const showComplete = isGuideActive && isLastStep;
+
   return (
-    <DemoActionGuardProvider>
+    <>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
         <div className="flex min-h-screen">
           {/* Demo sidebar (isolated — no owner controls) */}
@@ -140,6 +207,11 @@ export function DemoShell() {
           <div className="flex min-w-0 flex-1 flex-col">
             <DemoBanner />
 
+            <DemoGuideBar
+              activeView={activeView}
+              onGoToRecommendedView={() => currentStep && setActiveView(currentStep.view)}
+            />
+
             {/* Mobile view selector */}
             <div className="border-b border-gray-200 bg-white px-4 py-2 dark:border-gray-800 dark:bg-gray-900 md:hidden">
               <select
@@ -158,17 +230,28 @@ export function DemoShell() {
             </div>
 
             <main className="flex-1 p-4 sm:p-6 lg:p-8">
-              {booted ? (
+              {!booted ? (
+                <DemoBootSkeleton />
+              ) : showComplete ? (
+                <DemoGuideComplete
+                  onReturnToDashboard={() => {
+                    exitGuide();
+                    setActiveView('dashboard');
+                  }}
+                />
+              ) : (
                 <Reveal key={activeView}>
                   <DemoViewRenderer view={activeView} />
                 </Reveal>
-              ) : (
-                <DemoBootSkeleton />
               )}
             </main>
           </div>
         </div>
       </div>
-    </DemoActionGuardProvider>
+
+      {/* Guided demo overlays */}
+      <DemoGuideIntro />
+      <DemoGuideNotes />
+    </>
   );
 }

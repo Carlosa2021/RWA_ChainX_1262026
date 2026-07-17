@@ -47,6 +47,7 @@ import {
   Coins,
 } from 'lucide-react';
 import { useDemo } from '@/contexts/DemoContext';
+import { useDemoGuide } from '@/contexts/DemoGuideContext';
 import { useDemoAction } from '@/components/demo/DemoActionGuard';
 import {
   getDemoDataset,
@@ -1029,7 +1030,7 @@ function AnalyticsView() {
 
 function AICopilotView() {
   const [draft, setDraft] = useState('');
-
+  const guide = useDemoGuide();
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -1137,19 +1138,34 @@ function AICopilotView() {
           <Panel className="p-5">
             <SectionHeader>Suggested Prompts</SectionHeader>
             <div className="mt-4 space-y-2">
-              {AI_SUGGESTED_PROMPTS.map((q) => (
-                <button
-                  key={q}
-                  onClick={() => setDraft(q)}
-                  className="group flex w-full items-center justify-between gap-2 rounded-xl border border-gray-100 p-3 text-left text-sm text-gray-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-200 hover:bg-gray-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-800/60 dark:focus-visible:ring-offset-gray-950"
-                >
-                  {q}
-                  <ChevronRight
-                    className="h-4 w-4 shrink-0 text-gray-400 transition-transform group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
-                </button>
-              ))}
+              {AI_SUGGESTED_PROMPTS.map((q, i) => {
+                const actionId = `ai-prompt-${i}`;
+                const done = guide.isGuideActive && guide.isActionComplete(actionId);
+                return (
+                  <button
+                    key={q}
+                    onClick={() => {
+                      setDraft(q);
+                      if (guide.isGuideActive) guide.markActionComplete(actionId);
+                    }}
+                    className="group flex w-full items-center justify-between gap-2 rounded-xl border border-gray-100 p-3 text-left text-sm text-gray-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-200 hover:bg-gray-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-800/60 dark:focus-visible:ring-offset-gray-950"
+                  >
+                    <span className="flex min-w-0 items-center gap-2">
+                      {done && (
+                        <Check
+                          className="h-4 w-4 shrink-0 text-emerald-500"
+                          aria-label="Prompt shown"
+                        />
+                      )}
+                      <span className="truncate">{q}</span>
+                    </span>
+                    <ChevronRight
+                      className="h-4 w-4 shrink-0 text-gray-400 transition-transform group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  </button>
+                );
+              })}
             </div>
           </Panel>
           <Panel className="p-5">

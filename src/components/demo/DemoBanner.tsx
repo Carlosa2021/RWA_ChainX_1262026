@@ -9,11 +9,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import Link from 'next/link';
-import { Eye, ArrowLeftRight, LogOut, Sparkles } from 'lucide-react';
+import { Eye, ArrowLeftRight, LogOut, Sparkles, Presentation } from 'lucide-react';
 import { useDemo } from '@/contexts/DemoContext';
+import { useDemoGuide } from '@/contexts/DemoGuideContext';
 
 export function DemoBanner() {
   const { config } = useDemo();
+  const { openIntro } = useDemoGuide();
 
   return (
     <div className="bg-gray-900 dark:bg-gray-950 border-b border-gray-800 text-white">
@@ -29,6 +31,13 @@ export function DemoBanner() {
         </div>
 
         <div className="flex items-center gap-1.5">
+          <button
+            onClick={openIntro}
+            className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-200 hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
+          >
+            <Presentation className="w-3.5 h-3.5" aria-hidden="true" />
+            Guided Demo
+          </button>
           <Link
             href="/demo"
             className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-200 hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
