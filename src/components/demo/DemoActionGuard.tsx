@@ -9,6 +9,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from 'react';
+import Link from 'next/link';
 import { Lock, ShieldCheck, ArrowRight, X, Sparkles } from 'lucide-react';
 import { useDemo } from '@/contexts/DemoContext';
 import { DemoActionId, DemoGuardMessage, resolveGuardMessage } from '@/lib/demo/guards';
@@ -121,13 +122,13 @@ function DemoActionModal({ message, onClose }: { message: DemoGuardMessage; onCl
             >
               Continue exploring
             </button>
-            <a
-              href="mailto:sales@chainx.ch?subject=Private%20ChainX%20demo%20request"
+            <Link
+              href="/demo/request"
               className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 rounded-xl transition-colors"
             >
               Request Private Demo
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

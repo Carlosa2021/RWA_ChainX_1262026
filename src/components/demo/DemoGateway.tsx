@@ -48,25 +48,25 @@ export function DemoGateway() {
         {/* Secondary CTAs */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Link
-            href="/demo/business"
+            href="/demo"
             className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-50 hover:shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800"
           >
             <Table2 className="h-4 w-4" />
             Compare Plans
           </Link>
-          <a
-            href="mailto:sales@chainx.ch?subject=Private%20ChainX%20demo%20request"
+          <Link
+            href="/demo/request"
             className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-md dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
           >
             <Sparkles className="h-4 w-4" />
             Request Private Demo
-          </a>
+          </Link>
           <Link
             href="/"
             className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-50 hover:shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800"
           >
             <KeyRound className="h-4 w-4" />
-            Access Licensed Platform
+            Open Licensed Platform
           </Link>
         </div>
 

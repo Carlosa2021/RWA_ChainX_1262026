@@ -45,13 +45,13 @@ export function DemoBanner() {
             <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden="true" />
             Switch Plan
           </Link>
-          <a
-            href="mailto:sales@chainx.ch?subject=Private%20ChainX%20demo%20request"
+          <Link
+            href="/demo/request"
             className="inline-flex items-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-900 hover:bg-gray-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
           >
             <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
             Request Private Demo
-          </a>
+          </Link>
           <Link
             href="/demo"
             className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-200 hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"

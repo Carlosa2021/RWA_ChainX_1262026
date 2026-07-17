@@ -8,6 +8,7 @@ import { Header } from '@/components/Header';
 import { StatsCard } from '@/components/StatsCard';
 import { SimplePropertyCard } from '@/components/SimplePropertyCard';
 import { InvestmentModal } from '@/components/InvestmentModal';
+import { LicensedPlatformNotice } from '@/components/LicensedPlatformNotice';
 // import { AIShowcaseBanner } from "@/components/AIShowcaseBanner"; // Removed - intrusive
 // import SimplePlanDisplay from "@/components/SimplePlanDisplay";
 import Footer from '@/components/Footer';
@@ -48,6 +49,7 @@ export default function Home() {
         <Header />
 
         <main className="px-6 py-8 max-w-7xl mx-auto">
+          <LicensedPlatformNotice />
           {/* Platform header — institutional positioning */}
           <div className="mb-10">
             <h1 className="text-3xl font-semibold text-gray-900 dark:text-white mb-1">
